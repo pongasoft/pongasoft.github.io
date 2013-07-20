@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Orchestration engine &mdash; glu 5.0.0 documentation</title>
+    <title>Orchestration engine &mdash; glu 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '5.0.0',
+        VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="glu 5.0.0 documentation" href="index.html" />
+    <link rel="top" title="glu 5.1.0 documentation" href="index.html" />
     <link rel="next" title="Static Model" href="static-model.html" />
     <link rel="prev" title="glu script" href="glu-script.html" />
  
@@ -50,7 +50,7 @@
             <img class="logo" src="_static/glu-logo-214x72.png" alt="Logo"/>
           </a></p>
         <div class="headertitle"><a
-          href="contents.html">glu 5.0.0 documentation</a></div>
+          href="contents.html">glu 5.1.0 documentation</a></div>
         <div class="rel">
           <a href="glu-script.html" title="glu script"
              accesskey="P">previous</a> |
@@ -1952,23 +1952,29 @@ don&#8217;t filter at all.</td>
 </div>
 <div class="section" id="how-do-you-install-a-plugin">
 <h3>How do you install a plugin?<a class="headerlink" href="#how-do-you-install-a-plugin" title="Permalink to this headline">¶</a></h3>
-<p>The orchestration engine is currently bundled in the console web application. In order to install your plugins(s), you need to package them as jar file(s) and make sure they are available in the classpath of your web server. If you deploy the console as the provided console server, then simply drop your plugins (jar files) in the <tt class="docutils literal"><span class="pre">glu/repository/plugins</span></tt> folder.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If your plugin has external dependencies, they also need to be made available in the classpath of your web server! For the console server, simply drop them in <tt class="docutils literal"><span class="pre">jetty-distribution-&lt;version&gt;/lib/ext</span></tt>.</p>
-</div>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">If you use the provided console server wrapper (which underneath uses jetty), then you can simply drop your plugins jar files under <tt class="docutils literal"><span class="pre">glu/repository/plugins</span></tt> (and your dependencies under <tt class="docutils literal"><span class="pre">jetty-distribution-&lt;version&gt;/lib/ext</span></tt>)  and you are done. On the other hand, if you use your own web server (tomcat, etc...) or your own version of jetty, make sure to configure it properly: the plugins need to be available from the same class space as the webapp. For example, with jetty, dropping your plugins jar files under the <tt class="docutils literal"><span class="pre">jetty-distribution-&lt;version&gt;/lib/ext</span></tt> does not work! Check the files <tt class="docutils literal"><span class="pre">bin/consolectl.sh</span></tt> and <tt class="docutils literal"><span class="pre">conf/console-jetty-context.xml</span></tt> to see how this is accomplished with jetty.</p>
-</div>
-<p>You then need to tell the console about it. For this you change the configuration file (<tt class="docutils literal"><span class="pre">conf/glu-console-webapp.groovy</span></tt>), by adding the class name(s) of your plugin(s):</p>
-<div class="highlight-text"><div class="highlight"><pre>orchestration.engine.plugins = [
-  &#39;org.linkedin.glu.orchestration.engine.plugins.builtin.StreamFileContentPlugin&#39;,
-  &#39;org.acme.MyPlugin&#39;,
-  // etc...
+<p>In order to install your plugins(s), you need to first package them as jar file(s). Then it is just a matter of editing the appropriate section in the <a class="reference internal" href="meta-model.html#meta-model-console"><em>meta model</em></a> to let glu know where they are. For example:</p>
+<div class="highlight-text"><div class="highlight"><pre>consoles &lt;&lt; [
+  host: &#39;localhost&#39;,
+  plugins: [
+    [
+      fqcn: &#39;org.acme.glu.plugin.MyPlugin&#39;,
+      classPath: [&#39;http://repository/myplugin.jar&#39;, &#39;http://repository/dependency.jar&#39;]
+    ],
+    // ... more plugins
+  ],
 ]
 </pre></div>
 </div>
+<ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">fqcn</span></tt> is the fully qualified class name of your plugin</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The class of your plugin <strong>must</strong> be present in one of the jar files specified in the <tt class="docutils literal"><span class="pre">classPath</span></tt> section</p>
+</div>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">classPath</span></tt> is a list of URIs containing the various jars comprising your plugin (base class + dependencies).</p>
+</li>
+</ul>
 </div>
 <div class="section" id="list-of-hooks-available">
 <h3>List of hooks available<a class="headerlink" href="#list-of-hooks-available" title="Permalink to this headline">¶</a></h3>
@@ -2293,9 +2299,14 @@ don&#8217;t filter at all.</td>
 <li class="toctree-l1"><a class="reference internal" href="static-model.html"> Static Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="filtering.html"> Filtering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="console.html"> Console</a></li>
-<li class="toctree-l1"><a class="reference internal" href="production-setup.html">Production Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dev-setup.html">Development Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RELEASE.html">Latest changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="meta-model.html">Meta Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glu-config.html">Configuring glu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="easy-production-setup.html">Easy Production Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup-tool.html"><tt class="docutils literal"><span class="pre">setup.sh</span></tt> tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="production-setup.html">Old Production Setup (prior to 5.1.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev-setup.html">Compiling glu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RELEASE.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration-guide.html">Migration Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contents.html">All content</a></li>
 </ul>

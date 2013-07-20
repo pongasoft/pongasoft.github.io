@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Glossary &mdash; glu 5.0.0 documentation</title>
+    <title>Glossary &mdash; glu 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '5.0.0',
+        VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,8 +25,8 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="glu 5.0.0 documentation" href="index.html" />
-    <link rel="prev" title="Latest changes" href="RELEASE.html" />
+    <link rel="top" title="glu 5.1.0 documentation" href="index.html" />
+    <link rel="prev" title="Migration Guide" href="migration-guide.html" />
  
 <link rel="stylesheet" href="_static/glu.css" type="text/css" />
 <script type="text/javascript" src="http://widgets.twimg.com/j/2/widget.js"></script>
@@ -49,9 +49,9 @@
             <img class="logo" src="_static/glu-logo-214x72.png" alt="Logo"/>
           </a></p>
         <div class="headertitle"><a
-          href="contents.html">glu 5.0.0 documentation</a></div>
+          href="contents.html">glu 5.1.0 documentation</a></div>
         <div class="rel">
-          <a href="RELEASE.html" title="Latest changes"
+          <a href="migration-guide.html" title="Migration Guide"
              accesskey="P">previous</a> |
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a>
@@ -79,6 +79,8 @@
 <dd>In a glu script, a closure is a <a class="reference external" href="http://groovy.codehaus.org/Closures">groovy closure</a> which is essentially a piece of groovy/java code (between curly braces) assigned to an attribute.</dd>
 <dt id="term-command">command</dt>
 <dd>Any kind of (unix) shell command (ex: <tt class="docutils literal"><span class="pre">uptime</span></tt>, <tt class="docutils literal"><span class="pre">echo</span> <span class="pre">foo</span> <span class="pre">&gt;</span> <span class="pre">/tmp/file.txt</span></tt>, etc...)</dd>
+<dt id="term-cli">cli</dt>
+<dd>An application/tool that runs and then exists when the task is complete. In glu, clis are self contained and packaged under a directory structure with a <tt class="docutils literal"><span class="pre">bin/xxxx.sh</span></tt> to start the application/tool.</dd>
 <dt id="term-console">Console</dt>
 <dd>The webapp/REST api built on top of ZooKeeper which is the orchestrator of the system.</dd>
 <dt id="term-delta">delta</dt>
@@ -124,6 +126,8 @@ m.p2.p3 // which would return &#39;v3&#39;
 <dd>Representation of the <a class="reference internal" href="#term-live-state"><em class="xref std std-term">live state</em></a> as json document. More information about <a class="reference internal" href="orchestration-engine.html#goe-live-model"><em>the live model</em></a>.</dd>
 <dt id="term-live-state">live state</dt>
 <dd>The state of the <em>live</em> system as reported by the agents in ZooKeeper. This state is dynamically collected by the <a class="reference internal" href="#term-orchestration-engine"><em class="xref std std-term">orchestration engine</em></a>.</dd>
+<dt id="term-meta-model">meta model</dt>
+<dd>The model which describes the glu setup itself (agents, consoles, fabrics, etc...). Do not confuse with the <a class="reference internal" href="#term-model"><em class="xref std std-term">model</em></a> described below.</dd>
 <dt id="term-metadata">Metadata</dt>
 <dd><p class="first">Metadata in the context of glu represents a map that can be represented as a json object:</p>
 <div class="last highlight-text"><div class="highlight"><pre>def goodMetadata =
@@ -161,6 +165,8 @@ def badMetadata =
 <dd>Synonym for <a class="reference internal" href="#term-host"><em class="xref std std-term">host</em></a></dd>
 <dt id="term-orchestration-engine">orchestration engine</dt>
 <dd>The orchestration engine is the process that listens to ZooKeeper updates coming from the agents, compute differences (<a class="reference internal" href="#term-delta"><em class="xref std std-term">delta</em></a>) with the <a class="reference internal" href="#term-model"><em class="xref std std-term">model</em></a> in order to visualize them and/or execute a deployment plan. The orchestration engine is in charge of orchestrating deployments making sure they happen either sequentially or in parallel (or a combination of both).</dd>
+<dt id="term-server">server</dt>
+<dd>An application that is long lived and usually terminates when asked to do so. In glu, servers are self contained and packaged under a directory structure with a <tt class="docutils literal"><span class="pre">bin/xxxx.sh</span></tt> shell script. The command <tt class="docutils literal"><span class="pre">bin/xxxx.sh</span> <span class="pre">start</span></tt> is used to start the server. The command <tt class="docutils literal"><span class="pre">bin/xxxx.sh</span> <span class="pre">stop</span></tt> is used to stop the server.</dd>
 <dt id="term-static-model">static model</dt>
 <dd>Synonym for <a class="reference internal" href="#term-model"><em class="xref std std-term">model</em></a>. More information about <a class="reference internal" href="static-model.html#static-model"><em>the static model</em></a>.</dd>
 <dt id="term-system">system</dt>
@@ -189,9 +195,14 @@ def badMetadata =
 <li class="toctree-l1"><a class="reference internal" href="static-model.html"> Static Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="filtering.html"> Filtering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="console.html"> Console</a></li>
-<li class="toctree-l1"><a class="reference internal" href="production-setup.html">Production Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dev-setup.html">Development Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RELEASE.html">Latest changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="meta-model.html">Meta Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glu-config.html">Configuring glu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="easy-production-setup.html">Easy Production Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup-tool.html"><tt class="docutils literal"><span class="pre">setup.sh</span></tt> tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="production-setup.html">Old Production Setup (prior to 5.1.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev-setup.html">Compiling glu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RELEASE.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration-guide.html">Migration Guide</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contents.html">All content</a></li>
 </ul>
@@ -260,7 +271,7 @@ def badMetadata =
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="RELEASE.html" title="Latest changes"
+          <a href="migration-guide.html" title="Migration Guide"
              >previous</a> |
           <a href="genindex.html" title="General Index"
              >index</a>

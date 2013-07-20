@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Console &mdash; glu 5.0.0 documentation</title>
+    <title>Console &mdash; glu 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '5.0.0',
+        VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,8 +25,8 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="glu 5.0.0 documentation" href="index.html" />
-    <link rel="next" title="Production Setup" href="production-setup.html" />
+    <link rel="top" title="glu 5.1.0 documentation" href="index.html" />
+    <link rel="next" title="Meta Model" href="meta-model.html" />
     <link rel="prev" title="Filtering" href="filtering.html" />
  
 <link rel="stylesheet" href="_static/glu.css" type="text/css" />
@@ -50,11 +50,11 @@
             <img class="logo" src="_static/glu-logo-214x72.png" alt="Logo"/>
           </a></p>
         <div class="headertitle"><a
-          href="contents.html">glu 5.0.0 documentation</a></div>
+          href="contents.html">glu 5.1.0 documentation</a></div>
         <div class="rel">
           <a href="filtering.html" title="Filtering"
              accesskey="P">previous</a> |
-          <a href="production-setup.html" title="Production Setup"
+          <a href="meta-model.html" title="Meta Model"
              accesskey="N">next</a> |
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a>
@@ -80,93 +80,120 @@
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>Check the section <a class="reference internal" href="production-setup.html#production-setup-console"><em>Step 8: Install the console</em></a> for details about how to install the console.</p>
+<p>The <a class="reference internal" href="easy-production-setup.html#easy-production-setup-gen-dist"><em>distribution generation</em></a> phase generates a full web application container (jetty) that is ready to be used.</p>
+<div class="section" id="console-as-a-server">
+<span id="id1"></span><h3>Console as a server<a class="headerlink" href="#console-as-a-server" title="Permalink to this headline">¶</a></h3>
+<p>Simply follow <a class="reference internal" href="easy-production-setup.html#easy-production-setup-install"><em>Step 5: Install the distributions</em></a> in order to install the server that was generated for you.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">This is the recommended way for deploying the console.</p>
 </div>
-<div class="section" id="configuration-file">
-<span id="console-configuration"></span><h2>Configuration file<a class="headerlink" href="#configuration-file" title="Permalink to this headline">¶</a></h2>
-<p>When the console boots it reads a configuration file. There are 3 ways to provide this configuration file to the console:</p>
-<ol class="arabic simple">
+</div>
+<div class="section" id="console-as-a-war">
+<span id="id2"></span><h3>Console as a war<a class="headerlink" href="#console-as-a-war" title="Permalink to this headline">¶</a></h3>
+<p>If you want to deploy the console in another web container then do the following:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">generate the <a class="reference internal" href="easy-production-setup.html#easy-production-setup-gen-dist"><em>distributions</em></a> the normal way</p>
+</li>
+<li><p class="first">then create the war file manually:</p>
+<div class="highlight-text"><div class="highlight"><pre>cd &lt;outputFolder&gt;/consoles/org.linkedin.glu.console-server-&lt;version&gt;/
+cd glu/repository/exploded-wars/org.linkedin.glu.console-webapp-&lt;version&gt;/
+jar cfm /tmp/org.linkedin.glu.console-webapp-&lt;version&gt;.war META-INF/MANIFEST.MF *
+</pre></div>
+</div>
+</li>
+<li><p class="first">make the configuration file that was generated (<tt class="docutils literal"><span class="pre">&lt;outputFolder&gt;/consoles/org.linkedin.glu.console-server-&lt;version&gt;/glu-console-webapp.groovy</span></tt>) available to your application server by using one of the following 3 techniques</p>
+</li>
+</ul>
+<blockquote>
+<div><ol class="arabic simple">
 <li>store it under <tt class="docutils literal"><span class="pre">$HOME/.org.linkedin.glu/glu-console-webapp.groovy</span></tt></li>
 <li>store it under <tt class="docutils literal"><span class="pre">conf/glu-console-webapp.groovy</span></tt> (relative to wherever the VM <tt class="docutils literal"><span class="pre">user.dir</span></tt> is set to)</li>
 <li>pass a system property <tt class="docutils literal"><span class="pre">-Dorg.linkedin.glu.console.config.location=/fullpath/to/file</span></tt> (or use the <tt class="docutils literal"><span class="pre">JAVA_OPTIONS</span></tt> environment variable)</li>
 </ol>
-<p>Through this file, the console allows you to configure several areas including some aspects of the UI.</p>
+</div></blockquote>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="configuration">
+<span id="console-configuration"></span><h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>The console is configured by defining the proper parameters (<tt class="docutils literal"><span class="pre">configTokens</span></tt>) in the <a class="reference internal" href="meta-model.html#meta-model-console"><em>meta model</em></a> or providing the proper <tt class="docutils literal"><span class="pre">config-templates</span></tt> for more control.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">if you modify the configuration file, you need to stop and restart the console for the changes to take effect</p>
+<p class="last">All code examples (unless noted otherwise) are showing extracts of the meta model.</p>
 </div>
 <div class="section" id="console-agent-connection">
 <h3>Console &lt;-&gt; Agent Connection<a class="headerlink" href="#console-agent-connection" title="Permalink to this headline">¶</a></h3>
-<p>The console (orchestration engine) talks to all the agents using a REST api over https (or http if you do disable security).</p>
-<p>The following section allows you to configure how the console talks to the agent:</p>
-<div class="highlight-text"><div class="highlight"><pre>console.sslEnabled=true
+<p>The console (orchestration engine) talks to all the agents using a REST api over https (or http if you do disable security). If you define a set of keys for the fabric hosted by the console, then the communication will happen over https, otherwise it will happen over http:</p>
+<div class="highlight-text"><div class="highlight"><pre>// enable https communication
+def keys = [
+   ...
+]
 
-def keysDir = System.properties[&#39;org.linkedin.glu.console.keys.dir&#39;] ?:
-              &quot;${System.properties[&#39;user.dir&#39;]}/keys&quot;
+// disable https communication
+// def keys = null
 
-console.keystorePath=&quot;${keysDir}/console.keystore&quot;
-console.keystorePassword = &quot;nacEn92x8-1&quot;
-console.keyPassword = &quot;nWVxpMg6Tkv&quot;
+fabrics[&quot;myFabric&quot;] = [
+  keys: keys,
+  console: &#39;myConsole&#39;,
+  ...
+]
 
-console.secretkeystorePath=&quot;${keysDir}/console.secretkeystore&quot;
-
-console.truststorePath=&quot;${keysDir}/agent.truststore&quot;
-console.truststorePassword = &quot;nacEn92x8-1&quot;
-</pre></div>
-</div>
-<p>TODO: add link to key management.</p>
-<p>If you do not want a secure connection between the console and the agent, this is how you would configure it:</p>
-<div class="highlight-text"><div class="highlight"><pre>console.sslEnabled=false
-
-// the following entries *must* be present (but can be left empty)
-console.keystorePath=&quot;&quot;
-console.keystorePassword = &quot;&quot;
-console.keyPassword = &quot;&quot;
-console.secretkeystorePath=&quot;&quot;
-console.truststorePath=&quot;&quot;
-console.truststorePassword = &quot;&quot;
-</pre></div>
-</div>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Disabling the secure connection means that the agents will happily serve any request irrelevant of where it is coming from, which could be a serious security hole.</p>
-</div>
-</div>
-<div class="section" id="plugins">
-<h3>Plugins<a class="headerlink" href="#plugins" title="Permalink to this headline">¶</a></h3>
-<p>The console (orchestration engine) behavior can be tweaked and or enhanced with the use of plugins. Check the <a class="reference internal" href="orchestration-engine.html#goe-plugins"><em>Plugins</em></a> section for details on how to create and install a plugin. You add your plugin(s) to the console by modifying the following property:</p>
-<div class="highlight-text"><div class="highlight"><pre>orchestration.engine.plugins = [
-  &#39;org.linkedin.glu.orchestration.engine.plugins.builtin.StreamFileContentPlugin&#39;,
-  &#39;org.acme.MyPlugin&#39;,
-  // etc...
+consoles &lt;&lt; [
+  name: &#39;myConsole&#39;,
+  ...
+  ],
 ]
 </pre></div>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p>Since 4.1.0, <em>restricting file access on an agent</em> has been migrated to the <tt class="docutils literal"><span class="pre">StreamFileContentPlugin</span></tt> plugin and is now being configured by defining the
-properties:</p>
-<div class="last highlight-text"><div class="highlight"><pre>// path to the root of the unrestricted location (empty means no restriction)
+<p class="last">Disabling the secure connection means that the agents will happily serve any request irrelevant of where it is coming from, which could be a serious security hole and as result is not recommended!</p>
+</div>
+</div>
+<div class="section" id="plugins">
+<h3>Plugins<a class="headerlink" href="#plugins" title="Permalink to this headline">¶</a></h3>
+<p>The console (orchestration engine) behavior can be tweaked and or enhanced with the use of plugins. Check the <a class="reference internal" href="orchestration-engine.html#goe-plugins"><em>Plugins</em></a> section for details on how to create and install a plugin.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Since 4.1.0, <em>restricting file access on an agent</em> has been migrated to the <tt class="docutils literal"><span class="pre">StreamFileContentPlugin</span></tt> plugin and is now being configured by defining the properties:</p>
+<div class="last highlight-text"><div class="highlight"><pre>consoles &lt;&lt; [
+   name: &#39;myConsole&#39;,
+   ...,
+   configTokens: [
+     plugins: &quot;&quot;&quot;
+// path to the root of the unrestricted location (empty means no restriction)
 // this property is used by StreamFileContentPlugin
-plugins.StreamFileContentPlugin.unrestrictedLocation = &quot;/export/content/glu&quot;
+plugins.StreamFileContentPlugin.unrestrictedLocation = &quot;&quot;
 
 // role for unrestricted
 plugins.StreamFileContentPlugin.unrestrictedRole = &#39;ADMIN&#39;
+     &quot;&quot;&quot;
+   ]
+],
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="database">
 <span id="console-configuration-database"></span><h3>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h3>
-<p>The console uses a database to store some of its data (like the audit log, user information, etc...). At this moment in time, the console uses <a class="reference external" href="http://hsqldb.org/">HSQLDB</a> for its database. You may want to change the location of the database folder by providing a <tt class="docutils literal"><span class="pre">org.linkedin.glu.console.dataSource.url</span></tt> system property (<tt class="docutils literal"><span class="pre">-Dorg.linkedin.glu.console.dataSource.url=/path/to/database/root</span></tt> when starting the webapp container (or using the <tt class="docutils literal"><span class="pre">JAVA_OPTIONS</span></tt> environment variable)) or directly modifying the following section in the configuration file:</p>
-<div class="highlight-text"><div class="highlight"><pre>def dataSourceUrl =
-  System.properties[&#39;org.linkedin.glu.console.dataSource.url&#39;] ?:
-  &quot;jdbc:hsqldb:file:${System.properties[&#39;user.dir&#39;]}/database/prod;shutdown=true&quot;
-
-// specify the database connection string
+<p>The console uses a database to store some of its data (like the audit log, user information, etc...). The built-in database that comes bundled with glu is <a class="reference external" href="http://hsqldb.org/">HSQLDB</a>. The default location of the database is under the <tt class="docutils literal"><span class="pre">database/prod</span></tt> folder at the root of the jetty server. You may want to change this location by modifying the following section in the configuration file:</p>
+<div class="highlight-text"><div class="highlight"><pre>consoles &lt;&lt; [
+   name: &#39;myConsole&#39;,
+   ...,
+   configTokens: [
+     dataSource: &quot;&quot;&quot;
 dataSource.dbCreate = &quot;update&quot;
-dataSource.url = dataSourceUrl
+dataSource.url = &quot;jdbc:hsqldb:file:/path/to/database;shutdown=true&quot;
+     &quot;&quot;&quot;
+   ]
+],
 </pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">It is not recommended to use the HSQLDB database in a real production environment. Please consider using another database like MySql (see next section).</p>
 </div>
 <div class="section" id="example-for-a-different-database-mysql">
 <span id="console-configuration-database-mysql"></span><h4>Example for a different database: MySql<a class="headerlink" href="#example-for-a-different-database-mysql" title="Permalink to this headline">¶</a></h4>
@@ -187,27 +214,33 @@ mysql&gt; grant all on glu.* to &#39;glua&#39;@&#39;localhost&#39;;
 <p class="last">This values are obviously just example values (they simply need to be plugged in the right place in the configuration file (see below)).</p>
 </div>
 </li>
-<li><p class="first">Download the MySql <a class="reference external" href="http://www.mysql.com/downloads/connector/j/">driver</a></p>
-</li>
-<li><p class="first">Copy the driver (in this example it is called <tt class="docutils literal"><span class="pre">mysql-connector-java-5.1.17-bin.jar</span></tt>) to <tt class="docutils literal"><span class="pre">console-server/jetty-distribution-7.2.2.v20101205/lib/ext</span></tt></p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">You may need to run <tt class="docutils literal"><span class="pre">./bin/tutorial.sh</span> <span class="pre">setup</span></tt> in order to create the proper folder structure first!</p>
-</div>
-</li>
-<li><p class="first">Edit the glu configuration file (<tt class="docutils literal"><span class="pre">console-server/conf/glu-console-webapp.groovy</span></tt>) to input the proper values:</p>
-<div class="highlight-text"><div class="highlight"><pre>// &#39;glu&#39; is the name of the database created previously
-def dataSourceUrl = &quot;jdbc:mysql://localhost/glu&quot;
+<li><p class="first">Edit the meta model in this fashion:</p>
+<div class="highlight-text"><div class="highlight"><pre>consoles &lt;&lt; [
+   name: &#39;myConsole&#39;,
+   ...,
+   dataSourceDriverUri: &#39;http://jcenter.bintray.com/mysql/mysql-connector-java/5.1.25/mysql-connector-java-5.1.25.jar&#39;,
+   configTokens: [
+     dataSource: &quot;&quot;&quot;
+def dataSourceUrl = &quot;jdbc:mysql://hostWhereMySqlIsRunning/glu&quot;
 dataSource.dbCreate = &quot;update&quot;
 dataSource.url = dataSourceUrl
 dataSource.logSql=false // set to true for details (+ open trace logging level)
 dataSource.dialect = &quot;org.hibernate.dialect.MySQL5InnoDBDialect&quot;
 dataSource.driverClassName = &quot;com.mysql.jdbc.Driver&quot;
-dataSource.username= &quot;glua&quot; // user created previously
-dataSource.password = &quot;password&quot; // password assigned previously
+dataSource.username= &quot;glua&quot; // this is from the glu user creation step
+dataSource.password = &quot;password&quot; // this is from the glu user creation step
+     &quot;&quot;&quot;
+   ]
+ ],
 </pre></div>
 </div>
 </li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">You may want to check the quick production meta model that comes bundled with glu as it demonstrates the configuration steps.</p>
+</div>
+<ul>
 <li><p class="first">Start the console</p>
 </li>
 <li><p class="first">You can check that MySql is being used:</p>
@@ -244,7 +277,7 @@ timeouts, or using the Connector/J connection property &#39;autoReconnect=true&#
 this problem
 </pre></div>
 </div>
-<p>it has been <a class="reference external" href="https://github.com/pongasoft/glu/issues/141">reported</a> that in order to fix the issue, you can add the following configuration properties in the glu configuration
+<p>it has been <a class="reference external" href="https://github.com/pongasoft/glu/issues/141">reported</a> that in order to fix the issue, you can add the following configuration properties
 file:</p>
 <div class="last highlight-text"><div class="highlight"><pre>dataSource.properties.validationQuery = &quot;SELECT 1&quot;
 dataSource.properties.testWhileIdle = false
@@ -260,46 +293,39 @@ dataSource.properties.testOnReturn = false
 <div class="section" id="other-databases-oracle-postgressql">
 <span id="console-configuration-database-other"></span><h4>Other databases: Oracle, PostgresSQL<a class="headerlink" href="#other-databases-oracle-postgressql" title="Permalink to this headline">¶</a></h4>
 <p>Some databases (like Oracle and PostgresSQL) do not allow to have a table named <tt class="docutils literal"><span class="pre">USER</span></tt>. In order to use one of this database, you need to add the following property to the glu configuration file (<tt class="docutils literal"><span class="pre">console-server/conf/glu-console-webapp.groovy</span></tt>):</p>
-<div class="highlight-text"><div class="highlight"><pre>console.datasource.table.user.mapping = &quot;db_user&quot;
+<div class="highlight-text"><div class="highlight"><pre>consoles &lt;&lt; [
+   name: &#39;myConsole&#39;,
+   ...,
+   configTokens: [
+     dataSource: &quot;&quot;&quot;
+... // dataSource configuration goes here
+console.datasource.table.user.mapping = &quot;db_user&quot;
+     &quot;&quot;&quot;
+   ]
+],
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="logging">
 <h3>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h3>
-<p>The log4j section allows you to configure where and how the console logs its output. It is a DSL and you can view more details on how to configure it directly on the <a class="reference external" href="http://grails.org/doc/1.3.x/guide/3.%20Configuration.html#3.1.2%20Logging">grails web site</a>:</p>
-<div class="highlight-text"><div class="highlight"><pre>log4j = {
-    appenders {
-      file name:&#39;file&#39;,
-      file:&#39;logs/console.log&#39;,
-      layout:pattern(conversionPattern: &#39;%d{yyyy/MM/dd HH:mm:ss.SSS} %p [%c{1}] %m%n&#39;)
-    }
-
-    root {
-      info &#39;file&#39;
-      additivity = false
-    }
-
-    error  &#39;org.codehaus.groovy.grails.web.servlet&#39;,  //  controllers
-               &#39;org.codehaus.groovy.grails.web.pages&#39;, //  GSP
-               &#39;org.codehaus.groovy.grails.web.sitemesh&#39;, //  layouts
-               &#39;org.codehaus.groovy.grails.web.mapping.filter&#39;, // URL mapping
-               &#39;org.codehaus.groovy.grails.web.mapping&#39;, // URL mapping
-               &#39;org.codehaus.groovy.grails.commons&#39;, // core / classloading
-               &#39;org.codehaus.groovy.grails.plugins&#39;, // plugins
-               &#39;org.codehaus.groovy.grails.orm.hibernate&#39;, // hibernate integration
-               &#39;org.springframework&#39;,
-               &#39;org.hibernate&#39;
-
-    info &#39;grails&#39;,
-         &#39;org.linkedin&#39;
-
-    //debug &#39;com.linkedin.glu.agent.tracker&#39;, &#39;com.linkedin.glu.zookeeper.client&#39;
-
-    //trace &#39;org.hibernate.SQL&#39;, &#39;org.hibernate.type&#39;
-
-    warn   &#39;org.mortbay.log&#39;, &#39;org.restlet.Component.LogService&#39;, &#39;org.restlet&#39;
+<p>The log4j section allows you to configure where and how the console logs its output. It is a DSL and you can view more details on how to configure it directly on the <a class="reference external" href="http://grails.org/doc/1.3.x/guide/3.%20Configuration.html#3.1.2%20Logging">grails web site</a>. If you want to provide your own log4j configuration simply edit the following section:</p>
+<div class="highlight-text"><div class="highlight"><pre>consoles &lt;&lt; [
+   name: &#39;myConsole&#39;,
+   ...,
+   configTokens: [
+     log4j: &quot;&quot;&quot;
+{
+   appenders {
+    file name:&#39;file&#39;,
+    file:&#39;logs/console.log&#39;,
+    layout:pattern(conversionPattern: &#39;%d{yyyy/MM/dd HH:mm:ss.SSS} %p [%c{1}] %m%n&#39;)
+   }
+ ... etc ...
 }
+     &quot;&quot;&quot;
+   ]
+],
 </pre></div>
 </div>
 <div class="admonition note">
@@ -310,31 +336,46 @@ dataSource.properties.testOnReturn = false
 <div class="section" id="ldap">
 <span id="console-configuration-ldap"></span><h3>LDAP<a class="headerlink" href="#ldap" title="Permalink to this headline">¶</a></h3>
 <p>You can configure LDAP for handling user management in the console. See <a class="reference internal" href="#console-user-management"><em>User management</em></a> for details. Here is the relevant section in the configuration file:</p>
-<div class="highlight-text"><div class="highlight"><pre>// This section is optional if you do not want to use ldap
+<div class="highlight-text"><div class="highlight"><pre>consoles &lt;&lt; [
+   name: &#39;myConsole&#39;,
+   ...,
+   configTokens: [
+     ldap: &quot;&quot;&quot;
 ldap.server.url=&quot;ldaps://ldap.acme.com:3269&quot;
 ldap.search.base=&quot;dc=acme,dc=com&quot;
 ldap.search.user=&quot;cn=glu,ou=glu,dc=acme,dc=com&quot;
 ldap.search.pass=&quot;helloworld&quot;
 ldap.username.attribute=&quot;sAMAccountName&quot;
+     &quot;&quot;&quot;
+   ]
+],
 </pre></div>
 </div>
 </div>
 <div class="section" id="security-levels">
 <span id="console-configuration-security-levels"></span><h3>Security Levels<a class="headerlink" href="#security-levels" title="Permalink to this headline">¶</a></h3>
-<p>You can define your own security level (<cite>USER</cite>, <cite>RELEASE</cite> or <cite>ADMIN</cite>) per URL by defining a property like this in your configuration file:</p>
+<p>You can define your own security level (<cite>USER</cite>, <cite>RELEASE</cite> or <cite>ADMIN</cite>) per URL by defining a property like this:</p>
 <div class="highlight-text"><div class="highlight"><pre>console.security.roles.&#39;&lt;path&gt;&#39; = &#39;&lt;role&gt;&#39;
 </pre></div>
 </div>
-<p>You can define your own security level (<cite>USER</cite>, <cite>RELEASE</cite> or <cite>ADMIN</cite>) per REST call by defining a property like this in your configuration file:</p>
+<p>You can define your own security level (<cite>USER</cite>, <cite>RELEASE</cite> or <cite>ADMIN</cite>) per REST call by defining a property like this:</p>
 <div class="highlight-text"><div class="highlight"><pre>console.security.roles.&#39;&lt;method&gt;:&lt;path&gt;&#39; = &#39;&lt;role&gt;&#39;
 </pre></div>
 </div>
 <p>Here are some examples:</p>
-<div class="highlight-text"><div class="highlight"><pre>// a URL for the web interface
+<div class="highlight-text"><div class="highlight"><pre>consoles &lt;&lt; [
+   name: &#39;myConsole&#39;,
+   ...,
+   configTokens: [
+     security: &quot;&quot;&quot;
+// a URL for the web interface
 console.security.roles.&#39;/model/load&#39; = &#39;USER&#39;
 
 // a REST call
 console.security.roles.&#39;POST:/rest/v1/$fabric/model/static&#39; = &#39;RELEASE&#39;
+     &quot;&quot;&quot;
+   ]
+],
 </pre></div>
 </div>
 <div class="admonition note">
@@ -343,13 +384,20 @@ console.security.roles.&#39;POST:/rest/v1/$fabric/model/static&#39; = &#39;RELEA
 </div>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p>If you have more than one entry to change, you can use a simpler
-notation:</p>
-<div class="last highlight-text"><div class="highlight"><pre>console.security.roles.putAll([
+<p>If you have more than one entry to change, you can use a simpler notation:</p>
+<div class="last highlight-text"><div class="highlight"><pre>consoles &lt;&lt; [
+   name: &#39;myConsole&#39;,
+   ...,
+   configTokens: [
+     security: &quot;&quot;&quot;
+console.security.roles.putAll([
   &#39;/agents/kill/$id/$pid&#39;: &#39;ADMIN&#39;,
   &#39;/plan/execute/$id&#39;: &#39;ADMIN&#39;,
   &#39;/plan/filter/$id&#39;: &#39;ADMIN&#39;
 ])
+     &quot;&quot;&quot;
+   ]
+],
 </pre></div>
 </div>
 </div>
@@ -363,17 +411,33 @@ notation:</p>
 <div class="section" id="deployments-auto-archive">
 <h4>Deployments auto-archive<a class="headerlink" href="#deployments-auto-archive" title="Permalink to this headline">¶</a></h4>
 <p>The plans page displays the list of deployments that have happened recently. Since 3.3.0, items in this list are automatically archived after 30 minutes. You can tune this property or simply disable automatic archiving by adding the following property:</p>
-<div class="highlight-text"><div class="highlight"><pre>// set it to &quot;0&quot; if you want to disable auto archiving entirely
+<div class="highlight-text"><div class="highlight"><pre>consoles &lt;&lt; [
+   name: &#39;myConsole&#39;,
+   ...,
+   configTokens: [
+     tuning: &quot;&quot;&quot;
+// set it to &quot;0&quot; if you want to disable auto archiving entirely
 console.deploymentService.autoArchiveTimeout = &quot;30m&quot;
+     &quot;&quot;&quot;
+   ]
+],
 </pre></div>
 </div>
 </div>
 <div class="section" id="limiting-the-number-of-parallel-steps">
 <h4>Limiting the number of parallel steps<a class="headerlink" href="#limiting-the-number-of-parallel-steps" title="Permalink to this headline">¶</a></h4>
-<p>When running deployments in parallel, there is, by default, no limitation on how many steps can be executed at the same time. Depending on the size of your system, this may put a lot of stress on your infrastructure (like the network, binary repositories, etc...). In order to limit how many steps can run in parallel, you can define this property in the glu configuration file (<tt class="docutils literal"><span class="pre">console-server/conf/glu-console-webapp.groovy</span></tt>):</p>
-<div class="highlight-text"><div class="highlight"><pre>// The following property limits how many (leaf) steps get executed in parallel during a deployment
+<p>When running deployments in parallel, there is, by default, no limitation on how many steps can be executed at the same time. Depending on the size of your system, this may put a lot of stress on your infrastructure (like the network, binary repositories, etc...). In order to limit how many steps can run in parallel, you set it this way:</p>
+<div class="highlight-text"><div class="highlight"><pre>consoles &lt;&lt; [
+   name: &#39;myConsole&#39;,
+   ...,
+   configTokens: [
+     tuning: &quot;&quot;&quot;
+// The following property limits how many (leaf) steps get executed in parallel during a deployment
 // By default (undefined), it is unlimited
 console.deploymentService.deployer.planExecutor.leafExecutorService.fixedThreadPoolSize = 500
+     &quot;&quot;&quot;
+   ]
+],
 </pre></div>
 </div>
 </div>
@@ -383,8 +447,16 @@ console.deploymentService.deployer.planExecutor.leafExecutorService.fixedThreadP
 <div class="section" id="skipping-missing-agents">
 <h4>Skipping missing agents<a class="headerlink" href="#skipping-missing-agents" title="Permalink to this headline">¶</a></h4>
 <p>By default, a missing agent generates a noop entry in the plan, or in other words it is skipped when the plan runs. If you want to change this behavior and generate an entry (which will fail on execution), then change the following property to <tt class="docutils literal"><span class="pre">false</span></tt>:</p>
-<div class="highlight-text"><div class="highlight"><pre>// set to false if you want missing agents to not be skipped anymore in plan computation
+<div class="highlight-text"><div class="highlight"><pre>consoles &lt;&lt; [
+   name: &#39;myConsole&#39;,
+   ...,
+   configTokens: [
+     misc: &quot;&quot;&quot;
+// set to false if you want missing agents to not be skipped anymore in plan computation
 console.plannerService.planner.skipMissingAgents = true
+     &quot;&quot;&quot;
+   ]
+],
 </pre></div>
 </div>
 </div>
@@ -397,6 +469,38 @@ console.plannerService.planner.skipMissingAgents = true
   ... configuration goes here ...
 ]
 </pre></div>
+</div>
+<p>You can either provide your entire <tt class="docutils literal"><span class="pre">console.defaults</span></tt> section:</p>
+<div class="highlight-text"><div class="highlight"><pre>consoles &lt;&lt; [
+   name: &#39;myConsole&#39;,
+   ...,
+   configTokens: [
+     &#39;console.defaults&#39;: &quot;&quot;&quot;
+[
+  ... configuration goes here ...
+]
+     &quot;&quot;&quot;
+   ]
+],
+</pre></div>
+</div>
+<p>or simply override specific values:</p>
+<div class="highlight-text"><div class="highlight"><pre>consoles &lt;&lt; [
+   name: &#39;myConsole&#39;,
+   ...,
+   configTokens: [
+     &#39;console.defaults.override&#39;: &quot;&quot;&quot;
+console.defaults.customCss = ...
+console.defaults.dashboardAgentLinksToAgent = true
+...
+     &quot;&quot;&quot;
+   ]
+],
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The following sections will simply call out the specific entries within the <tt class="docutils literal"><span class="pre">console.defaults</span></tt> map, but you can use either method to change them.</p>
 </div>
 <div class="section" id="custom-css">
 <span id="console-configuration-custom-css"></span><h4>Custom Css<a class="headerlink" href="#custom-css" title="Permalink to this headline">¶</a></h4>
@@ -414,6 +518,10 @@ customCss: &quot;&quot;&quot;
 // as a URI (for security reasons should be local!)
 customCss: new URI(&quot;/glu/repository/css/custom.css&quot;)
 </pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Since 5.1.0 there is also another way to entirely change the css files. Check the <a class="reference internal" href="#console-further-customizations"><em>Further customizations</em></a> section.</p>
 </div>
 </div>
 <div class="section" id="default-dashboard">
@@ -633,7 +741,12 @@ mountPointActions: [
 <div class="section" id="commands">
 <h2>Commands<a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h2>
 <p>If the <tt class="docutils literal"><span class="pre">commands</span></tt> feature is enabled, then you can configure what happens with the result (IO) of the command execution:</p>
-<div class="highlight-text"><div class="highlight"><pre>def commandsDir =
+<div class="highlight-text"><div class="highlight"><pre>consoles &lt;&lt; [
+   name: &#39;myConsole&#39;,
+   ...,
+   configTokens: [
+     &#39;console.defaults.override&#39;: &quot;&quot;&quot;
+def commandsDir =
   System.properties[&#39;org.linkedin.glu.console.commands.dir&#39;] ?: &quot;${System.properties[&#39;user.dir&#39;]}/commands&quot;
 
 // storage type supported right now are &#39;filesystem&#39; and &#39;memory&#39;
@@ -644,6 +757,9 @@ console.commandsService.commandExecutionIOStorage.filesystem.rootDir = commandsD
 
 // when storage is memory =&gt; how many elements maximum to store (then start evicting...)
 console.commandsService.commandExecutionIOStorage.memory.maxNumberOfElements = 25
+     &quot;&quot;&quot;
+   ]
+],
 </pre></div>
 </div>
 <div class="admonition note">
@@ -704,7 +820,7 @@ Example:
 </ul>
 </div>
 <div class="section" id="console-default-dashboard">
-<span id="id2"></span><h3>Default Dashboard<a class="headerlink" href="#console-default-dashboard" title="Permalink to this headline">¶</a></h3>
+<span id="id4"></span><h3>Default Dashboard<a class="headerlink" href="#console-default-dashboard" title="Permalink to this headline">¶</a></h3>
 <p>When a user logs in the first time it is assigned a <cite>default</cite> dashboard. This dashboard is defined in the configuration file under the <tt class="docutils literal"><span class="pre">defaults.dashboard</span></tt> section and can be a json string or a simple groovy array of <tt class="docutils literal"><span class="pre">columnsDefinition</span></tt> as defined previously. This is the one that comes by default:</p>
 <div class="highlight-text"><div class="highlight"><pre>dashboard:
 [
@@ -721,6 +837,41 @@ Example:
 ]
 </pre></div>
 </div>
+</div>
+</div>
+<div class="section" id="further-customizations">
+<span id="console-further-customizations"></span><h2>Further customizations<a class="headerlink" href="#further-customizations" title="Permalink to this headline">¶</a></h2>
+<p>The console is distributed as an exploded war file. As a result it is possible to customize the console further like entirely replacing css files, images and javascript. To do so, you use the <a class="reference internal" href="glu-config.html#glu-config-config-templates"><em>config-templates folder</em></a> concepts.</p>
+<ul>
+<li><ol class="first arabic">
+<li><p class="first">Create a directory structure:</p>
+<div class="highlight-text"><div class="highlight"><pre>config-templates/console-server/glu/repository/exploded-wars/org.linkedin.glu.console-webapp-@consoleMetaModel.version@/
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">the <tt class="docutils literal"><span class="pre">&#64;</span></tt> sign in the directory name is not an error. It is a replacement token that is processed during the distribution phase.</p>
+</div>
+</li>
+<li><ol class="first arabic simple" start="2">
+<li>This gives you access to the root of the webapp with 3 essential folders: <tt class="docutils literal"><span class="pre">css</span></tt>, <tt class="docutils literal"><span class="pre">images</span></tt> and <tt class="docutils literal"><span class="pre">js</span></tt>. Simply put your <a class="reference internal" href="glu-config.html#glu-config-templates"><em>templates</em></a> in the proper subfolder.</li>
+</ol>
+</li>
+<li><ol class="first arabic simple" start="3">
+<li>Run the setup tool with the <tt class="docutils literal"><span class="pre">--config-templates</span></tt> option.</li>
+</ol>
+</li>
+</ul>
+<p>For example, if you wanted to change the glu logo with your own logo:</p>
+<div class="highlight-text"><div class="highlight"><pre># create directory structure
+mkdir -p /tmp/myFolder/config-templates/console-server/glu/repository/exploded-wars/org.linkedin.glu.console-webapp-@consoleMetaModel.version@/images
+# copy your logo with the proper name
+cp &lt;my logo&gt;.png /tmp/myFolder/config-templates/console-server/glu/repository/exploded-wars/org.linkedin.glu.console-webapp-@consoleMetaModel.version@/images/glu_480_white.png
+# run the setup tool
+$GLU_HOME/bin/setup.sh -D -o xxxx --config-templates &quot;&lt;default&gt;&quot; --config-templates /tmp/myFolder/config-templates my-model.json.groovy
+</pre></div>
 </div>
 </div>
 <div class="section" id="log-files-display">
@@ -765,8 +916,8 @@ password: admin
 <div class="section" id="user-management">
 <span id="console-user-management"></span><h2>User management<a class="headerlink" href="#user-management" title="Permalink to this headline">¶</a></h2>
 <p>There are 2 ways to manage users.</p>
-<div class="section" id="id3">
-<h3>LDAP<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id5">
+<h3>LDAP<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <p>If you define an ldap section in the configuration file (see <a class="reference internal" href="#console-configuration-ldap"><em>configuration section</em></a> for details), then the console will automatically allow any user who has the correct ldap credentials to login. If the user has never logged in before, a new account will be automatically created and the user will have the role <tt class="docutils literal"><span class="pre">USER</span></tt> which gives him read access mostly (and limited access to log files). This allows any user to login to the console without any administrator intervention.</p>
 </div>
 <div class="section" id="manual-user-management">
@@ -810,7 +961,7 @@ entries…)</td>
 </div>
 <div class="section" id="console-tabs">
 <h3>Console tabs<a class="headerlink" href="#console-tabs" title="Permalink to this headline">¶</a></h3>
-<p>Documentation coming soon. In the meantime, take a look at the <a class="reference internal" href="tutorial.html"><em>tutorial</em></a>.</p>
+<p>Take a look at the <a class="reference internal" href="tutorial.html"><em>tutorial</em></a> in order to get a feel for each tab.</p>
 </div>
 </div>
 </div>
@@ -833,8 +984,12 @@ entries…)</td>
 <li class="toctree-l1"><a class="reference internal" href="filtering.html"> Filtering</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href=""> Console</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#console-in-action">Console in action</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#configuration-file">Configuration file</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#console-as-a-server">Console as a server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#console-as-a-war">Console as a war</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#console-agent-connection">Console &lt;-&gt; Agent Connection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#plugins">Plugins</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#database">Database</a><ul>
@@ -876,10 +1031,11 @@ entries…)</td>
 <li class="toctree-l3"><a class="reference internal" href="#console-default-dashboard">Default Dashboard</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#further-customizations">Further customizations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#log-files-display">Log Files Display</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#first-bootstrap">First bootstrap</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#user-management">User management</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id3">LDAP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">LDAP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#manual-user-management">Manual user management</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#password-management">Password management</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#console-tabs">Console tabs</a></li>
@@ -887,9 +1043,14 @@ entries…)</td>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="production-setup.html">Production Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dev-setup.html">Development Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RELEASE.html">Latest changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="meta-model.html">Meta Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glu-config.html">Configuring glu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="easy-production-setup.html">Easy Production Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup-tool.html"><tt class="docutils literal"><span class="pre">setup.sh</span></tt> tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="production-setup.html">Old Production Setup (prior to 5.1.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev-setup.html">Compiling glu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RELEASE.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration-guide.html">Migration Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contents.html">All content</a></li>
 </ul>
@@ -960,7 +1121,7 @@ entries…)</td>
         <div class="left">
           <a href="filtering.html" title="Filtering"
              >previous</a> |
-          <a href="production-setup.html" title="Production Setup"
+          <a href="meta-model.html" title="Meta Model"
              >next</a> |
           <a href="genindex.html" title="General Index"
              >index</a>

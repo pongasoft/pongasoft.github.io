@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Production Setup &mdash; glu 5.0.0 documentation</title>
+    <title>Old Production Setup (prior to 5.1.0) &mdash; glu 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '5.0.0',
+        VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,9 +25,9 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="glu 5.0.0 documentation" href="index.html" />
-    <link rel="next" title="Development Setup" href="dev-setup.html" />
-    <link rel="prev" title="Console" href="console.html" />
+    <link rel="top" title="glu 5.1.0 documentation" href="index.html" />
+    <link rel="next" title="Compiling glu" href="dev-setup.html" />
+    <link rel="prev" title="setup.sh tool" href="setup-tool.html" />
  
 <link rel="stylesheet" href="_static/glu.css" type="text/css" />
 <script type="text/javascript" src="http://widgets.twimg.com/j/2/widget.js"></script>
@@ -50,11 +50,11 @@
             <img class="logo" src="_static/glu-logo-214x72.png" alt="Logo"/>
           </a></p>
         <div class="headertitle"><a
-          href="contents.html">glu 5.0.0 documentation</a></div>
+          href="contents.html">glu 5.1.0 documentation</a></div>
         <div class="rel">
-          <a href="console.html" title="Console"
+          <a href="setup-tool.html" title="setup.sh tool"
              accesskey="P">previous</a> |
-          <a href="dev-setup.html" title="Development Setup"
+          <a href="dev-setup.html" title="Compiling glu"
              accesskey="N">next</a> |
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a>
@@ -71,9 +71,18 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="production-setup">
-<h1>Production Setup<a class="headerlink" href="#production-setup" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="old-production-setup-prior-to-5-1-0">
+<h1>Old Production Setup (prior to 5.1.0)<a class="headerlink" href="#old-production-setup-prior-to-5-1-0" title="Permalink to this headline">¶</a></h1>
 <p>This document describes how to setup glu for production.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Since 5.1.0:</p>
+<ul class="last simple">
+<li>this page describes the old/manual way of configuring glu in a production environment.</li>
+<li>the recommended way of configuring and installing glu is described in the document <a class="reference internal" href="easy-production-setup.html"><em>Easy Production Setup</em></a></li>
+<li>the directory structure mentioned in this document can be recreated by <a class="reference internal" href="migration-guide.html#migration-guide-5-0-0-5-1-0-quick-and-easy"><em>running a tool</em></a></li>
+</ul>
+</div>
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
 <p>Currently glu requires a UNIX like platform (tested on Mac OS X) and the following version of java:</p>
@@ -117,13 +126,17 @@ org.linkedin.zookeeper-server-1.2.2/
 setup/
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Since 5.1.0, this directory structure does not apply anymore. In order to to achieve a similar directory structure, simply run the command <cite>./bin/tutorial.sh setup</cite> and you will end up with a directory called <cite>tutorial</cite> which contains a similar structure.</p>
+</div>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
 <p class="last">This documentation is available under <tt class="docutils literal"><span class="pre">console-server/glu/docs/html/index.html</span></tt></p>
 </div>
 </div>
 <div class="section" id="step-2-setup-zookeeper">
-<span id="production-setup-zookeeper"></span><h2>Step 2: Setup ZooKeeper<a class="headerlink" href="#step-2-setup-zookeeper" title="Permalink to this headline">¶</a></h2>
+<span id="production-old-setup-zookeeper"></span><h2>Step 2: Setup ZooKeeper<a class="headerlink" href="#step-2-setup-zookeeper" title="Permalink to this headline">¶</a></h2>
 <p>In a production environment you need to install ZooKeeper in a more robust setup. The recommended way is to install ZooKeeper on 3 different nodes as a replicated group of servers (the number 3 is coming directly from discussions with the ZooKeeper authors). You may want to check the <a class="reference external" href="http://zookeeper.apache.org/doc/trunk/zookeeperStarted.html#sc_RunningReplicatedZooKeeper">Running Replicated ZooKeeper</a> section on the Apache ZooKeeper documentation web site.</p>
 <p>You have 2 options there:</p>
 <ol class="arabic">
@@ -148,11 +161,11 @@ setup/
 </ol>
 </div>
 <div class="section" id="step-3-generate-your-own-set-of-keys">
-<span id="production-keys"></span><h2>Step 3: Generate your own set of keys<a class="headerlink" href="#step-3-generate-your-own-set-of-keys" title="Permalink to this headline">¶</a></h2>
+<span id="production-old-keys"></span><h2>Step 3: Generate your own set of keys<a class="headerlink" href="#step-3-generate-your-own-set-of-keys" title="Permalink to this headline">¶</a></h2>
 <p>The security in glu relies on the fact that the glu <a class="reference internal" href="agent.html"><em>agent</em></a> exposes a REST api over a secure https connection configured in client authentication mode.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>it is possible to configure the agent (and the console) to not use this security level (see <a class="reference internal" href="agent.html#agent-configuration"><em>Agent boot sequence and configuration</em></a>, in particular the property called <tt class="docutils literal"><span class="pre">glu.agent.sslEnabled</span></tt>)</p>
+<p>it is possible to configure the agent (and the console) to not use this security level (see <a class="reference internal" href="agent.html#agent-configuration"><em>Agent configuration</em></a>, in particular the property called <tt class="docutils literal"><span class="pre">glu.agent.sslEnabled</span></tt>)</p>
 <div class="last admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">it is <strong>not</strong> recommended to disable security for a production setup</p>
@@ -334,7 +347,7 @@ Certificate was added to keystore
 </div>
 </div>
 <div class="section" id="step-4-encrypt-passwords-and-compute-checksums">
-<span id="production-setup-passwords"></span><h2>Step 4: Encrypt passwords and compute checksums<a class="headerlink" href="#step-4-encrypt-passwords-and-compute-checksums" title="Permalink to this headline">¶</a></h2>
+<span id="production-old-setup-passwords"></span><h2>Step 4: Encrypt passwords and compute checksums<a class="headerlink" href="#step-4-encrypt-passwords-and-compute-checksums" title="Permalink to this headline">¶</a></h2>
 <p>To encrypt the passwords you use a little utility bundled with glu:</p>
 <div class="highlight-text"><div class="highlight"><pre>./agent-cli/bin/password.sh
 
@@ -349,7 +362,7 @@ mmAikmAikm
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">the encrypting key is always the same and is <tt class="docutils literal"><span class="pre">gluos2way</span></tt>. At this time, the only way to change it is to override the <a class="reference external" href="https://github.com/pongasoft/glu/blob/master/agent/org.linkedin.glu.agent-server-impl/src/main/groovy/org/linkedin/glu/agent/server/AgentMain.groovy">AgentMain.groovy</a> class and override the <tt class="docutils literal"><span class="pre">getTwoWayCodec()</span></tt> method and provide your own main class during agent boot (<tt class="docutils literal"><span class="pre">MAIN_CLASS</span></tt>). See <a class="reference internal" href="agent.html#agent-configuration"><em>Agent boot sequence and configuration</em></a> for more details on how to configure the agent.</p>
+<p class="last">the encrypting key is always the same and is <tt class="docutils literal"><span class="pre">gluos2way</span></tt>. At this time, the only way to change it is to override the <a class="reference external" href="https://github.com/pongasoft/glu/blob/master/agent/org.linkedin.glu.agent-server-impl/src/main/groovy/org/linkedin/glu/agent/server/AgentMain.groovy">AgentMain.groovy</a> class and override the <tt class="docutils literal"><span class="pre">getTwoWayCodec()</span></tt> method and provide your own main class during agent boot (<tt class="docutils literal"><span class="pre">MAIN_CLASS</span></tt>). See <a class="reference internal" href="agent.html#agent-configuration"><em>Agent configuration</em></a> for more details on how to configure the agent.</p>
 </div>
 <p>To generate the checksum you use the same utility but you provide the file you want to compute the checksum for as an argument:</p>
 <div class="highlight-text"><div class="highlight"><pre>./agent-cli/bin/password.sh agent.keystore
@@ -450,12 +463,12 @@ located)</li>
 </div>
 </div>
 <div class="section" id="step-5-prepare-zookeeper">
-<span id="production-setup-prepare-zookeeper"></span><h2>Step 5: Prepare ZooKeeper<a class="headerlink" href="#step-5-prepare-zookeeper" title="Permalink to this headline">¶</a></h2>
-<p>By now you should have ZooKeeper up and running (if you have followed <a class="reference internal" href="#production-setup-zookeeper"><em>Step 2: Setup ZooKeeper</em></a>).</p>
+<span id="production-old-setup-prepare-zookeeper"></span><h2>Step 5: Prepare ZooKeeper<a class="headerlink" href="#step-5-prepare-zookeeper" title="Permalink to this headline">¶</a></h2>
+<p>By now you should have ZooKeeper up and running (if you have followed <a class="reference internal" href="#production-old-setup-zookeeper"><em>Step 2: Setup ZooKeeper</em></a>).</p>
 <ol class="arabic simple">
 <li>Copy <tt class="docutils literal"><span class="pre">agent.keystore</span></tt> and <tt class="docutils literal"><span class="pre">console.trustore</span></tt> into <tt class="docutils literal"><span class="pre">setup/zookeeper-config</span></tt></li>
-<li>Edit <tt class="docutils literal"><span class="pre">setup/zookeeper-config/config.properties</span></tt> to put your own values for the passwords and checksums (see <a class="reference internal" href="#production-setup-passwords"><em>Step 4: Encrypt passwords and compute checksums</em></a>)
-.. note:: you can also add/modify most of the configuration properties for the agent (see <a class="reference internal" href="agent.html#agent-configuration"><em>Agent boot sequence and configuration</em></a>).</li>
+<li>Edit <tt class="docutils literal"><span class="pre">setup/zookeeper-config/config.properties</span></tt> to put your own values for the passwords and checksums (see <a class="reference internal" href="#production-old-setup-passwords"><em>Step 4: Encrypt passwords and compute checksums</em></a>)
+.. note:: you can also add/modify most of the configuration properties for the agent (see <a class="reference internal" href="agent.html#agent-configuration"><em>Agent configuration</em></a>).</li>
 </ol>
 <p>Use the tool provided to create a <a class="reference internal" href="glossary.html#term-fabric"><em class="xref std std-term">fabric</em></a>, load the keys in ZooKeeper as well as the agent configuration:</p>
 <div class="highlight-text"><div class="highlight"><pre>./bin/setup-zookeeper.sh -z &lt;zkConnectionString&gt; -f &lt;fabricName&gt;
@@ -471,11 +484,11 @@ located)</li>
 </div>
 </div>
 <div class="section" id="step-6-install-the-agent">
-<span id="production-setup-agent"></span><h2>Step 6: Install the agent<a class="headerlink" href="#step-6-install-the-agent" title="Permalink to this headline">¶</a></h2>
-<p>You can now install the agent on each host you will want to do deployment. The agent is contained in the folder called <tt class="docutils literal"><span class="pre">agent-server</span></tt>. Check the <a class="reference internal" href="agent.html#agent-configuration"><em>Agent boot sequence and configuration</em></a> for details on how to configure the agent. What is important is to provide the following configuration to the agent:</p>
+<span id="production-old-setup-agent"></span><h2>Step 6: Install the agent<a class="headerlink" href="#step-6-install-the-agent" title="Permalink to this headline">¶</a></h2>
+<p>You can now install the agent on each host you will want to do deployment. The agent is contained in the folder called <tt class="docutils literal"><span class="pre">agent-server</span></tt>. Check the <a class="reference internal" href="agent.html#agent-configuration"><em>Agent configuration</em></a> for details on how to configure the agent. What is important is to provide the following configuration to the agent:</p>
 <ul class="simple">
-<li>the fabric (as set in <a class="reference internal" href="#production-setup-prepare-zookeeper"><em>Step 5: Prepare ZooKeeper</em></a>)</li>
-<li>the ZooKeeper connection string (which, if you have followed the recommendations in <a class="reference internal" href="#production-setup-zookeeper"><em>Step 2: Setup ZooKeeper</em></a>, will contain a comma separated list of servers (example: <tt class="docutils literal"><span class="pre">zk01.acme.com:2181,zk02.acme.com:2181,zk03.acme.com:2181</span></tt>))</li>
+<li>the fabric (as set in <a class="reference internal" href="#production-old-setup-prepare-zookeeper"><em>Step 5: Prepare ZooKeeper</em></a>)</li>
+<li>the ZooKeeper connection string (which, if you have followed the recommendations in <a class="reference internal" href="#production-old-setup-zookeeper"><em>Step 2: Setup ZooKeeper</em></a>, will contain a comma separated list of servers (example: <tt class="docutils literal"><span class="pre">zk01.acme.com:2181,zk02.acme.com:2181,zk03.acme.com:2181</span></tt>))</li>
 <li>the agent name (unless the default is fine)</li>
 </ul>
 <div class="admonition tip">
@@ -489,7 +502,7 @@ located)</li>
 <p>There is a way to test at this point that everything is working fine by using the agent cli. In order to do that:</p>
 <ol class="arabic simple">
 <li>Copy <tt class="docutils literal"><span class="pre">agent.truststore</span></tt> and <tt class="docutils literal"><span class="pre">console.keystore</span></tt> into <tt class="docutils literal"><span class="pre">agent-cli/conf/keys</span></tt></li>
-<li>Edit <tt class="docutils literal"><span class="pre">agent-cli/conf/clientConfig.properties</span></tt> to put your own values for the passwords (see <a class="reference internal" href="#production-setup-passwords"><em>Step 4: Encrypt passwords and compute checksums</em></a>)</li>
+<li>Edit <tt class="docutils literal"><span class="pre">agent-cli/conf/clientConfig.properties</span></tt> to put your own values for the passwords (see <a class="reference internal" href="#production-old-setup-passwords"><em>Step 4: Encrypt passwords and compute checksums</em></a>)</li>
 </ol>
 <p>You can then issue the following command:</p>
 <div class="highlight-text"><div class="highlight"><pre>./bin/agent-cli.sh -s https://&lt;agent&gt;:12906
@@ -499,14 +512,14 @@ located)</li>
 <p>If the keys, passwords and everything is fine, you will get <tt class="docutils literal"><span class="pre">[/]</span></tt> which is a list of all the mount points currently installed on the agent (all agents have a root <a class="reference internal" href="glossary.html#term-mount-point"><em class="xref std std-term">mount point</em></a>).</p>
 </div>
 <div class="section" id="step-8-install-the-console">
-<span id="production-setup-console"></span><h2>Step 8: Install the console<a class="headerlink" href="#step-8-install-the-console" title="Permalink to this headline">¶</a></h2>
+<span id="production-old-setup-console"></span><h2>Step 8: Install the console<a class="headerlink" href="#step-8-install-the-console" title="Permalink to this headline">¶</a></h2>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">The default configuration uses HSQLDB for the database. In a production setup, it is <strong>not</strong> recommended to use HSQLDB. Check the section <a class="reference internal" href="console.html#console-configuration-database-mysql"><em>Example for a different database: MySql</em></a> for details on how to configure a different database. If you want to use Oracle or PostgresSQL, please check the section <a class="reference internal" href="console.html#console-configuration-database-other"><em>Other databases: Oracle, PostgresSQL</em></a> for more configuration information.</p>
 </div>
 <div class="section" id="option-1-install-the-war-file">
 <h3>Option 1: Install the war file<a class="headerlink" href="#option-1-install-the-war-file" title="Permalink to this headline">¶</a></h3>
-<p>The console is packaged as a regular webapp (war file) and can simply be dropped in any servlet container (tested with tomcat). In order to run, the console requires a configuration file. See <a class="reference internal" href="console.html#console-configuration"><em>Configuration file</em></a>. The war file is available under <tt class="docutils literal"><span class="pre">console-server/glu/repository/wars/org.linkedin.glu.console-webapp-&lt;version&gt;.war</span></tt>.</p>
+<p>The console is packaged as a regular webapp (war file) and can simply be dropped in any servlet container (tested with tomcat). In order to run, the console requires a configuration file. See <a class="reference internal" href="console.html#console-configuration"><em>Configuration</em></a>. The war file is available under <tt class="docutils literal"><span class="pre">console-server/glu/repository/wars/org.linkedin.glu.console-webapp-&lt;version&gt;.war</span></tt>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">do not forget to copy your own version of <tt class="docutils literal"><span class="pre">agent.truststore</span></tt> and <tt class="docutils literal"><span class="pre">console.keystore</span></tt> and to put your own passwords in the config file.</p>
@@ -525,7 +538,7 @@ located)</li>
 <p>The console is also packaged as a server (using jetty) (<tt class="docutils literal"><span class="pre">console-server/</span></tt>) and comes with a default configuration file (under <tt class="docutils literal"><span class="pre">console-server/conf/glu-console-webapp.groovy</span></tt>)</p>
 <ol class="arabic simple">
 <li>Copy <tt class="docutils literal"><span class="pre">agent.truststore</span></tt> and <tt class="docutils literal"><span class="pre">console.keystore</span></tt> into <tt class="docutils literal"><span class="pre">console-server/keys</span></tt></li>
-<li>Edit <tt class="docutils literal"><span class="pre">conf/glu-console-webapp.groovy</span></tt> to put your own values for the passwords (see <a class="reference internal" href="#production-setup-passwords"><em>Step 4: Encrypt passwords and compute checksums</em></a>)</li>
+<li>Edit <tt class="docutils literal"><span class="pre">conf/glu-console-webapp.groovy</span></tt> to put your own values for the passwords (see <a class="reference internal" href="#production-old-setup-passwords"><em>Step 4: Encrypt passwords and compute checksums</em></a>)</li>
 </ol>
 <p>In order to start the console simply issue:</p>
 <div class="highlight-text"><div class="highlight"><pre>./bin/consolectl.sh start
@@ -573,7 +586,11 @@ located)</li>
 <li class="toctree-l1"><a class="reference internal" href="static-model.html"> Static Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="filtering.html"> Filtering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="console.html"> Console</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Production Setup</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="meta-model.html">Meta Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glu-config.html">Configuring glu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="easy-production-setup.html">Easy Production Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup-tool.html"><tt class="docutils literal"><span class="pre">setup.sh</span></tt> tool</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Old Production Setup (prior to 5.1.0)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#step-1-download">Step 1: Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#step-2-setup-zookeeper">Step 2: Setup ZooKeeper</a></li>
@@ -602,8 +619,9 @@ located)</li>
 <li class="toctree-l2"><a class="reference internal" href="#upgrade">Upgrade</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="dev-setup.html">Development Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RELEASE.html">Latest changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev-setup.html">Compiling glu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RELEASE.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration-guide.html">Migration Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contents.html">All content</a></li>
 </ul>
@@ -672,9 +690,9 @@ located)</li>
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="console.html" title="Console"
+          <a href="setup-tool.html" title="setup.sh tool"
              >previous</a> |
-          <a href="dev-setup.html" title="Development Setup"
+          <a href="dev-setup.html" title="Compiling glu"
              >next</a> |
           <a href="genindex.html" title="General Index"
              >index</a>

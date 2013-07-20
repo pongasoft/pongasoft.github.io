@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>A taste of glu (tutorial) &mdash; glu 5.0.0 documentation</title>
+    <title>A taste of glu (tutorial) &mdash; glu 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '5.0.0',
+        VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="glu 5.0.0 documentation" href="index.html" />
+    <link rel="top" title="glu 5.1.0 documentation" href="index.html" />
     <link rel="next" title="Agent" href="agent.html" />
     <link rel="prev" title="What is glu?" href="index.html" />
  
@@ -50,7 +50,7 @@
             <img class="logo" src="_static/glu-logo-214x72.png" alt="Logo"/>
           </a></p>
         <div class="headertitle"><a
-          href="contents.html">glu 5.0.0 documentation</a></div>
+          href="contents.html">glu 5.1.0 documentation</a></div>
         <div class="rel">
           <a href="index.html" title="What is glu?"
              accesskey="P">previous</a> |
@@ -128,77 +128,65 @@ zookeeper: 2181
 <div class="section" id="install-the-tutorial">
 <h2>Install the tutorial<a class="headerlink" href="#install-the-tutorial" title="Permalink to this headline">¶</a></h2>
 <p>Download the binary called <tt class="docutils literal"><span class="pre">&lt;version&gt;/org.linkedin.glu.packaging-all-&lt;version&gt;.tgz</span></tt> from <a class="reference external" href="https://bintray.com/pkg/show/general/pongasoft/glu/releases">bintray</a> glu repository.</p>
-<p>Untar/Unzip in a location of your choice. From now on, this location will be referred to as <tt class="docutils literal"><span class="pre">GLU_TUTORIAL_ROOT</span></tt>.</p>
+<p>Untar/Unzip in a location of your choice.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">From now on, this location will be referred to as <tt class="docutils literal"><span class="pre">GLU_HOME</span></tt>.</p>
 </div>
-<div class="section" id="initial-setup">
-<h2>Initial setup<a class="headerlink" href="#initial-setup" title="Permalink to this headline">¶</a></h2>
-<p>In a shell terminal enter:</p>
-<div class="highlight-text"><div class="highlight"><pre>cd $GLU_TUTORIAL_ROOT
-./bin/tutorial.sh setup
-</pre></div>
-</div>
-<p>This step does the following:</p>
-<ol class="arabic simple">
-<li>it loads the keys in ZooKeeper (<tt class="docutils literal"><span class="pre">agent.keystore</span></tt>, <tt class="docutils literal"><span class="pre">console.truststore</span></tt>) for the fabric <tt class="docutils literal"><span class="pre">glu-dev-1</span></tt></li>
-<li>it loads the agent configuration in ZooKeeper (<tt class="docutils literal"><span class="pre">config.properties</span></tt>) for the fabric <tt class="docutils literal"><span class="pre">glu-dev-1</span></tt></li>
-<li>it configures and assigns <tt class="docutils literal"><span class="pre">agent-1</span></tt> to fabric <tt class="docutils literal"><span class="pre">glu-dev-1</span></tt></li>
-</ol>
-<img alt="output of setup command" class="align-center" src="_images/tutorial-setup.png" />
 </div>
 <div class="section" id="start-all-components">
 <h2>Start all components<a class="headerlink" href="#start-all-components" title="Permalink to this headline">¶</a></h2>
-<p>From the same terminal enter:</p>
-<div class="highlight-text"><div class="highlight"><pre>./bin/tutorial.sh start
+<p>In a shell terminal enter:</p>
+<div class="highlight-text"><div class="highlight"><pre>cd $GLU_HOME
+./bin/tutorial.sh start
 ./bin/tutorial.sh tail
 </pre></div>
 </div>
-<p>This will start 3 components:</p>
-<ul class="simple">
-<li>ZooKeeper</li>
-<li>the agent</li>
-<li>the console (which contains the orchestration engine)</li>
+<p>The first command does the following:</p>
+<ol class="arabic">
+<li><p class="first">using the <a class="reference internal" href="glossary.html#term-meta-model"><em class="xref std std-term">meta model</em></a> (<tt class="docutils literal"><span class="pre">$GLU_HOME/models/tutorial/glu-meta-model.json.groovy</span></tt>), it generates the various components and configures them for the turorial:</p>
+<blockquote>
+<div><ul class="simple">
+<li>1 agent (<tt class="docutils literal"><span class="pre">agent-1</span></tt>) running on localhost (port 12906). <tt class="docutils literal"><span class="pre">agent-1</span></tt> is configured to be part of the <tt class="docutils literal"><span class="pre">glu-dev-1</span></tt> fabric.</li>
+<li>1 console running on localhost (port 8080) (the console contains the orchestration engine)</li>
+<li>1 ZooKeeper instance running on localhost (port 2181)</li>
 </ul>
+</div></blockquote>
+</li>
+<li><p class="first">then it starts the (3) components previously generated and configured</p>
+</li>
+</ol>
 <p>The second command tails the log for each component.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Depending on the speed of your system, sometimes the console takes a little while to create its log file. In order to see it in the output of the tail command, you may have to reissue the command after waiting a little while.</p>
-</div>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
 <p class="last">The console includes this documentation as well, available at <a class="reference external" href="http://localhost:8080/glu/docs/html/tutorial.html">http://localhost:8080/glu/docs/html/tutorial.html</a></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The setup command has created a new directory <tt class="docutils literal"><span class="pre">$GLU_HOME/tutorial</span></tt> which will be now referred to as <tt class="docutils literal"><span class="pre">GLU_TUTORIAL_HOME</span></tt>. Once you are done with the tutorial (and you have stopped all components), it is safe to delete this directory as it is easy to regenerate it. You may also generate the tutorial in another location if you want to:</p>
+<div class="last highlight-text"><div class="highlight"><pre>./bin/tutorial.sh -d /tmp/tutorial start
+./bin/tutorial.sh -d /tmp/tutorial tail
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="login-to-the-console">
 <h2>Login to the console<a class="headerlink" href="#login-to-the-console" title="Permalink to this headline">¶</a></h2>
 <p>Point your browser to <a class="reference external" href="http://localhost:8080/console">http://localhost:8080/console</a></p>
-<ol class="arabic">
-<li><p class="first">login:</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Depending on the speed of your system, it may take a little while for all the components to be started. You will know when you see the <em>Console started.</em> message in the tailed log file.</p>
+</div>
+<p>login:</p>
 <div class="highlight-text"><div class="highlight"><pre>username: admin
 password: admin
 </pre></div>
 </div>
-</li>
-</ol>
-<blockquote>
-<div><img alt="console login screen" class="align-center" src="_images/tutorial-console-login-600.png" />
+<img alt="console login screen" class="align-center" src="_images/tutorial-console-login-600.png" />
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The very first time the console is started, an admin account is created. In production mode, it is highly recommended to change the default password!</p>
 </div>
-</div></blockquote>
-<ol class="arabic" start="2">
-<li><p class="first">The very first time, you will be prompted to create a fabric:</p>
-<div class="highlight-text"><div class="highlight"><pre>Name             : glu-dev-1
-Zk Connect String: localhost:2181
-Zk Timeout       : 30s
-</pre></div>
-</div>
-</li>
-</ol>
-<blockquote>
-<div><img alt="create fabric" class="align-center" src="_images/tutorial-console-create-fabric.png" />
-</div></blockquote>
-<p>When the console is launched for the very first time, the database is empty and you need to add a fabric to it. In this case we create the fabric called <tt class="docutils literal"><span class="pre">glu-dev-1</span></tt> (which is the same name used in the setup) and we associate it to the local ZooKeeper.</p>
 </div>
 <div class="section" id="view-the-agent">
 <h2>View the agent<a class="headerlink" href="#view-the-agent" title="Permalink to this headline">¶</a></h2>
@@ -414,7 +402,7 @@ webapp3: /sample/i003 (port 9002)
 <div class="section" id="reloading-the-model-and-experiencing-a-failure">
 <h2>Reloading the model and experiencing a failure<a class="headerlink" href="#reloading-the-model-and-experiencing-a-failure" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
-<li><p class="first">Manually edit the file: <tt class="docutils literal"><span class="pre">$GLU_TUTORIAL_ROOT/console-server/glu/repository/systems/sample-webapp-system.json</span></tt></p>
+<li><p class="first">Manually edit the file: <tt class="docutils literal"><span class="pre">$GLU_TUTORIAL_HOME/console-server/glu/repository/systems/sample-webapp-system.json</span></tt></p>
 </li>
 <li><p class="first">Change the contextPath in the very last entry from <tt class="docutils literal"><span class="pre">/cp4</span></tt> to <tt class="docutils literal"><span class="pre">/fail</span></tt> and change the name of the model to <tt class="docutils literal"><span class="pre">Tutorial</span> <span class="pre">System</span> <span class="pre">Model</span> <span class="pre">(with</span> <span class="pre">failure)</span></tt> and save your changes (it will make it easier to differentiate the model in the UI by giving it a different name).</p>
 </li>
@@ -462,7 +450,7 @@ webapp3: /sample/i003 (port 9002)
 </div>
 </li>
 <li><p class="first">Go to the root directory:</p>
-<div class="highlight-text"><div class="highlight"><pre>cd $GLU_TUTORIAL_ROOT
+<div class="highlight-text"><div class="highlight"><pre>cd $GLU_TUTORIAL_HOME      # $GLU_HOME/tutorial
 </pre></div>
 </div>
 </li>
@@ -641,7 +629,6 @@ webapp3: /sample/i003 (port 9002)
 <li class="toctree-l1 current"><a class="current reference internal" href="">A taste of glu (tutorial)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#install-the-tutorial">Install the tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#initial-setup">Initial setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#start-all-components">Start all components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#login-to-the-console">Login to the console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#view-the-agent">View the agent</a></li>
@@ -665,9 +652,14 @@ webapp3: /sample/i003 (port 9002)
 <li class="toctree-l1"><a class="reference internal" href="static-model.html"> Static Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="filtering.html"> Filtering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="console.html"> Console</a></li>
-<li class="toctree-l1"><a class="reference internal" href="production-setup.html">Production Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dev-setup.html">Development Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RELEASE.html">Latest changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="meta-model.html">Meta Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glu-config.html">Configuring glu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="easy-production-setup.html">Easy Production Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup-tool.html"><tt class="docutils literal"><span class="pre">setup.sh</span></tt> tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="production-setup.html">Old Production Setup (prior to 5.1.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev-setup.html">Compiling glu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RELEASE.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration-guide.html">Migration Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contents.html">All content</a></li>
 </ul>

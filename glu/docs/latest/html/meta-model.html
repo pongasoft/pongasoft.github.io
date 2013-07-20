@@ -1,0 +1,604 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Meta Model &mdash; glu 5.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '5.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="glu 5.1.0 documentation" href="index.html" />
+    <link rel="next" title="Configuring glu" href="glu-config.html" />
+    <link rel="prev" title="Console" href="console.html" />
+ 
+<link rel="stylesheet" href="_static/glu.css" type="text/css" />
+<script type="text/javascript" src="http://widgets.twimg.com/j/2/widget.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-8362808-6', 'github.io');
+  ga('send', 'pageview');
+
+</script>
+
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <div class="header">
+          <p class="logo"><a href="contents.html">
+            <img class="logo" src="_static/glu-logo-214x72.png" alt="Logo"/>
+          </a></p>
+        <div class="headertitle"><a
+          href="contents.html">glu 5.1.0 documentation</a></div>
+        <div class="rel">
+          <a href="console.html" title="Console"
+             accesskey="P">previous</a> |
+          <a href="glu-config.html" title="Configuring glu"
+             accesskey="N">next</a> |
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+<div class="content-wrapper">
+<div class="content">
+<div class="document">
+  
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="meta-model">
+<span id="id1"></span><h1>Meta Model<a class="headerlink" href="#meta-model" title="Permalink to this headline">¶</a></h1>
+<p>The glu <a class="reference internal" href="glossary.html#term-meta-model"><em class="xref std std-term">meta model</em></a> is a model which describes where the various components of glu will be installed and how they will be configured.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The glu meta model should not be mistaken with the <a class="reference internal" href="static-model.html"><em>static model</em></a> which represents where the various components that glu manages will be installed and how they will be configured. This is why it is called the meta model: it is about glu itself, not what glu handles.</p>
+</div>
+<div class="section" id="the-model">
+<h2>The model<a class="headerlink" href="#the-model" title="Permalink to this headline">¶</a></h2>
+<p>The glu meta model is represented in memory by a set of classes. This is this representation that the <a class="reference internal" href="setup-tool.html"><em>glu setup tool</em></a> uses to generate the glu distribution.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">In order to know what you can (or cannot express) in your meta model, it is strongly advised to look at the <a class="reference external" href="https://github.com/pongasoft/glu/tree/master/provisioner/org.linkedin.glu.provisioner-core/src/main/java/org/pongasoft/glu/provisioner/core/metamodel">classes</a>.</p>
+</div>
+<p>Ultimately the model represents where the various components of glu will be installed and how they will be configured. glu is comprised of:</p>
+<ul class="simple">
+<li>set of fabrics (which have unique names)</li>
+<li>set of agents, each agent belonging to one and only one fabric (the name of an agent is unique within a fabric)</li>
+<li>set of ZooKeeper clusters (each cluster being comprised by 3 or 5 ZooKeeper instances)</li>
+<li>set of glu onsoles</li>
+<li>an agent cli</li>
+<li>a console cli</li>
+</ul>
+<p>The meta model is expressed on the file system as a set of files which can have 2 different formats: json or light json groovy dsl. Those files are read and parsed to build the in memory model.</p>
+<div class="section" id="json-format">
+<h3>Json format<a class="headerlink" href="#json-format" title="Permalink to this headline">¶</a></h3>
+<p>Ultimately the model is expressed in json format. Json is a very simple format but the syntax can be a bit cumbersome at times (especially if you have sections that essentially needs to be repeated over and over). This is why there is another syntax that you can use.</p>
+<p>The outline of the format is the following:</p>
+<div class="highlight-text"><div class="highlight"><pre>{
+  &quot;metaModelVersion&quot;: &quot;1.0.0&quot;,
+  &quot;gluVersion&quot;: &quot;...&quot;,
+  &quot;zooKeeperRoot&quot;: &quot;/org/glu&quot;,
+  &quot;stateMachine&quot;: {
+    ... definition of the state machine
+  },
+
+  &quot;fabrics&quot;: {
+    &quot;&lt;fabricName&quot;: {
+      ... fabric definition
+    },
+    ... more fabrics
+  },
+
+  &quot;agents&quot;: [
+    {
+      ... agent definition
+    },
+    ... more agents
+  ],
+
+  &quot;zooKeeperClusters&quot;: [
+    {
+      &quot;name&quot;: &quot;&lt;cluster name&gt;&quot;,
+      &quot;zooKeepers&quot;: [
+        {
+          ... zooKeeper definition
+        },
+        ... more zooKeepers
+      ]
+    },
+    ... more clusters
+  ],
+
+  &quot;consoles&quot;: [
+    {
+      ... console definition
+    },
+    ... more consoles
+  ],
+
+  &quot;agent-cli&quot;: {
+    ... agent cli definition
+  },
+
+  &quot;console-cli&quot;: {
+    ... console cli definition
+  }
+
+
+}
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The rest of this document will use the json groovy dsl but feel free to express your model in json directly.</p>
+</div>
+</div>
+<div class="section" id="json-groovy-dsl">
+<h3>Json Groovy DSL<a class="headerlink" href="#json-groovy-dsl" title="Permalink to this headline">¶</a></h3>
+<p>The json groovy dsl uses the convenience of groovy to express the model: instead of defining the model in one chunk, you build it pieces at a time which makes it a lot easier to build and read. You can also use the power of groovy, like variable replacements (<tt class="docutils literal"><span class="pre">${xxx}</span></tt>) syntax, loops, iterations, if conditions, etc...</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">This syntax is for convenience only. If you want to see the metal model you create in its final json format (fully expanded with all defaults values filled in), simply use the <tt class="docutils literal"><span class="pre">-J</span></tt> option of the <a class="reference internal" href="setup-tool.html#setup-tool-j"><em>setup tool</em></a>)</p>
+</div>
+<p>Here are the top entries of the dsl:</p>
+<div class="highlight-text"><div class="highlight"><pre>metaModelVersion
+gluVersion
+stateMachine
+zooKeeperRoot
+
+fabrics           // map where the key is fabric name
+agents            // collection
+consoles          // collection
+zooKeeperClusters // collection
+
+agentCli
+consoleCli
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="components-of-the-model">
+<h2>Components of the model<a class="headerlink" href="#components-of-the-model" title="Permalink to this headline">¶</a></h2>
+<p>This section will describe each entry in the model. Please refer to the <a class="reference external" href="https://github.com/pongasoft/glu/tree/master/provisioner/org.linkedin.glu.provisioner-core/src/main/java/org/pongasoft/glu/provisioner/core/metamodel">source of truth</a> for an exhaustive list of all the properties.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">glu&#8217;s distribution comes with a set of models which are a good starting point to see how they are built and understand the syntax.</p>
+</div>
+<div class="section" id="configtokens">
+<span id="meta-model-configtokens"></span><h3><tt class="docutils literal"><span class="pre">configTokens</span></tt><a class="headerlink" href="#configtokens" title="Permalink to this headline">¶</a></h3>
+<p>There is a concept that will pop up in various components so let&#8217;s explain it first. Every <em>configurable</em> entry has a <tt class="docutils literal"><span class="pre">configTokens</span></tt> section which is a simple json map (keys are <tt class="docutils literal"><span class="pre">String</span></tt> and values are any json valid type). The config tokens are simply passed down to any <a class="reference internal" href="glu-config.html#glu-config-templates"><em>config template</em></a> during the setup process and as a result are available for token replacement. For example:</p>
+<div class="highlight-text"><div class="highlight"><pre>// in your meta model
+agents &lt;&lt; [
+  ...
+  configTokens: [
+    myKey: &quot;myValue&quot;
+  ]
+]
+
+// in a config template agent-server/readme.txt.gtmpl
+This is the value of my token: ${configTokens.myKey}
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you use the <em>simpler</em> template type (<tt class="docutils literal"><span class="pre">.xtmpl</span></tt>), the config tokens will be flattened since those are just key/value pairs.</p>
+</div>
+</div>
+<div class="section" id="metamodelversion">
+<h3><tt class="docutils literal"><span class="pre">metaModelVersion</span></tt><a class="headerlink" href="#metamodelversion" title="Permalink to this headline">¶</a></h3>
+<p>The version of the meta model itself. This is in case the model changes in the future, to be able to distinguish the various formats. Current value is <tt class="docutils literal"><span class="pre">&quot;1.0.0&quot;</span></tt> and is optional. Example:</p>
+<div class="highlight-text"><div class="highlight"><pre>metaModelVersion = &quot;1.0.0&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="gluversion">
+<h3><tt class="docutils literal"><span class="pre">gluVersion</span></tt><a class="headerlink" href="#gluversion" title="Permalink to this headline">¶</a></h3>
+<p>The version of glu itself. This mostly serves as a shortcut since it allows you to not have to define a version per component. This is an optional entry as well:</p>
+<div class="highlight-text"><div class="highlight"><pre>gluVersion = &quot;5.1.0&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="zookeeperroot">
+<span id="meta-model-zookeeperroot"></span><h3><tt class="docutils literal"><span class="pre">zooKeeperRoot</span></tt><a class="headerlink" href="#zookeeperroot" title="Permalink to this headline">¶</a></h3>
+<p>The location where to store glu&#8217;s information in ZooKeeper. This is a system wide setting and is optional. It defaults to <tt class="docutils literal"><span class="pre">/org/glu</span></tt>. Example:</p>
+<div class="highlight-text"><div class="highlight"><pre>zooKeeperRoot = &quot;/my/other/glu/location&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="statemachine">
+<span id="meta-model-statemachine"></span><h3><tt class="docutils literal"><span class="pre">stateMachine</span></tt><a class="headerlink" href="#statemachine" title="Permalink to this headline">¶</a></h3>
+<p>The system wide state machine. See <a class="reference internal" href="glu-script.html#glu-script-state-machine"><em>State machine</em></a> for more details. This is an optional entry and it defaults to the default state machine that comes with glu. Example:</p>
+<div class="highlight-text"><div class="highlight"><pre> stateMachine = [
+   defaultTransitions: [
+     NONE: [[to: &#39;s1&#39;, action: &#39;noneTOs1&#39;]],
+     s1: [[to: &#39;NONE&#39;, action: &#39;s1TOnone&#39;], [to: &#39;s2&#39;, action: &#39;s1TOs2&#39;]],
+     s2: [[to: &#39;s1&#39;, action: &#39;s2TOs1&#39;]]
+   ],
+
+   defaultEntryState: &#39;s2&#39;
+]
+</pre></div>
+</div>
+</div>
+<div class="section" id="fabrics">
+<span id="meta-model-fabric"></span><h3><tt class="docutils literal"><span class="pre">fabrics</span></tt><a class="headerlink" href="#fabrics" title="Permalink to this headline">¶</a></h3>
+<p>A <a class="reference internal" href="glossary.html#term-fabric"><em class="xref std std-term">fabric</em></a> is only defined by the set of agents that belong to it: every agent will define the link to it fabric (rather than the other way around). The configuration points for a fabric are:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">keys</span></tt>: the various keys to establish security while talking to the agents</li>
+<li><tt class="docutils literal"><span class="pre">console</span></tt>: which console (name) this fabric is hosted by</li>
+<li><tt class="docutils literal"><span class="pre">zooKeeperCluster</span></tt>: which ZooKeeper cluster (name) this fabric is stored</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-text"><div class="highlight"><pre>fabrics[&#39;my-fabric-1&#39;] = [
+  keys: ...,
+  console: &#39;tutorialConsole&#39;,
+  zooKeeperCluster: &#39;tutorialZooKeeperCluster&#39;
+]
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The format of the <tt class="docutils literal"><span class="pre">keys</span></tt> entry is not shown as this is simply generated for you during the <a class="reference internal" href="easy-production-setup.html#easy-production-setup-gen-keys"><em>setup process</em></a>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you do not care about securing the channel while talking to the agents then simply set keys to <tt class="docutils literal"><span class="pre">null</span></tt> (<tt class="docutils literal"><span class="pre">keys:</span> <span class="pre">null</span></tt>).</p>
+</div>
+</div>
+<div class="section" id="agents">
+<span id="meta-model-agent"></span><h3><tt class="docutils literal"><span class="pre">agents</span></tt><a class="headerlink" href="#agents" title="Permalink to this headline">¶</a></h3>
+<p>You install one agent on every host where you want glu to deploy your own application. As a result, in general there are many agents, but besides the host on which they go, the rest of the configuration is identical. Example:</p>
+<div class="highlight-text"><div class="highlight"><pre>def installPath = &#39;/opt/glu/&#39;
+
+[
+  &#39;agent-host-1&#39;: &#39;my-fabric-1&#39;,
+  &#39;agent-host-2&#39;: &#39;my-fabric-2&#39;,
+  &#39;agent-host-3&#39;: &#39;my-fabric-1&#39;
+].each { agentHost, agentFabric -&gt;
+
+  agents &lt;&lt; [
+    host: agentHost,
+    install: [
+      path: installPath,
+    ],
+    fabric: agentFabric,
+    configTokens: [:] // map of config tokens if necessary
+  ]
+}
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">If you want to change the default agent port, then simply add <tt class="docutils literal"><span class="pre">port:</span> <span class="pre">xxxx</span></tt> with the new port.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Note how the agent defines which fabric it belongs to.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Check the default templates for <tt class="docutils literal"><span class="pre">agent-server</span></tt> in order to know which <tt class="docutils literal"><span class="pre">configTokens</span></tt> are used by the default templates. In addition to those, the code also uses the following values to further customize the jvm:</p>
+<div class="last highlight-text"><div class="highlight"><pre>GLU_CONFIG_PREFIX
+GLU_ZOOKEEPER
+GLU_AGENT_NAME
+GLU_AGENT_TAGS
+GLU_AGENT_HOSTNAME_FACTORY
+GLU_AGENT_PORT
+GLU_AGENT_ADDRESS
+GLU_AGENT_FABRIC
+GLU_AGENT_APPS
+GLU_AGENT_ZOOKEEPER_ROOT
+APP_NAME
+APP_VERSION
+JAVA_HOME
+JAVA_CMD
+JAVA_CMD_TYPE
+JVM_CLASSPATH
+JVM_SIZE
+JVM_SIZE_NEW
+JVM_SIZE_PERM
+JVM_GC_TYPE
+JVM_GC_OPTS
+JVM_GC_LOG
+JVM_LOG4J
+JVM_TMP_DIR
+JVM_XTRA_ARGS
+JVM_DEBUG
+JVM_APP_INFO
+MAIN_CLASS
+MAIN_CLASS_ARGS
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="consoles">
+<span id="meta-model-console"></span><h3><tt class="docutils literal"><span class="pre">consoles</span></tt><a class="headerlink" href="#consoles" title="Permalink to this headline">¶</a></h3>
+<p>The console is the glu ui which also contains the orchestration engine. Example:</p>
+<div class="highlight-text"><div class="highlight"><pre>def installPath = &#39;/opt/glu&#39;
+
+consoles &lt;&lt; [
+  name: &#39;my-console&#39;,
+  host: &#39;console-host1&#39;,
+  install: [
+    path: installPath,
+  ],
+  plugins: ...,
+  dataSourceDriverUri: &#39;http://jcenter.bintray.com/mysql/mysql-connector-java/5.1.25/mysql-connector-java-5.1.25.jar&#39;,
+  configTokens: [
+    dataSource: &quot;&quot;&quot;
+def dataSourceUrl = &quot;jdbc:mysql://mysql-host1/glu&quot;
+dataSource.dbCreate = &quot;update&quot;
+dataSource.url = dataSourceUrl
+dataSource.logSql=false // set to true for details (+ open trace logging level)
+dataSource.dialect = &quot;org.hibernate.dialect.MySQL5InnoDBDialect&quot;
+dataSource.driverClassName = &quot;com.mysql.jdbc.Driver&quot;
+dataSource.username= &quot;xxx&quot;
+dataSource.password = &quot;yyy&quot;
+&quot;&quot;&quot;,
+  ]
+]
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <tt class="docutils literal"><span class="pre">plugins</span></tt> syntax is not shown and is explained in the <a class="reference internal" href="orchestration-engine.html#goe-plugins"><em>section</em></a>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The name of the console is the one used in the <tt class="docutils literal"><span class="pre">fabrics</span></tt> definition.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Check the default templates for <tt class="docutils literal"><span class="pre">console-server</span></tt> in order to know which <tt class="docutils literal"><span class="pre">configTokens</span></tt> are used by the default templates. In addition to those, the code also uses the following values to further customize the jvm:</p>
+<div class="last highlight-text"><div class="highlight"><pre>APP_NAME
+APP_VERSION
+JAVA_HOME
+JAVA_CMD
+JAVA_CMD_TYPE
+JAVA_OPTIONS
+JVM_SIZE
+JVM_SIZE_NEW
+JVM_SIZE_PERM
+JVM_GC_TYPE
+JVM_GC_OPTS
+JVM_GC_LOG
+JVM_APP_INFO
+JETTY_CMD
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The console server is a jetty server (a web application server) and can be configured further if you want to put it behind a web server (like nginx, apache,... ). For example:</p>
+<div class="last highlight-text"><div class="highlight"><pre>ports: [
+  mainPort: 9090,
+  externalPort: 80
+],
+internalPath: &#39;/console&#39;,
+externalHost: &#39;www.glu-console.acme.org&#39;,
+externalPath: &#39;/&#39;,
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="zookeeperclusters">
+<span id="meta-model-zookeepercluster"></span><h3><tt class="docutils literal"><span class="pre">zooKeeperClusters</span></tt><a class="headerlink" href="#zookeeperclusters" title="Permalink to this headline">¶</a></h3>
+<p>A ZooKeeper cluster is a set of ZooKeeper that work as a cluster. This is not a glu concept: you may want to check the <a class="reference external" href="http://zookeeper.apache.org/doc/trunk/zookeeperStarted.html#sc_RunningReplicatedZooKeeper">Running Replicated ZooKeeper</a> section on the Apache ZooKeeper documentation web site. Example:</p>
+<div class="highlight-text"><div class="highlight"><pre>zooKeeperClusters &lt;&lt; [
+  name: &#39;my-zk-cluster-1&#39;,
+  configTokens: [:], // map of config tokens if necessary
+  zooKeepers: [
+    {
+      ... // see next section
+    }
+  ]
+]
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The name of the ZooKeeper cluster is the one used in the <tt class="docutils literal"><span class="pre">fabrics</span></tt> definition.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The main configuration for the cluster is the generation of the files that will then be uploaded in ZooKeeper in <a class="reference internal" href="easy-production-setup.html#easy-production-setup-zookeeper"><em>Step 6: Configuring ZooKeeper [-Z]</em></a>. Check the templates under <tt class="docutils literal"><span class="pre">zookeeper-cluster/agents</span></tt> and <tt class="docutils literal"><span class="pre">zookeeper-cluster/fabrics</span></tt> to know which <tt class="docutils literal"><span class="pre">configTokens</span></tt> are used by the default templates.</p>
+</div>
+</div>
+<div class="section" id="zookeepers">
+<span id="meta-model-zookeeper"></span><h3><tt class="docutils literal"><span class="pre">zooKeepers</span></tt><a class="headerlink" href="#zookeepers" title="Permalink to this headline">¶</a></h3>
+<p>This is a single instance of a ZooKeeper server in the cluster. Example:</p>
+<div class="highlight-text"><div class="highlight"><pre>def zooKeeperVersion = &#39;xxx&#39;
+def installPath = &#39;/opt/glu&#39;
+
+zooKeeperClusters &lt;&lt; [
+  name: &#39;my-zk-cluster-1&#39;,
+  zooKeepers: [&#39;zk-host1&#39;, &#39;zk-host2&#39;, &#39;zk-host3&#39;].collect { zkHost -&gt;
+    [
+      version: zooKeeperVersion,
+      host: zkHost,
+      install: [
+        path: installPath,
+      ],
+      configTokens: [:] // map of config tokens if necessary
+    ]
+  }
+]
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>ZooKeeper uses 3 different ports (when used in a cluster): the client port (aka <tt class="docutils literal"><span class="pre">mainPort</span></tt>, default to 2181), the leader election port (default to 3888) and the quorum port (default to 2888) which are all configurable:</p>
+<div class="last highlight-text"><div class="highlight"><pre>ports: [
+  mainPort: 5555,
+  leaderElectionPort: 10000,
+  quorumPort: 20000
+],
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Check the default templates for <tt class="docutils literal"><span class="pre">zookeeper-server</span></tt> in order to know which <tt class="docutils literal"><span class="pre">configTokens</span></tt> are used by the default templates.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+</div>
+<div class="sidebar">
+  <div class="sidebar-entry">
+    <h3>Table Of Contents</h3>
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">What is glu?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">A taste of glu (tutorial)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="agent.html"> Agent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glu-script.html"> glu script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="orchestration-engine.html"> Orchestration engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="static-model.html"> Static Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filtering.html"> Filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="console.html"> Console</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Meta Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-model">The model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#json-format">Json format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#json-groovy-dsl">Json Groovy DSL</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#components-of-the-model">Components of the model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#configtokens"><tt class="docutils literal"><span class="pre">configTokens</span></tt></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#metamodelversion"><tt class="docutils literal"><span class="pre">metaModelVersion</span></tt></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gluversion"><tt class="docutils literal"><span class="pre">gluVersion</span></tt></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#zookeeperroot"><tt class="docutils literal"><span class="pre">zooKeeperRoot</span></tt></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#statemachine"><tt class="docutils literal"><span class="pre">stateMachine</span></tt></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fabrics"><tt class="docutils literal"><span class="pre">fabrics</span></tt></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#agents"><tt class="docutils literal"><span class="pre">agents</span></tt></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#consoles"><tt class="docutils literal"><span class="pre">consoles</span></tt></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#zookeeperclusters"><tt class="docutils literal"><span class="pre">zooKeeperClusters</span></tt></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#zookeepers"><tt class="docutils literal"><span class="pre">zooKeepers</span></tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="glu-config.html">Configuring glu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="easy-production-setup.html">Easy Production Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup-tool.html"><tt class="docutils literal"><span class="pre">setup.sh</span></tt> tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="production-setup.html">Old Production Setup (prior to 5.1.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev-setup.html">Compiling glu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RELEASE.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration-guide.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents.html">All content</a></li>
+</ul>
+
+  </div>
+<div class="sidebar-entry">
+  <h3>Quick Links</h3>
+  <ul class="quick-links">
+    <li><a href="https://bintray.com/pkg/show/general/pongasoft/glu/releases/">Download</a>
+    <li><a href="tutorial.html">Tutorial</a>
+    <li><a href="http://www.github.com/pongasoft/glu">Source Code</a>
+    <li><a href="http://glu.977617.n3.nabble.com/">Forum / Questions / Help</a>
+    <li><a href="http://devops.com/2011/07/09/glu-deployment-automation-video/">Video (July 2011)</a>
+    <li><a href="https://plus.google.com/111352340806201326494?prsrc=3" rel="publisher" style="text-decoration:none;">Google+<img src="https://ssl.gstatic.com/images/icons/gplus-32.png" alt="" style="border:0;width:16px;height:16px;margin:0;padding:0 0 0 .5em;vertical-align:middle"/></a>
+    <li><a href="https://plus.google.com/communities/118019862679241960849">Google+ Community</a></li>
+    <li><a href="http://twitter.com/glutweets">Twitter</a>
+    <li><a href="https://github.com/pongasoft/glu/issues">Issues / Tasks</a>
+    <li><a href="RELEASE.html">Latest Changes</a>
+  </ul>
+</div>
+<div class="sidebar-entry">
+  <h3>Technologies</h3>
+  <ul class="quick-links">
+    <li><a href="http://www.ej-technologies.com/products/jprofiler/overview.html">JProfiler</a>
+  </ul>
+</div>
+  <div class="sidebar-entry">
+    <h3>Twitter</h3>
+    <script type="text/javascript">
+      new TWTR.Widget({
+                        version: 2,
+                        type: 'profile',
+                        rpp: 4,
+                        interval: 6000,
+                        width: 'auto',
+                        height: 300,
+                        theme: {
+                          shell: {
+                            background: '#dddddd',
+                            color: '#000000'
+                          },
+                          tweets: {
+                            background: '#ffffff',
+                            color: '#000000',
+                            links: '#ce5c00'
+                          }
+                        },
+                        features: {
+                          scrollbar: false,
+                          loop: false,
+                          live: false,
+                          hashtags: true,
+                          timestamp: true,
+                          avatars: true,
+                          behavior: 'all'
+                        }
+                      }).render().setUser('glutweets').start();
+    </script>
+  </div>
+</div>
+<div class="clearer"></div>
+</div>
+
+</div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <a href="console.html" title="Console"
+             >previous</a> |
+          <a href="glu-config.html" title="Configuring glu"
+             >next</a> |
+          <a href="genindex.html" title="General Index"
+             >index</a>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer">
+        &copy; Copyright 2011-2013, Yan Pujante.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

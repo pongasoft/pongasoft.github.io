@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Agent &mdash; glu 5.0.0 documentation</title>
+    <title>Agent &mdash; glu 5.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '5.0.0',
+        VERSION:     '5.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="glu 5.0.0 documentation" href="index.html" />
+    <link rel="top" title="glu 5.1.0 documentation" href="index.html" />
     <link rel="next" title="glu script" href="glu-script.html" />
     <link rel="prev" title="A taste of glu (tutorial)" href="tutorial.html" />
  
@@ -50,7 +50,7 @@
             <img class="logo" src="_static/glu-logo-214x72.png" alt="Logo"/>
           </a></p>
         <div class="headertitle"><a
-          href="contents.html">glu 5.0.0 documentation</a></div>
+          href="contents.html">glu 5.1.0 documentation</a></div>
         <div class="rel">
           <a href="tutorial.html" title="A taste of glu (tutorial)"
              accesskey="P">previous</a> |
@@ -490,7 +490,11 @@ GET /file/tmp/foo?maxLine=500
 </div>
 <div class="section" id="auto-upgrade">
 <span id="agent-auto-upgrade"></span><h2>Auto Upgrade<a class="headerlink" href="#auto-upgrade" title="Permalink to this headline">¶</a></h2>
-<p>The agent has the capability of being able to upgrade itself</p>
+<p>The agent has the capability of being able to upgrade itself.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Since glu 5.1.0, the agent upgrade artifact is generated as part of the <a class="reference internal" href="easy-production-setup.html#easy-production-setup-gen-dist"><em>distribution generation step</em></a> and can be found under <tt class="docutils literal"><span class="pre">&lt;outputFolder&gt;/agents/org.linkedin.glu.agent-server-&lt;clusterName&gt;-upgrade-&lt;version&gt;</span></tt> (simply tar this folder or use the <tt class="docutils literal"><span class="pre">--compress</span></tt> option when running the <tt class="docutils literal"><span class="pre">setup.sh</span></tt> command).</p>
+</div>
 <div class="section" id="using-the-command-line">
 <h3>Using the command line<a class="headerlink" href="#using-the-command-line" title="Permalink to this headline">¶</a></h3>
 <p>Command Line:</p>
@@ -517,61 +521,21 @@ agent-cli.sh -s https://localhost:12906/ -m /upgrade -u
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
 <p>The glu agent requires java 1.6 to be installed on the host it is running on. As this stage only unix like hosts are supported (tested on Solaris and Mac OS X).</p>
 </div>
-<div class="section" id="agent-boot-sequence-and-configuration">
-<span id="agent-configuration"></span><h2>Agent boot sequence and configuration<a class="headerlink" href="#agent-boot-sequence-and-configuration" title="Permalink to this headline">¶</a></h2>
-<p>The agent can be configured in many ways.</p>
-<ul class="simple">
-<li>arguments on the command line (use -h to see the list of available options)</li>
-<li><tt class="docutils literal"><span class="pre">pre_master_conf.sh</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">post_master_conf.sh</span></tt></li>
-<li>configuration file</li>
-<li>zookeeper configuration</li>
-</ul>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Some configuration parameters are configuring the java vm itself (like the VM size) and as such have to be provided before the agent boots up</p>
-</div>
-<p>In order of preference, this is what happens during the boot sequence:</p>
-<ol class="arabic">
-<li><p class="first">arguments provided on the command line are read and will take precedence</p>
-</li>
-<li><p class="first">if a file called <tt class="docutils literal"><span class="pre">pre_master_conf.sh</span></tt> is found (in the <tt class="docutils literal"><span class="pre">conf</span></tt> folder next to <tt class="docutils literal"><span class="pre">master_conf.sh</span></tt>), this shell script will be executed first: this is the place where you can assign some environment variables.
-Example:</p>
-<div class="highlight-text"><div class="highlight"><pre>GLU_ZOOKEEPER=zk01.acme.com:2181;zk02.acme.com:2181
-</pre></div>
-</div>
-</li>
-<li><p class="first"><tt class="docutils literal"><span class="pre">master_conf.sh</span></tt> is executed: it will set a bunch of environment variables (see below for the complete list)</p>
-</li>
-<li><p class="first">if a file called <tt class="docutils literal"><span class="pre">post_master_conf.sh</span></tt> is found (in the <tt class="docutils literal"><span class="pre">conf</span></tt> folder next to <tt class="docutils literal"><span class="pre">master_conf.sh</span></tt>), this shell script will be executed last: this is the place where you can override or tweak some environment variables set previously
-Example:</p>
-<div class="highlight-text"><div class="highlight"><pre>JVM_EXTRA_ARGS=&quot;$JVM_EXTRA_ARGS &lt;my special configuration&gt;&quot;
-</pre></div>
-</div>
-</li>
-<li><p class="first">the VM is started and the configuration file defined by the <tt class="docutils literal"><span class="pre">MAIN_CLASS_ARGS</span></tt> environment variable is read (default to <tt class="docutils literal"><span class="pre">conf/agentConfig.properties</span></tt>)</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">this argument is actually a URI so it does not have to be local!</p>
-</div>
-</li>
-<li><p class="first">if the java property <tt class="docutils literal"><span class="pre">glu.agent.configURL</span></tt> is defined, then the configuration file pointed to will be read as well (default to <tt class="docutils literal"><span class="pre">zookeeper:${glu.agent.zookeeper.root}/agents/fabrics/${glu.agent.fabric}/config/config.properties</span></tt>)</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">the default value is actually reading its configuration from ZooKeeper (by using the <tt class="docutils literal"><span class="pre">zookeeper:</span></tt> URI format) in a fabric dependent location!</p>
-</div>
-</li>
-</ol>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>This is not a glu specific feature but you can always provide environment variables to the boot script the normal way you would in any other shell script.
-Example:</p>
-<div class="last highlight-text"><div class="highlight"><pre>GLU_ZOOKEEPER=zk01.acme.com:2181;zk02.acme.com:2181 ./bin/agentctl.sh start
-</pre></div>
-</div>
-</div>
+<div class="section" id="agent-configuration">
+<span id="id1"></span><h2>Agent configuration<a class="headerlink" href="#agent-configuration" title="Permalink to this headline">¶</a></h2>
+<p>The agent uses the configuration mechanisms offered by the <a class="reference internal" href="meta-model.html#meta-model-agent"><em>meta model</em></a>.</p>
 <div class="section" id="configuration-properties">
 <h3>Configuration properties<a class="headerlink" href="#configuration-properties" title="Permalink to this headline">¶</a></h3>
+<p>The following properties can be set in the meta model this way:</p>
+<div class="highlight-text"><div class="highlight"><pre>agents &lt;&lt; [
+   ...,
+   configTokens: [
+     JVM_SIZE: &#39;-Xmx128m&#39;,
+     ... etc ...
+   ]
+],
+</pre></div>
+</div>
 <table border="1" class="docutils">
 <colgroup>
 <col width="9%" />
@@ -601,7 +565,14 @@ properties below</td>
 <td><tt class="docutils literal"><span class="pre">glu.agent.zkConnectString</span></tt></td>
 <td>Undefined but
 required!</td>
-<td>Connection string to ZooKeeper</td>
+<td><p class="first">Connection string to ZooKeeper</p>
+<div class="last admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Set for you
+automatically based on
+information in meta model</p>
+</div>
+</td>
 </tr>
 <tr class="row-even"><td><tt class="docutils literal"><span class="pre">-n</span></tt></td>
 <td><tt class="docutils literal"><span class="pre">GLU_AGENT_NAME</span></tt></td>
@@ -652,8 +623,7 @@ to (REST api address)</td>
 <tr class="row-odd"><td><tt class="docutils literal"><span class="pre">-f</span></tt></td>
 <td><tt class="docutils literal"><span class="pre">GLU_AGENT_FABRIC</span></tt></td>
 <td><tt class="docutils literal"><span class="pre">glu.agent.fabric</span></tt></td>
-<td>Undefined but required (see
-<a class="reference internal" href="#agent-fabric-configuration"><em>Assigning a fabric</em></a>)</td>
+<td>Undefined (read from ZooKeeper by default)</td>
 <td>The <a class="reference internal" href="glossary.html#term-fabric"><em class="xref std std-term">fabric</em></a> this agent
 belongs to</td>
 </tr>
@@ -680,10 +650,10 @@ folder!</p>
 written to ZooKeeper</p>
 <div class="last admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">if you change this
-value, you will need to make
-a similar change in the
-console!</p>
+<p class="last">use <tt class="docutils literal"><span class="pre">zooKeeperRoot</span></tt>
+in the meta model instead
+which will change it where
+needed appropriately.</p>
 </div>
 </td>
 </tr>
@@ -804,7 +774,7 @@ arguments</td>
 <td><tt class="docutils literal"><span class="pre">file:$CONF_DIR/agentConfig.properties</span></tt></td>
 <td>The config file for the
 bootstrap (see
-<a class="reference internal" href="#agent-configuration"><em>Agent boot sequence and configuration</em></a>)</td>
+<a class="reference internal" href="#agent-configuration"><em>Agent configuration</em></a>)</td>
 </tr>
 <tr class="row-even"><td>NA</td>
 <td><tt class="docutils literal"><span class="pre">JAVA_HOME</span></tt></td>
@@ -882,7 +852,8 @@ over and over</td>
 <tr class="row-even"><td>NA</td>
 <td>NA</td>
 <td><tt class="docutils literal"><span class="pre">glu.agent.configURL</span></tt></td>
-<td><tt class="docutils literal"><span class="pre">${glu.agent.zookeeper.root}/agents/fabrics/${glu.agent.fabric}/config/config.properties</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">${glu.agent.zookeeper.root}/agents/fabrics/</span></tt>
+<tt class="docutils literal"><span class="pre">${glu.agent.fabric}/config/config.properties</span></tt></td>
 <td>The location of (more)
 configuration for the agent
 (default to a fabric dependent
@@ -898,9 +869,9 @@ exported over https or not</td>
 <tr class="row-even"><td>NA</td>
 <td>NA</td>
 <td><tt class="docutils literal"><span class="pre">glu.agent.keystorePath</span></tt></td>
-<td><tt class="docutils literal"><span class="pre">zookeeper:${glu.agent.zookeeper.root}</span> <span class="pre">/agents</span>
-<span class="pre">/fabrics</span> <span class="pre">/${glu.agent.fabric}</span> <span class="pre">/config</span>
-<span class="pre">/agent.keystore</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">zookeeper:${glu.agent.zookeeper.root}/agents</span></tt>
+<tt class="docutils literal"><span class="pre">/fabrics</span> <span class="pre">/${glu.agent.fabric}/config</span></tt>
+<tt class="docutils literal"><span class="pre">/agent.keystore</span></tt></td>
 <td>Location of the keystore which
 contains the private key of the
 agent</td>
@@ -927,9 +898,9 @@ keystore)</td>
 <tr class="row-even"><td>NA</td>
 <td>NA</td>
 <td><tt class="docutils literal"><span class="pre">glu.agent.truststorePath</span></tt></td>
-<td><tt class="docutils literal"><span class="pre">zookeeper:${glu.agent.zookeeper.root}</span> <span class="pre">/agents</span>
-<span class="pre">/fabrics</span> <span class="pre">/${glu.agent.fabric}</span> <span class="pre">/config</span>
-<span class="pre">/console.truststore</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">zookeeper:${glu.agent.zookeeper.root}/agents</span></tt>
+<tt class="docutils literal"><span class="pre">/fabrics</span> <span class="pre">/${glu.agent.fabric}/config</span></tt>
+<tt class="docutils literal"><span class="pre">/console.truststore</span></tt></td>
 <td>Location of the trustore which
 contains the public key of the
 console</td>
@@ -969,58 +940,29 @@ feature</td>
 </table>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p>The number of configuration properties may seem a little bit overwhelming at first but most of them have default values.</p>
-<p class="last">In the end the only configuration property really required for booting are the location of ZooKeeper and the fabric (because there are no sensible default value). Then the agent can boot at this stage and read the rest of its configuration from ZooKeeper (with a default of <tt class="docutils literal"><span class="pre">zookeeper:/org/glu/agent/fabrics/&lt;fabric&gt;/config/config.properties</span></tt>) which should have been loaded during the <a class="reference internal" href="production-setup.html#production-setup-prepare-zookeeper"><em>Step 5: Prepare ZooKeeper</em></a> of the setup (which mostly contains your own set of keys for security).</p>
+<p class="last">The number of configuration properties may seem a little bit overwhelming at first but most of them have default values. Furthermore, the <a class="reference internal" href="easy-production-setup.html#easy-production-setup-gen-dist"><em>Step 4: Generate the distributions [-D]</em></a> phase sets the only required property for you (which is the location of its ZooKeeper cluster)!</p>
 </div>
-</div>
-<div class="section" id="assigning-a-fabric">
-<span id="agent-fabric-configuration"></span><h3>Assigning a fabric<a class="headerlink" href="#assigning-a-fabric" title="Permalink to this headline">¶</a></h3>
-<p>When the agent boots it needs to know in which <a class="reference internal" href="glossary.html#term-fabric"><em class="xref std std-term">fabric</em></a> it belongs. As seen previously there are several ways of providing this information to the agent:</p>
-<ol class="arabic simple">
-<li>using the <tt class="docutils literal"><span class="pre">-f</span></tt> command line option</li>
-<li>using the <tt class="docutils literal"><span class="pre">GLU_AGENT_FABRIC</span></tt> environment variable (in <tt class="docutils literal"><span class="pre">pre_master_conf.sh</span></tt> or on the command line when booting)</li>
-</ol>
-<p>There is a third way to set the fabric. If you boot the agent without providing the fabric information you will see a message in the log file (of the agent):</p>
-<div class="highlight-text"><div class="highlight"><pre>[FabricTracker] Waiting for fabric @ zookeeper:/org/glu/agents/names/&lt;agentName&gt;/fabric
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last"><tt class="docutils literal"><span class="pre">&lt;agentName&gt;</span></tt> will contain the name of the agent (either computed or set)</p>
-</div>
-<p>The boot process will wait to go further until a fabric is assigned in ZooKeeper. From there you have 2 ways to proceed:</p>
-<ol class="arabic">
-<li><p class="first">Using the ZooKeeper cli to set the fabric:</p>
-<div class="highlight-text"><div class="highlight"><pre># example with fabric name &quot;glu-dev-1&quot; and agentName &quot;agent-1&quot;
-./bin/zookeeper-cli.sh put glu-dev-1 /org/glu/agents/names/agent-1/fabric
-</pre></div>
-</div>
-<div class="admonition tip">
-<p class="first admonition-title">Tip</p>
-<p class="last">the message in the agent log file gives you the exact path to use for ZooKeeper</p>
-</div>
-</li>
-<li><p class="first">Using the console, you can go the <tt class="docutils literal"><span class="pre">Admin/View</span> <span class="pre">agents</span> <span class="pre">fabric</span></tt> page and you will be able to set it from there:</p>
-</li>
-</ol>
-<img alt="Assigning the agent fabric from the console" class="align-center" src="_images/console-set-agents-fabric.png" />
 </div>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>Check the section <a class="reference internal" href="production-setup.html#production-setup-agent"><em>Step 6: Install the agent</em></a> for details about how to install the agent the first time.</p>
-<p>Once the agent is installed, you can simply use the <a class="reference internal" href="#agent-auto-upgrade"><em>auto upgrade</em></a> capability to upgrade it. For that you would download the agent upgrade only package (<tt class="docutils literal"><span class="pre">org.linkedin.glu.agent-server-upgrade-x.y.z.tar.gz</span></tt>) and follow the <a class="reference internal" href="#agent-auto-upgrade"><em>instructions</em></a>.</p>
+<p>Check the section <a class="reference internal" href="easy-production-setup.html#easy-production-setup-install"><em>Step 5: Install the distributions</em></a> for details about how to install the agent the first time.</p>
+<p>Once the agent is installed, you can simply use the <a class="reference internal" href="#agent-auto-upgrade"><em>auto upgrade</em></a> capability to upgrade it.</p>
 </div>
 <div class="section" id="security">
 <h2>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h2>
 <p>The agent offers a REST API over https, setup with client authentication. In this model, what is really important is for the agent to allow only the right set of clients to be able to call the API.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Although this is not recommended for a production setup, you may be ok in using http in which case simply define:</p>
+<div class="highlight-text"><div class="highlight"><pre>def keys = null
+</pre></div>
+</div>
+<p class="last">in your glu <a class="reference internal" href="glossary.html#term-meta-model"><em class="xref std std-term">meta model</em></a>.</p>
 </div>
 <div class="section" id="key-setup">
-<h2>Key setup<a class="headerlink" href="#key-setup" title="Permalink to this headline">¶</a></h2>
-<p>The agent comes with a default set of keys.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">It is strongly suggested to generate your own set of keys. See <a class="reference internal" href="production-setup.html#production-keys"><em>Step 3: Generate your own set of keys</em></a> for instructions on how to do this.</p>
+<h3>Key setup<a class="headerlink" href="#key-setup" title="Permalink to this headline">¶</a></h3>
+<p>The keys needed by the agent are generated during the <a class="reference internal" href="easy-production-setup.html#easy-production-setup-gen-dist"><em>keys generation step</em></a>.</p>
 </div>
 </div>
 <div class="section" id="multiple-agents-on-one-host">
@@ -1084,14 +1026,15 @@ feature</td>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#independent-lifecycle">Independent lifecycle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#agent-boot-sequence-and-configuration">Agent boot sequence and configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#agent-configuration">Agent configuration</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#configuration-properties">Configuration properties</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#assigning-a-fabric">Assigning a fabric</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#security">Security</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#key-setup">Key setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#security">Security</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#key-setup">Key setup</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#multiple-agents-on-one-host">Multiple agents on one host</a></li>
 </ul>
 </li>
@@ -1100,9 +1043,14 @@ feature</td>
 <li class="toctree-l1"><a class="reference internal" href="static-model.html"> Static Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="filtering.html"> Filtering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="console.html"> Console</a></li>
-<li class="toctree-l1"><a class="reference internal" href="production-setup.html">Production Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dev-setup.html">Development Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RELEASE.html">Latest changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="meta-model.html">Meta Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glu-config.html">Configuring glu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="easy-production-setup.html">Easy Production Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup-tool.html"><tt class="docutils literal"><span class="pre">setup.sh</span></tt> tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="production-setup.html">Old Production Setup (prior to 5.1.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev-setup.html">Compiling glu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RELEASE.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration-guide.html">Migration Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contents.html">All content</a></li>
 </ul>
