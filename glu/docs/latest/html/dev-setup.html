@@ -200,60 +200,45 @@ top.publish.dir=&quot;/export/content/repositories/publish&quot;
 </div>
 <div class="section" id="quick-setup-guide">
 <h2>Quick Setup Guide<a class="headerlink" href="#quick-setup-guide" title="Permalink to this headline">¶</a></h2>
-<p>This is a quick setup guide that shows you how to bring all the stack up (step 3 and 4 are optional and are just meant to verify that the agents are up and familiarizes you with the tools).</p>
-<div class="section" id="install-zookeeper">
-<h3>1. Install ZooKeeper<a class="headerlink" href="#install-zookeeper" title="Permalink to this headline">¶</a></h3>
-<p>First you need ZooKeeper installed. If you do not have a ZooKeeper running on your box then you can either:</p>
-<ul class="simple">
-<li>download it and install it from <a class="reference external" href="http://hadoop.apache.org/zookeeper/">the main website</a></li>
-<li>download and install the server and cli from the sibling project on github called <a class="reference external" href="https://github.com/pongasoft/linkedin-zookeeper/downloads">linkedin-zookeeper</a> (if you want to build it yourself, follow the <a class="reference external" href="https://github.com/pongasoft/linkedin-zookeeper/blob/master/README.md">instructions</a>)</li>
-</ul>
-<p>In any case, make sure that ZooKeeper is up and running. If you installed the cli simply run:</p>
-<div class="highlight-text"><div class="highlight"><pre>&lt;path_to_cli&gt;/bin/zk.sh ls /
-</pre></div>
-</div>
-<p>which will display:</p>
-<div class="highlight-text"><div class="highlight"><pre>zookeeper
-</pre></div>
-</div>
-</div>
-<div class="section" id="bring-the-glu-agent-s-up">
-<h3>2. Bring the glu agent(s) up<a class="headerlink" href="#bring-the-glu-agent-s-up" title="Permalink to this headline">¶</a></h3>
+<p>This is a quick setup guide that shows you how to bring all the stack up (step 2 and 3 are optional and are just meant to verify that the agents are up and help you get familiar with the tools).</p>
+<div class="section" id="bring-the-dev-stack-up">
+<h3>1. Bring the (dev) stack up<a class="headerlink" href="#bring-the-dev-stack-up" title="Permalink to this headline">¶</a></h3>
 <p>Issue:</p>
-<div class="highlight-text"><div class="highlight"><pre>cd agent/org.linkedin.glu.agent-server
+<div class="highlight-text"><div class="highlight"><pre>cd packaging/org.linkedin.glu.packaging-all
 
-../../gradlew setup-2-2
+../../gradlew dev-setup-2-2
 </pre></div>
 </div>
-<p>This will automatically create a setup by loading all the necessary information in ZooKeeper and creating a startup script: it creates 2 fabrics and 2 agents.</p>
-<p>Go back to checkout root:</p>
+<p>This will automatically create a full stack setup (ZooKeeper, console and 2 agents in 2 fabrics).</p>
+<p>Go back to checkout root then issue:</p>
 <div class="highlight-text"><div class="highlight"><pre>cd ../..
 </pre></div>
 </div>
-<p>Go to the dist devsetup folder:</p>
-<div class="highlight-text"><div class="highlight"><pre>cd out/build/agent/org.linkedin.glu.agent-server/install/devsetup
+<p>Go to the dist <tt class="docutils literal"><span class="pre">dev-setup</span></tt> folder:</p>
+<div class="highlight-text"><div class="highlight"><pre>cd out/build/packaging/org.linkedin.glu.packaging-all/install/dev-setup
 </pre></div>
 </div>
-<p>and start the 2 agents:</p>
-<div class="highlight-text"><div class="highlight"><pre>./agentdevctl.sh start
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p>The build output shows you were the folder is located:</p>
+<div class="last highlight-text"><div class="highlight"><pre>Created dev setup: /Users/ypujante/github/org.pongasoft/glu/out/build/packaging/org.linkedin.glu.packaging-all/install/dev-setup/bin/devsetupctl.sh
+</pre></div>
+</div>
+</div>
+<p>and start the stack:</p>
+<div class="highlight-text"><div class="highlight"><pre>./bin/devsetupctl.sh start
 </pre></div>
 </div>
 <p>You can now issue:</p>
-<div class="highlight-text"><div class="highlight"><pre>./agentdevctl.sh tail
+<div class="highlight-text"><div class="highlight"><pre>./bin/devsetupctl.sh tail
 </pre></div>
 </div>
-<p>which will automatically tail the log files of both agents</p>
+<p>which will automatically tail the log files of all components of the stack.</p>
 </div>
 <div class="section" id="try-the-agent-cli-optional">
-<h3>3. Try the agent cli (optional)<a class="headerlink" href="#try-the-agent-cli-optional" title="Permalink to this headline">¶</a></h3>
-<p>Go to checkout root (you may want to do this in a different window as the tail command is blocking):</p>
-<div class="highlight-text"><div class="highlight"><pre>cd agent/org.linkedin.glu.agent-cli
-
-../../gradlew package-install
-</pre></div>
-</div>
-<p>Go to the installation folder (the previous command will tell you where) and issue:</p>
-<div class="highlight-text"><div class="highlight"><pre>./bin/agent-cli.sh -s https://localhost:13906
+<h3>2. Try the agent cli (optional)<a class="headerlink" href="#try-the-agent-cli-optional" title="Permalink to this headline">¶</a></h3>
+<p>You can try the <tt class="docutils literal"><span class="pre">agent-cli</span></tt> and make sure that you can communicate with the agents:</p>
+<div class="highlight-text"><div class="highlight"><pre>./dists/agent-cli/org.linkedin.glu.agent-cli-&lt;version&gt;/bin/agent-cli.sh -s https://localhost:13906
 </pre></div>
 </div>
 <p>which returns (list all mountpoints on agent-1):</p>
@@ -261,7 +246,7 @@ top.publish.dir=&quot;/export/content/repositories/publish&quot;
 </pre></div>
 </div>
 <p>then:</p>
-<div class="highlight-text"><div class="highlight"><pre>./bin/agent-cli.sh -s https://localhost:13907
+<div class="highlight-text"><div class="highlight"><pre>./dists/agent-cli/org.linkedin.glu.agent-cli-&lt;version&gt;/bin/agent-cli.sh -s https://localhost:13908
 </pre></div>
 </div>
 <p>which returns (list all mountpoints on agent-2):</p>
@@ -269,86 +254,97 @@ top.publish.dir=&quot;/export/content/repositories/publish&quot;
 </pre></div>
 </div>
 <p>then:</p>
-<div class="highlight-text"><div class="highlight"><pre>./bin/agent-cli.sh -s https://localhost:13906 -m /
+<div class="highlight-text"><div class="highlight"><pre>./dists/agent-cli/org.linkedin.glu.agent-cli-&lt;version&gt;/bin/agent-cli.sh -s https://localhost:13906 -m /
 </pre></div>
 </div>
 <p>which returns (details about the mountPoint &#8216;/&#8217; on agent-1):</p>
 <div class="highlight-text"><div class="highlight"><pre>[scriptDefinition:[initParameters:[:], mountPoint:/, scriptFactory:[class:org.linkedin.glu.agent.impl.script.FromClassNameScriptFactory, className:org.linkedin.glu.agent.impl.script.RootScript]], scriptState:[stateMachine:[currentState:installed], script:[rootPath:/]]]
 </pre></div>
 </div>
-<p>Note that when issuing this command you should see an entry in the log file of the agent (if you continued the tail started in step 2).</p>
+<p>Note that when issuing this command you should see an entry in the log file of the agent (if you continued the tail started in step 1).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You need to replace <tt class="docutils literal"><span class="pre">&lt;version&gt;</span></tt> by the appropriate version of the build!</p>
+</div>
 </div>
 <div class="section" id="try-the-rest-api-directly-optional">
-<h3>4. Try the REST api directly (optional)<a class="headerlink" href="#try-the-rest-api-directly-optional" title="Permalink to this headline">¶</a></h3>
-<p>Go to checkout root</p>
-<p>and issue the command which is doing a <tt class="docutils literal"><span class="pre">GET</span> <span class="pre">/agent</span></tt> on agent-2 using the right keys:</p>
-<div class="highlight-text"><div class="highlight"><pre>curl -k https://localhost:13907/agent -E agent/org.linkedin.glu.agent-server/src/zk-config/keys/console.dev.pem
+<h3>3. Try the REST api directly (optional)<a class="headerlink" href="#try-the-rest-api-directly-optional" title="Permalink to this headline">¶</a></h3>
+<p>Issue the command which is doing a <tt class="docutils literal"><span class="pre">GET</span> <span class="pre">/mountPoint/</span></tt> on agent-2 using the right keys:</p>
+<div class="highlight-text"><div class="highlight"><pre>curl -k https://localhost:13906/mountPoint/ -E dev-keys/console.pem
 
-{&quot;fullState&quot;:{&quot;scriptDefinition&quot;:{&quot;initParameters&quot;:{},&quot;mountPoint&quot;:&quot;/&quot;,&quot;scriptFactory&quot;:    {&quot;class&quot;:&quot;org.linkedin.glu.agent.impl.script.FromClassNameScriptFactory&quot;,&quot;className&quot;:    &quot;org.linkedin.glu.agent.impl.script.RootScript&quot;}},&quot;scriptState&quot;:{&quot;stateMachine&quot;:{&quot;currentState&quot;:&quot;installed&quot;},&quot;script&quot;:{&quot;rootPath&quot;:&quot;/&quot;}}}}
+{&quot;fullState&quot;:{&quot;scriptDefinition&quot;:{&quot;initParameters&quot;:{},&quot;mountPoint&quot;:&quot;/&quot;,&quot;scriptFactory&quot;: {&quot;class&quot;:&quot;org.linkedin.glu.agent.impl.script.FromClassNameScriptFactory&quot;,&quot;className&quot;: &quot;org.linkedin.glu.agent.impl.script.RootScript&quot;}},&quot;scriptState&quot;:{&quot;stateMachine&quot;:{&quot;currentState&quot;:&quot;installed&quot;},&quot;script&quot;:{&quot;rootPath&quot;:&quot;/&quot;}}}}
 </pre></div>
 </div>
-<p>The passphrase you are prompted for is: <tt class="docutils literal"><span class="pre">password</span></tt></p>
-<p>Note how what you get back is a json string</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">What you get back is a json string!</p>
 </div>
-<div class="section" id="start-the-console">
-<h3>5. Start the console<a class="headerlink" href="#start-the-console" title="Permalink to this headline">¶</a></h3>
-<p>Go to checkout root:</p>
+</div>
+<div class="section" id="stopping-the-stack">
+<h3>4. Stopping the stack<a class="headerlink" href="#stopping-the-stack" title="Permalink to this headline">¶</a></h3>
+<p>In order to stop the stack, simply issue:</p>
+<div class="highlight-text"><div class="highlight"><pre>./bin/devsetupctl.sh stop
+</pre></div>
+</div>
+</div>
+<div class="section" id="generating-a-new-stack">
+<h3>5. Generating a new stack<a class="headerlink" href="#generating-a-new-stack" title="Permalink to this headline">¶</a></h3>
+<p>In order to generate a new stack, it is important to clean the previous one, which can be done by simply doing:</p>
+<div class="highlight-text"><div class="highlight"><pre>../../gradlew clean-dev-setup dev-setup-2-2
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">If there is already a stack up and running, this command will stop it first.</p>
+</div>
+</div>
+<div class="section" id="working-on-the-console">
+<h3>6. Working on the console<a class="headerlink" href="#working-on-the-console" title="Permalink to this headline">¶</a></h3>
+<p>Step 1 generates a full stack, which means at this stage, you have ZooKeeper, the agent(s) and the console up and running. If you want to work on the console, you should generate a partial stack by following these steps instead.</p>
+<p>Go to checkout root then issue:</p>
+<div class="highlight-text"><div class="highlight"><pre>cd packaging/org.linkedin.glu.packaging-all
+
+../../gradlew -Pno.console-server clean-dev-setup dev-setup-2-2
+</pre></div>
+</div>
+<p>This will generate a stack with only ZooKeeper and the agent(s) but not the console. You start the stack the same way described in Step 1. Then in order to start the console, you do the following:</p>
+<p>Go to checkout root then issue:</p>
 <div class="highlight-text"><div class="highlight"><pre>cd console/org.linkedin.glu.console-webapp
 
 ../../gradlew -i run-app
 </pre></div>
 </div>
-<dl class="docutils">
-<dt>Note that in order to work you must have grails installed. The -i option is a bit verbose but if you don&#8217;t gradle is very silent and you don&#8217;t see the output coming from grails::</dt>
-<dd>[ant:exec] Server running. Browse to http://localhost:8080/console</dd>
-</dl>
-<p>Note that if you prefer you can run:</p>
-<div class="highlight-text"><div class="highlight"><pre>../../gradlew lib
-grails run-app
+<p>The <tt class="docutils literal"><span class="pre">-i</span></tt> option is a bit verbose but if you don&#8217;t gradle is very silent and you don&#8217;t see the output coming from grails:</p>
+<div class="highlight-text"><div class="highlight"><pre>[ant:exec] Server running. Browse to http://localhost:8080/console
 </pre></div>
 </div>
-<p>This way you run grails command directly. gradle lib is used to populate the lib folder with the
+<p>Note that if you prefer you can run:</p>
+<div class="highlight-text"><div class="highlight"><pre>../../gradlew lib
+./grailsw run-app
+</pre></div>
+</div>
+<p>This way you run grails command directly. <tt class="docutils literal"><span class="pre">gradle</span> <span class="pre">lib</span></tt> is used to populate the <tt class="docutils literal"><span class="pre">lib</span></tt> folder with the
 right set of dependencies and bootstrap information for the app.</p>
 <p>At this stage you are all setup!!!!</p>
 <p>Check the section <a class="reference internal" href="tutorial.html"><em>A taste of glu (tutorial)</em></a> for a quick walkthrough the console.</p>
 </div>
 <div class="section" id="setup-configuration">
-<h3>6. Setup configuration<a class="headerlink" href="#setup-configuration" title="Permalink to this headline">¶</a></h3>
+<h3>7. Setup configuration<a class="headerlink" href="#setup-configuration" title="Permalink to this headline">¶</a></h3>
 <p>The same way you can configure the build, you can also configure the setup by editing the file:</p>
 <div class="highlight-text"><div class="highlight"><pre>~/.userConfig.properties
 
-# control the agent setup when running gradle setup from org.linkedin.glu.agent-server
-glu.agent.devsetup.fabric=...
-glu.agent.devsetup.name=...
-
-# control the agent setup when running gradle setup-x-y from org.linkedin.glu.agent-server
-glu.agent.devsetup.basePort=13906
-glu.agent.devsetup.zkRoot=/org/glu
-glu.agent.devsetup.dir=... &lt;---- this is most likely the one you will modify to install somewhere else
-glu.agent.setup.zkConfigDir=...
+glu.packaging.dev-setup.agent.base.port=13906
+glu.packaging.dev-setup.dir=... &lt;---- this is most likely the one you will modify to install somewhere else
 </pre></div>
 </div>
-<p>Check the file <a class="reference external" href="https://github.com/pongasoft/glu/blob/master/agent/org.linkedin.glu.agent-server/build.gradle">build.gradle</a> in <tt class="docutils literal"><span class="pre">org.linkedin.glu.agent-server</span></tt> for details on how those properties
-are used.</p>
 </div>
 <div class="section" id="different-setups">
-<h3>7. Different setups<a class="headerlink" href="#different-setups" title="Permalink to this headline">¶</a></h3>
-<p>The command <tt class="docutils literal"><span class="pre">../../gradlew</span> <span class="pre">setup-2-2</span></tt> has several flavors using gradle task rules. It allows to configure and setup your development environment with multiple agents on multiple fabrics quickly and effortlessly: the first number is the number of agents, the second one is the number of fabrics.</p>
+<h3>8. Different setups<a class="headerlink" href="#different-setups" title="Permalink to this headline">¶</a></h3>
+<p>The command <tt class="docutils literal"><span class="pre">../../gradlew</span> <span class="pre">dev-setup-2-2</span></tt> has several flavors using gradle task rules. It allows to configure and setup your development environment with multiple agents on multiple fabrics quickly and effortlessly: the first number is the number of agents, the second one is the number of fabrics.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last"><tt class="docutils literal"><span class="pre">dev-setup</span></tt> is a shortcut for <tt class="docutils literal"><span class="pre">dev-setup-1-1</span></tt></p>
 </div>
-<div class="section" id="cleaning-up">
-<h3>8. Cleaning up<a class="headerlink" href="#cleaning-up" title="Permalink to this headline">¶</a></h3>
-<p>In order to clean up you can do the following:</p>
-<p>Stop all the agents that were started in Step 2. by issuing:</p>
-<div class="highlight-text"><div class="highlight"><pre>./agentdevctl.sh stop
-</pre></div>
-</div>
-<p>(you may need to <tt class="docutils literal"><span class="pre">CTRL-C</span></tt> the tail command if it is still running)</p>
-<p>Under <tt class="docutils literal"><span class="pre">agent/org.linkedin.glu.agent-server</span></tt> you can use:</p>
-<div class="highlight-text"><div class="highlight"><pre>../../gradlew clean-setup
-</pre></div>
-</div>
-<p>which cleans up all the data in ZooKeeper and deletes the devsetup folder created in step 2.</p>
-<p>You can then shutdown ZooKeeper</p>
 </div>
 </div>
 </div>
@@ -381,14 +377,14 @@ are used.</p>
 <li class="toctree-l2"><a class="reference internal" href="#directory-structure">Directory structure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#build-configuration">Build configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#quick-setup-guide">Quick Setup Guide</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#install-zookeeper">1. Install ZooKeeper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#bring-the-glu-agent-s-up">2. Bring the glu agent(s) up</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#try-the-agent-cli-optional">3. Try the agent cli (optional)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#try-the-rest-api-directly-optional">4. Try the REST api directly (optional)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#start-the-console">5. Start the console</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#setup-configuration">6. Setup configuration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#different-setups">7. Different setups</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cleaning-up">8. Cleaning up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bring-the-dev-stack-up">1. Bring the (dev) stack up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#try-the-agent-cli-optional">2. Try the agent cli (optional)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#try-the-rest-api-directly-optional">3. Try the REST api directly (optional)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stopping-the-stack">4. Stopping the stack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generating-a-new-stack">5. Generating a new stack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#working-on-the-console">6. Working on the console</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-configuration">7. Setup configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#different-setups">8. Different setups</a></li>
 </ul>
 </li>
 </ul>
