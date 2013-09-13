@@ -105,15 +105,15 @@
 <img alt="Generating the distributions" class="align-center" src="_images/glu-setup-D-800.png" />
 <p>This command is used to generate the distributions, which are ready to install/run packaged tailored to <strong>your</strong> environment.</p>
 <p>Example usage:</p>
-<div class="highlight-text"><div class="highlight"><pre>setup.sh -D -o /tmp/distributions/staging --config-templates &quot;&lt;default&gt;&quot; \
-         --config-templates /tmp/glu-meta-model/config-templates /tmp/glu-meta-model/my-meta-model.json.groovy
+<div class="highlight-text"><div class="highlight"><pre>setup.sh -D -o /tmp/distributions/staging --config-templates-root &quot;&lt;default&gt;&quot; \
+         --config-templates-root /tmp/glu-meta-model/config-templates /tmp/glu-meta-model/my-meta-model.json.groovy
 </pre></div>
 </div>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">-D</span></tt> (or <tt class="docutils literal"><span class="pre">--gen-dist</span></tt>): to generate the distributions</li>
 <li><tt class="docutils literal"><span class="pre">-o</span></tt>: the directory in which to generate the distributions</li>
-<li><tt class="docutils literal"><span class="pre">--config-templates</span> <span class="pre">&quot;&lt;default&gt;&quot;</span></tt>: use the config templates that comes with glu</li>
-<li><tt class="docutils literal"><span class="pre">--config-templates</span> <span class="pre">xxx</span></tt>: use your own (cumulative)</li>
+<li><tt class="docutils literal"><span class="pre">--config-templates-root</span> <span class="pre">&quot;&lt;default&gt;&quot;</span></tt>: use the config templates that comes with glu</li>
+<li><tt class="docutils literal"><span class="pre">--config-templates-root</span> <span class="pre">xxx</span></tt>: use your own (cumulative)</li>
 <li><tt class="docutils literal"><span class="pre">--agents-only</span></tt>: generate the distributions only for agents</li>
 <li><tt class="docutils literal"><span class="pre">--consoles-only</span></tt>: generate the distributions only for consoles</li>
 <li><tt class="docutils literal"><span class="pre">--zookeeper-clusters-only</span></tt>: generate the distributions only for ZooKeeper clusters</li>
@@ -122,7 +122,7 @@
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><tt class="docutils literal"><span class="pre">config-templates</span></tt> is cumulative, meaning you can define as many as you want and they will all be processed. The order is <strong>important</strong>. It is strongly recommended to always use <tt class="docutils literal"><span class="pre">--config-templates</span> <span class="pre">&quot;&lt;default&gt;&quot;</span></tt> first, then your own.</p>
+<p class="last"><tt class="docutils literal"><span class="pre">--config-templates-root</span></tt> is cumulative, meaning you can define as many as you want and they will all be processed. The order is <strong>important</strong>. It is strongly recommended to always use <tt class="docutils literal"><span class="pre">--config-templates-root</span> <span class="pre">&quot;&lt;default&gt;&quot;</span></tt> first, then your own.</p>
 </div>
 </div>
 <div class="section" id="configure-zookeeper-clusters-z">
