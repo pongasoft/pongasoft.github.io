@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Console &mdash; glu 5.2.0 documentation</title>
+    <title>Console &mdash; glu 5.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '5.2.0',
+        VERSION:     '5.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="glu 5.2.0 documentation" href="index.html" />
+    <link rel="top" title="glu 5.3.0 documentation" href="index.html" />
     <link rel="next" title="Meta Model" href="meta-model.html" />
     <link rel="prev" title="Filtering" href="filtering.html" />
  
@@ -50,7 +50,7 @@
             <img class="logo" src="_static/glu-logo-214x72.png" alt="Logo"/>
           </a></p>
         <div class="headertitle"><a
-          href="contents.html">glu 5.2.0 documentation</a></div>
+          href="contents.html">glu 5.3.0 documentation</a></div>
         <div class="rel">
           <a href="filtering.html" title="Filtering"
              accesskey="P">previous</a> |
@@ -483,7 +483,7 @@ console.plannerService.planner.skipMissingAgents = true
 ]
 </pre></div>
 </div>
-<p>You can either provide your entire <tt class="docutils literal"><span class="pre">console.defaults</span></tt> section:</p>
+<p>In order to use your own values, you can either provide (in the meta model) your entire <tt class="docutils literal"><span class="pre">console.defaults</span></tt> section:</p>
 <div class="highlight-text"><div class="highlight"><pre>consoles &lt;&lt; [
    name: &#39;myConsole&#39;,
    ...,
@@ -727,6 +727,16 @@ mountPointActions: [
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
 <p class="last">By using the <a class="reference internal" href="orchestration-engine.html#goe-plugins"><em>plugin hook</em></a> <tt class="docutils literal"><span class="pre">PlannerService_pre_computePlans</span></tt> you can add your own plan types!</p>
+</div>
+</div>
+<div class="section" id="tail">
+<span id="console-configuration-tail"></span><h4>Tail<a class="headerlink" href="#tail" title="Permalink to this headline">¶</a></h4>
+<p>This section defines the default size and refresh rate (how long between polls) for the tail feature:</p>
+<div class="highlight-text"><div class="highlight"><pre>tail: [
+  size: &#39;10k&#39;, // size to use when tailing a file by default (MemorySize)
+  refreshRate: &#39;5s&#39; // how long between polls (Timespan)
+],
+</pre></div>
 </div>
 </div>
 <div class="section" id="features">
@@ -1034,6 +1044,7 @@ entries…)</td>
 <li class="toctree-l4"><a class="reference internal" href="#dashboard-agent-links">Dashboard Agent Links</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#plans">Plans</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mountpoint-actions">MountPoint actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tail">Tail</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#features">Features</a></li>
 </ul>
 </li>

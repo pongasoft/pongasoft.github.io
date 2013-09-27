@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Agent &mdash; glu 5.2.0 documentation</title>
+    <title>Agent &mdash; glu 5.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '5.2.0',
+        VERSION:     '5.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="glu 5.2.0 documentation" href="index.html" />
+    <link rel="top" title="glu 5.3.0 documentation" href="index.html" />
     <link rel="next" title="glu script" href="glu-script.html" />
     <link rel="prev" title="A taste of glu (tutorial)" href="tutorial.html" />
  
@@ -50,7 +50,7 @@
             <img class="logo" src="_static/glu-logo-214x72.png" alt="Logo"/>
           </a></p>
         <div class="headertitle"><a
-          href="contents.html">glu 5.2.0 documentation</a></div>
+          href="contents.html">glu 5.3.0 documentation</a></div>
         <div class="rel">
           <a href="tutorial.html" title="A taste of glu (tutorial)"
              accesskey="P">previous</a> |
@@ -432,6 +432,11 @@ def uninstall = {
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you shutdown and restart the agent, the fields in your script will be restored to their last known value before shutdown if and only if the field was exportable, or in other words, if you declare your field <tt class="docutils literal"><span class="pre">transient</span></tt> its value won&#8217;t be preserved accross restart!</p>
+</div>
+<p>In addition, the ZooKeeper connection used by the agent is exported via the <tt class="docutils literal"><span class="pre">agentZooKeeper</span></tt> glu script property. This property is of type <tt class="docutils literal"><span class="pre">org.linkedin.zookeeper.client.IZKClient</span></tt> and lets you read and write whatever data you want in ZooKeeper.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The agent will <strong>not</strong> cleanup any data stored using <tt class="docutils literal"><span class="pre">agentZooKeeper</span></tt> when the script is uninstalled! Make sure you do your own cleanup (usually in the <tt class="docutils literal"><span class="pre">uninstall</span></tt> phase).</p>
 </div>
 </div>
 </div>
