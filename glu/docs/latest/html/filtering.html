@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Filtering &mdash; glu 5.3.1 documentation</title>
+    <title>Filtering &mdash; glu 5.4.0 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
-        VERSION:     '5.3.1',
+        URL_ROOT:    './',
+        VERSION:     '5.4.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="glu 5.3.1 documentation" href="index.html" />
+    <link rel="top" title="glu 5.4.0 documentation" href="index.html" />
     <link rel="next" title="Console" href="console.html" />
     <link rel="prev" title="Static Model" href="static-model.html" />
  
@@ -50,7 +48,7 @@
             <img class="logo" src="_static/glu-logo-214x72.png" alt="Logo"/>
           </a></p>
         <div class="headertitle"><a
-          href="contents.html">glu 5.3.1 documentation</a></div>
+          href="contents.html">glu 5.4.0 documentation</a></div>
         <div class="rel">
           <a href="static-model.html" title="Static Model"
              accesskey="P">previous</a> |
@@ -122,7 +120,18 @@ tags (+ special syntax, see below)
   &quot;agent&quot;: &quot;ei2-app3-zone5.qa&quot;,
   &quot;initParameters&quot;: {
     &quot;skeleton&quot;: &quot;ivy:/com.linkedin.network.container/container-jetty/0.0.007-RC1.1&quot;,
-    &quot;wars&quot;: &quot;ivy:/com.linkedin.jobs/jobs-war/0.0.504-RC3.2612|jobs&quot;
+    &quot;webapps&quot;: [
+      {
+        &quot;war&quot;: &quot;http://localhost:8080/glu/repository/wars/webapp1.war&quot;,
+        &quot;contextPath&quot;: &quot;/cp1&quot;,
+        &quot;monitor&quot;: &quot;/monitor&quot;
+      },
+      {
+        &quot;war&quot;: &quot;http://localhost:8080/glu/repository/wars/webapp2.war&quot;,
+        &quot;contextPath&quot;: &quot;/cp2&quot;,
+        &quot;monitor&quot;: &quot;/monitor&quot;
+      }
+      ]
   },
   &quot;metadata&quot;: {
     &quot;container&quot;: {
@@ -214,6 +223,22 @@ or {
   tags=&#39;frontend&#39;
   tags=&#39;backend&#39;
 }
+</pre></div>
+</div>
+</li>
+<li><p class="first">All entries where there is at least one webapp with contextPath &#8216;/cp1&#8217;:</p>
+<div class="highlight-text"><div class="highlight"><pre>// &quot;webapps&quot; is a collection... which can be accessed using [] notation
+// [0..-1] means &quot;all items in the collection&quot;
+// so the filter means &quot;any item where contextPath is &#39;/cp1&#39;&quot;
+initParameters.webapps[0..-1].contextPath = &#39;/cp1&#39;
+</pre></div>
+</div>
+</li>
+<li><p class="first">All entries where the 2nd webapp has a contextPath &#8216;/cp2&#8217;:</p>
+<div class="highlight-text"><div class="highlight"><pre>// &quot;webapps&quot; is a collection... which can be accessed using [] notation
+// [1] means &quot;item 2 in the collection&quot; (0 is the first entry, so 1 is the second one)
+// so the filter means &quot;second item where contextPath is &#39;/cp2&#39;&quot;
+initParameters.webapps[1].contextPath = &#39;/cp2&#39;
 </pre></div>
 </div>
 </li>

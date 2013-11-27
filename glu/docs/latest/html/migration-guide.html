@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Migration Guide &mdash; glu 5.3.1 documentation</title>
+    <title>Migration Guide &mdash; glu 5.4.0 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
-        VERSION:     '5.3.1',
+        URL_ROOT:    './',
+        VERSION:     '5.4.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="glu 5.3.1 documentation" href="index.html" />
+    <link rel="top" title="glu 5.4.0 documentation" href="index.html" />
     <link rel="next" title="Glossary" href="glossary.html" />
     <link rel="prev" title="Release Notes" href="RELEASE.html" />
  
@@ -50,7 +48,7 @@
             <img class="logo" src="_static/glu-logo-214x72.png" alt="Logo"/>
           </a></p>
         <div class="headertitle"><a
-          href="contents.html">glu 5.3.1 documentation</a></div>
+          href="contents.html">glu 5.4.0 documentation</a></div>
         <div class="rel">
           <a href="RELEASE.html" title="Release Notes"
              accesskey="P">previous</a> |
@@ -73,24 +71,28 @@
             
   <div class="section" id="migration-guide">
 <h1>Migration Guide<a class="headerlink" href="#migration-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="migration-guide-5-3-1-5-4-0">
+<span id="id1"></span><h2>5.3.1 -&gt; 5.4.0<a class="headerlink" href="#migration-guide-5-3-1-5-4-0" title="Permalink to this headline">¶</a></h2>
+<p>No specific migration steps. Only the console is affected in this release, so no need to upgrade the agents.</p>
+</div>
 <div class="section" id="migration-guide-5-3-0-5-3-1">
-<span id="id1"></span><h2>5.3.0 -&gt; 5.3.1<a class="headerlink" href="#migration-guide-5-3-0-5-3-1" title="Permalink to this headline">¶</a></h2>
+<span id="id2"></span><h2>5.3.0 -&gt; 5.3.1<a class="headerlink" href="#migration-guide-5-3-0-5-3-1" title="Permalink to this headline">¶</a></h2>
 <p>No specific migration steps. Only the console is affected in this release, so no need to upgrade the agents.</p>
 </div>
 <div class="section" id="migration-guide-5-2-0-5-3-0">
-<span id="id2"></span><h2>5.2.0 -&gt; 5.3.0<a class="headerlink" href="#migration-guide-5-2-0-5-3-0" title="Permalink to this headline">¶</a></h2>
+<span id="id3"></span><h2>5.2.0 -&gt; 5.3.0<a class="headerlink" href="#migration-guide-5-2-0-5-3-0" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>In order to benefit fully from the new tail feature, you need to upgrade the agent to 5.3.0. If you upgrade the console only, the tail will simply not refresh. You can use the auto upgrade capability of the agent to upgrade.</li>
 <li>If you have been using the variable <tt class="docutils literal"><span class="pre">agentZooKeeper</span></tt> in your glu script, it will conflict with the new one introduced in 5.3.0 and it is strongly suggested you rename yours.</li>
 </ul>
 </div>
 <div class="section" id="migration-guide-5-1-0-5-2-0">
-<span id="id3"></span><h2>5.1.0 -&gt; 5.2.0<a class="headerlink" href="#migration-guide-5-1-0-5-2-0" title="Permalink to this headline">¶</a></h2>
+<span id="id4"></span><h2>5.1.0 -&gt; 5.2.0<a class="headerlink" href="#migration-guide-5-1-0-5-2-0" title="Permalink to this headline">¶</a></h2>
 <p>No specific migration steps.</p>
 <p>If you are compiling glu, please refer to the <a class="reference internal" href="dev-setup.html"><em>Compiling glu</em></a> page as the quick setup guide has changed.</p>
 </div>
 <div class="section" id="migration-guide-5-0-0-5-1-0">
-<span id="id4"></span><h2>5.0.0 -&gt; 5.1.0<a class="headerlink" href="#migration-guide-5-0-0-5-1-0" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2>5.0.0 -&gt; 5.1.0<a class="headerlink" href="#migration-guide-5-0-0-5-1-0" title="Permalink to this headline">¶</a></h2>
 <p>The glu code itself has not changed much between 5.0.0 and 5.1.0. What has really changed is the way glu is packaged and distributed. In order to migrate, you have several approaches.</p>
 <div class="section" id="recommended">
 <h3>Recommended<a class="headerlink" href="#recommended" title="Permalink to this headline">¶</a></h3>
@@ -173,7 +175,7 @@ org.linkedin.zookeeper-server-2.0.0/
 </div>
 </div>
 <div class="section" id="migration-guide-4-7-2-5-0-0">
-<span id="id5"></span><h2>4.7.2 -&gt; 5.0.0<a class="headerlink" href="#migration-guide-4-7-2-5-0-0" title="Permalink to this headline">¶</a></h2>
+<span id="id6"></span><h2>4.7.2 -&gt; 5.0.0<a class="headerlink" href="#migration-guide-4-7-2-5-0-0" title="Permalink to this headline">¶</a></h2>
 <p>The only migration step required for this upgrade is to make sure that you are using java 1.7.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -181,7 +183,7 @@ org.linkedin.zookeeper-server-2.0.0/
 </div>
 </div>
 <div class="section" id="migration-guide-4-7-1-4-7-2">
-<span id="id6"></span><h2>4.7.1 -&gt; 4.7.2<a class="headerlink" href="#migration-guide-4-7-1-4-7-2" title="Permalink to this headline">¶</a></h2>
+<span id="id7"></span><h2>4.7.1 -&gt; 4.7.2<a class="headerlink" href="#migration-guide-4-7-1-4-7-2" title="Permalink to this headline">¶</a></h2>
 <p>No specific migration steps.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -189,7 +191,7 @@ org.linkedin.zookeeper-server-2.0.0/
 </div>
 </div>
 <div class="section" id="migration-guide-4-6-2-4-7-1">
-<span id="id7"></span><h2>4.6.2 -&gt; 4.7.1<a class="headerlink" href="#migration-guide-4-6-2-4-7-1" title="Permalink to this headline">¶</a></h2>
+<span id="id8"></span><h2>4.6.2 -&gt; 4.7.1<a class="headerlink" href="#migration-guide-4-6-2-4-7-1" title="Permalink to this headline">¶</a></h2>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last"><tt class="docutils literal"><span class="pre">4.7.0</span></tt> contains a critical bug and should not be used. It is also recommended to use <tt class="docutils literal"><span class="pre">4.7.2</span></tt> instead of <tt class="docutils literal"><span class="pre">4.7.1</span></tt> if you are upgrading from an earlier version.</p>
@@ -250,6 +252,7 @@ org.linkedin.zookeeper-server-2.0.0/
 <li class="toctree-l1"><a class="reference internal" href="dev-setup.html">Compiling glu</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RELEASE.html">Release Notes</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Migration Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#migration-guide-5-3-1-5-4-0">5.3.1 -&gt; 5.4.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#migration-guide-5-3-0-5-3-1">5.3.0 -&gt; 5.3.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#migration-guide-5-2-0-5-3-0">5.2.0 -&gt; 5.3.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#migration-guide-5-1-0-5-2-0">5.1.0 -&gt; 5.2.0</a></li>
