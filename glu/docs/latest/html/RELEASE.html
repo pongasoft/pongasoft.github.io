@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Release Notes &mdash; glu 5.4.2 documentation</title>
+    <title>Release Notes &mdash; glu 5.5.0 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '5.4.2',
+        VERSION:     '5.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="glu 5.4.2 documentation" href="index.html" />
+    <link rel="top" title="glu 5.5.0 documentation" href="index.html" />
     <link rel="next" title="Migration Guide" href="migration-guide.html" />
     <link rel="prev" title="Compiling glu" href="dev-setup.html" />
  
@@ -48,7 +48,7 @@
             <img class="logo" src="_static/glu-logo-214x72.png" alt="Logo"/>
           </a></p>
         <div class="headertitle"><a
-          href="contents.html">glu 5.4.2 documentation</a></div>
+          href="contents.html">glu 5.5.0 documentation</a></div>
         <div class="rel">
           <a href="dev-setup.html" title="Compiling glu"
              accesskey="P">previous</a> |
@@ -71,15 +71,49 @@
             
   <div class="section" id="release-notes">
 <h1>Release Notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="glu-5-5-0">
+<span id="id1"></span><h2>5.5.0 (2014/03/14)<a class="headerlink" href="#glu-5-5-0" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="new-and-noteworthy">
+<h3>New and noteworthy<a class="headerlink" href="#new-and-noteworthy" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first">Added ability to retrieve the audit log via a <a class="reference internal" href="orchestration-engine.html#goe-rest-api-list-audit-logs"><em>REST api</em></a></p>
+</li>
+<li><p class="first">Added a concept of <cite>max parallel steps count</cite> in order to limit the parallelism of a given
+deployment on a per deployment basis.</p>
+<ul>
+<li><p class="first">A new text field (in order to input this value) has been added in the UI</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/maxParallelStepsCount.png"><img alt="Max Parallel Steps Count" class="align-center" src="_images/maxParallelStepsCount.png" style="width: 600px;" /></a>
+</div></blockquote>
+</li>
+<li><p class="first">a new parameter has been added to the <a class="reference internal" href="orchestration-engine.html#goe-rest-api-representing-a-plan"><em>REST api</em></a>.</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <tt class="docutils literal"><span class="pre">...leafExecutorService.fixedThreadPoolSize</span></tt> <a class="reference internal" href="console.html#console-configuration-limiting-parallel-steps"><em>console property configuration</em></a> allows you to limit the parallelism globally at the thread level (as soon as one step completes, another one will start). The new concept allows you to limit the parallelism for a given deployment by <cite>transforming</cite> a fully parallel plan into a sequential plan containing groups of parallel plans: only when the entire group is completed will the next one start.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="tickets">
+<h3>Tickets<a class="headerlink" href="#tickets" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Implemented <a class="reference external" href="https://github.com/pongasoft/glu/issues/159">glu-159</a>: <cite>Add audit log access to the REST api</cite></li>
+<li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/258">glu-258</a>: <cite>wait for state does not wake up on forceChangeState</cite></li>
+<li>Implemented <a class="reference external" href="https://github.com/pongasoft/glu/issues/260">glu-260</a>: <cite>Implement &#8220;hybrid&#8221; plan</cite></li>
+</ul>
+</div>
+</div>
 <div class="section" id="glu-5-4-2">
-<span id="id1"></span><h2>5.4.2 (2014/01/17)<a class="headerlink" href="#glu-5-4-2" title="Permalink to this headline">¶</a></h2>
+<span id="id2"></span><h2>5.4.2 (2014/01/17)<a class="headerlink" href="#glu-5-4-2" title="Permalink to this headline">¶</a></h2>
 <p>This release is a small bug fix release.</p>
 <ul class="simple">
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/257">glu-257</a>: <cite>Allow to change the console server port in the setup phase</cite></li>
 </ul>
 </div>
 <div class="section" id="glu-5-4-1">
-<span id="id2"></span><h2>5.4.1 (2013/12/06)<a class="headerlink" href="#glu-5-4-1" title="Permalink to this headline">¶</a></h2>
+<span id="id3"></span><h2>5.4.1 (2013/12/06)<a class="headerlink" href="#glu-5-4-1" title="Permalink to this headline">¶</a></h2>
 <p>This release is a small bug fix release.</p>
 <ul class="simple">
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/254">glu-254</a>: <cite>After stop, the start action is not displayed</cite></li>
@@ -88,18 +122,18 @@
 </ul>
 </div>
 <div class="section" id="glu-5-4-0">
-<span id="id3"></span><h2>5.4.0 (2013/11/27)<a class="headerlink" href="#glu-5-4-0" title="Permalink to this headline">¶</a></h2>
+<span id="id4"></span><h2>5.4.0 (2013/11/27)<a class="headerlink" href="#glu-5-4-0" title="Permalink to this headline">¶</a></h2>
 <p>This release contains a few bug fixes and small features. Only the console is affected, so no need to upgrade the agents.</p>
-<div class="section" id="new-and-noteworthy">
-<h3>New and noteworthy<a class="headerlink" href="#new-and-noteworthy" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id5">
+<h3>New and noteworthy<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>an admin user can now reset passwords</li>
 <li>passwords are now salted and using bcrypt for hashing which makes it way more secure (note that current passwords are <em>not</em> changed and you will need to change your password to have the new feature kick in).</li>
 <li>system filters can now contain <tt class="docutils literal"><span class="pre">[x]</span></tt> in their syntax like <tt class="docutils literal"><span class="pre">initParameters.webapps[1].contextPath</span></tt> (check the <a class="reference internal" href="filtering.html#goe-filter-syntax"><em>filtering section</em></a>)</li>
 </ul>
 </div>
-<div class="section" id="tickets">
-<h3>Tickets<a class="headerlink" href="#tickets" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id6">
+<h3>Tickets<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/247">glu-247</a>: <cite>Glu applies variable expansion to local filenames</cite></li>
 <li>Implemented <a class="reference external" href="https://github.com/pongasoft/glu/issues/248">glu-248</a>: <cite>Add support for array items in filters</cite></li>
@@ -112,7 +146,7 @@
 </div>
 </div>
 <div class="section" id="glu-5-3-1">
-<span id="id4"></span><h2>5.3.1 (2013/10/03)<a class="headerlink" href="#glu-5-3-1" title="Permalink to this headline">¶</a></h2>
+<span id="id7"></span><h2>5.3.1 (2013/10/03)<a class="headerlink" href="#glu-5-3-1" title="Permalink to this headline">¶</a></h2>
 <p>This release contains a minor bug fix. Only the console is affected, so no need to upgrade the agents.</p>
 <ul class="simple">
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/242">glu-242</a>: <cite>NPE when selecting &#8220;bounce&#8221; or &#8220;stop&#8221; plans with a tags filter</cite></li>
@@ -120,14 +154,14 @@
 </ul>
 </div>
 <div class="section" id="glu-5-3-0">
-<span id="id5"></span><h2>5.3.0 (2013/09/27)<a class="headerlink" href="#glu-5-3-0" title="Permalink to this headline">¶</a></h2>
+<span id="id8"></span><h2>5.3.0 (2013/09/27)<a class="headerlink" href="#glu-5-3-0" title="Permalink to this headline">¶</a></h2>
 <p>This release contains a major overhaul of the directory/file listing feature for a given agent.</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
 <p class="last">In order to benefit fully from the new feature, the agent needs to be upgraded (check the <a class="reference internal" href="migration-guide.html#migration-guide-5-2-0-5-3-0"><em>migration steps</em></a> for details).</p>
 </div>
-<div class="section" id="id6">
-<h3>New and noteworthy<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id9">
+<h3>New and noteworthy<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <ul>
 <li><p class="first">It is now possible to continuously tail any file located on any agent (initial tail size and refresh rate are both <a class="reference internal" href="console.html#console-configuration-tail"><em>configurable</em></a>) as well as view it in the browser or download the content. The directory listing view has also been enhanced to add the same functionality.</p>
 </li>
@@ -148,8 +182,8 @@
 </li>
 </ul>
 </div>
-<div class="section" id="id7">
-<h3>Tickets<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id10">
+<h3>Tickets<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Implemented <a class="reference external" href="https://github.com/pongasoft/glu/issues/153">glu-153</a>: <cite>Make URLs copy/paste friendly</cite></li>
 <li>Implemented <a class="reference external" href="https://github.com/pongasoft/glu/issues/183">glu-183</a>: <cite>Add support for different state machine in agent-cli</cite></li>
@@ -163,10 +197,10 @@
 </div>
 </div>
 <div class="section" id="glu-5-2-0">
-<span id="id9"></span><h2>5.2.0 (2013/08/14)<a class="headerlink" href="#glu-5-2-0" title="Permalink to this headline">¶</a></h2>
+<span id="id12"></span><h2>5.2.0 (2013/08/14)<a class="headerlink" href="#glu-5-2-0" title="Permalink to this headline">¶</a></h2>
 <p>This release contains a few bug fixes and enhancements.</p>
-<div class="section" id="id10">
-<h3>New and noteworthy<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id13">
+<h3>New and noteworthy<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>you can configure the agent outside the (upgrade) tarball (although since 5.1.0 this is less useful): <tt class="docutils literal"><span class="pre">$AGENT_ROOT/conf/pre_master_conf.sh</span></tt> and <tt class="docutils literal"><span class="pre">$AGENT_ROOT/conf/post_master_conf.sh</span></tt></li>
 <li>you can change the <a class="reference internal" href="console.html#console-configuration-session-timeout"><em>session timeout</em></a> in the console</li>
@@ -175,8 +209,8 @@
 <li>the agent is now properly registered in ZooKeeper <strong>after</strong> opening the rest api</li>
 </ul>
 </div>
-<div class="section" id="id11">
-<h3>Tickets<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id14">
+<h3>Tickets<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Implemented <a class="reference external" href="https://github.com/pongasoft/glu/issues/215">glu-215</a>: <cite>Add ability to configure agent outside the &#8220;tarball&#8221;</cite></li>
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/220">glu-220</a>: <cite>java.lang.IllegalArgumentException: not a boolean : [:]</cite></li>
@@ -195,7 +229,7 @@
 </div>
 </div>
 <div class="section" id="glu-5-1-0">
-<span id="id12"></span><h2>5.1.0 (2013/07/20)<a class="headerlink" href="#glu-5-1-0" title="Permalink to this headline">¶</a></h2>
+<span id="id15"></span><h2>5.1.0 (2013/07/20)<a class="headerlink" href="#glu-5-1-0" title="Permalink to this headline">¶</a></h2>
 <p>This release contains a brand new way of configuring and installing glu which should make it much easier to deploy glu in production. The documentation has been enhanced throughout to reflect the changes, including several new pages (<a class="reference internal" href="easy-production-setup.html"><em>Easy Production Setup</em></a>, <a class="reference internal" href="meta-model.html"><em>Meta Model</em></a>, <a class="reference internal" href="glu-config.html"><em>Configuring glu</em></a>, <a class="reference internal" href="setup-tool.html"><em>setup.sh tool</em></a>, <a class="reference internal" href="migration-guide.html"><em>Migration Guide</em></a>).</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -212,7 +246,7 @@
 </ul>
 </div>
 <div class="section" id="glu-5-0-0">
-<span id="id13"></span><h2>5.0.0 (2013/04/23)<a class="headerlink" href="#glu-5-0-0" title="Permalink to this headline">¶</a></h2>
+<span id="id16"></span><h2>5.0.0 (2013/04/23)<a class="headerlink" href="#glu-5-0-0" title="Permalink to this headline">¶</a></h2>
 <p>This release is the very first release that requires java 1.7. As noted in the previous release notes, in order to upgrade glu from an earlier release, you should first upgrade to the <cite>4.7.x</cite> line (which works both with java 1.6 and java 1.7), then upgrade to the 5.x.y line.</p>
 <p>There is no new features or bug fixes since <cite>4.7.1</cite>.</p>
 <ul class="simple">
@@ -237,14 +271,14 @@
 </div>
 </div>
 <div class="section" id="glu-4-7-2">
-<span id="id14"></span><h2>4.7.2 (2013/05/09)<a class="headerlink" href="#glu-4-7-2" title="Permalink to this headline">¶</a></h2>
+<span id="id17"></span><h2>4.7.2 (2013/05/09)<a class="headerlink" href="#glu-4-7-2" title="Permalink to this headline">¶</a></h2>
 <p>This release is a bug fix release.</p>
 <ul class="simple">
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/223">glu-223</a>: <cite>jdk1.7 workaround does not &#8220;persist&#8221; in 4.7.1</cite></li>
 </ul>
 </div>
 <div class="section" id="glu-4-7-1">
-<span id="id15"></span><h2>4.7.1 (2013/04/16)<a class="headerlink" href="#glu-4-7-1" title="Permalink to this headline">¶</a></h2>
+<span id="id18"></span><h2>4.7.1 (2013/04/16)<a class="headerlink" href="#glu-4-7-1" title="Permalink to this headline">¶</a></h2>
 <p>This release is a bug fix release.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -266,7 +300,7 @@
 </div>
 </div>
 <div class="section" id="glu-4-7-0">
-<span id="id17"></span><h2>4.7.0 (2013/04/02)<a class="headerlink" href="#glu-4-7-0" title="Permalink to this headline">¶</a></h2>
+<span id="id20"></span><h2>4.7.0 (2013/04/02)<a class="headerlink" href="#glu-4-7-0" title="Permalink to this headline">¶</a></h2>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <ul class="last simple">
@@ -318,7 +352,7 @@
 <p>Thanks to <a class="reference external" href="http://www.ej-technologies.com/products/jprofiler/overview.html">JProfiler</a> for providing a free license key in order to troubleshoot (and very quickly identify!) the memory leak in groovy.</p>
 </div>
 <div class="section" id="glu-4-6-2">
-<span id="id19"></span><h2>4.6.2 (2013/01/21)<a class="headerlink" href="#glu-4-6-2" title="Permalink to this headline">¶</a></h2>
+<span id="id22"></span><h2>4.6.2 (2013/01/21)<a class="headerlink" href="#glu-4-6-2" title="Permalink to this headline">¶</a></h2>
 <p>This release is a bug fix release only.</p>
 <ul class="simple">
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/195">glu-195</a>: <cite>Very long lines in an application log are loaded surprisingly slow when browsing from Console</cite></li>
@@ -328,7 +362,7 @@
 </ul>
 </div>
 <div class="section" id="glu-4-6-1">
-<span id="id20"></span><h2>4.6.1 (2012/12/21)<a class="headerlink" href="#glu-4-6-1" title="Permalink to this headline">¶</a></h2>
+<span id="id23"></span><h2>4.6.1 (2012/12/21)<a class="headerlink" href="#glu-4-6-1" title="Permalink to this headline">¶</a></h2>
 <p>This release is essentially a bug fix release with a couple of minor enhancements to the agent api.</p>
 <ul class="simple">
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/134">glu-134</a>: <cite>Race condition between agent.waitForState and ZooKeeper state</cite></li>
@@ -348,7 +382,7 @@
 </div>
 </div>
 <div class="section" id="glu-4-6-0">
-<span id="id22"></span><h2>4.6.0 (2012/11/18)<a class="headerlink" href="#glu-4-6-0" title="Permalink to this headline">¶</a></h2>
+<span id="id25"></span><h2>4.6.0 (2012/11/18)<a class="headerlink" href="#glu-4-6-0" title="Permalink to this headline">¶</a></h2>
 <p>This release contains the new feature <tt class="docutils literal"><span class="pre">commands</span></tt> which extends glu capabilities in order to execute an arbitrary (unix/shell) command on any node. One way to think about it is executing a remote command using a REST api rather than ssh. It provides the added benefit that all commands executed this way are following the <cite>standard</cite> authentication and auditing path followed by deployments. The <tt class="docutils literal"><span class="pre">All</span> <span class="pre">commands</span></tt> view shows you instantly what is (or has been) executing on various agents, thus allowing you to immediately get a sense of what other <cite>actions</cite> (besides deployments) have been performed on an agent for tracking and/or diagnosing purposes.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -360,8 +394,8 @@
 <li>Implemented <a class="reference external" href="https://github.com/pongasoft/glu/issues/170">glu-170</a>: <cite>Add &#8220;start&#8221; in the plans subtab</cite></li>
 </ul>
 </div>
-<div class="section" id="id23">
-<h2>4.5.2 (2012/10/31)<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id26">
+<h2>4.5.2 (2012/10/31)<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h2>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">This release contains a critical bug fix and is highly recommended.</p>
@@ -391,8 +425,8 @@ recommended to upgrade</li>
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/175">glu-175</a>: <cite>client auth not working for agent with ssl enabled</cite></li>
 </ul>
 </div>
-<div class="section" id="id24">
-<h2>4.5.1 (2012/09/23)<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id27">
+<h2>4.5.1 (2012/09/23)<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h2>
 <p>This release essentially contains some minor fixes. The deployment view has a subtle change: all (leaf) steps are now links: when you hover your mouse over one of them you can click on it and it is a shortcut to the agent view page (fix for glu-163).</p>
 <ul class="simple">
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/155">glu-155</a>: <cite>shell.exec leaks file descriptors</cite></li>
@@ -400,8 +434,8 @@ recommended to upgrade</li>
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/165">glu-165</a>: <cite>symlinks are not being shown in the console</cite></li>
 </ul>
 </div>
-<div class="section" id="id25">
-<h2>4.5.0 (2012/08/15)<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id28">
+<h2>4.5.0 (2012/08/15)<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h2>
 <p>This release contains a refactoring of the authorization framework in order to be able to change the authorization levels via <a class="reference internal" href="console.html#console-configuration-security-levels"><em>configuration</em></a> as well as being entirely customizable via <a class="reference internal" href="orchestration-engine.html#goe-plugins"><em>plugins</em></a>.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -417,8 +451,8 @@ recommended to upgrade</li>
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/154">glu-154</a>: <cite>make console-cli return 1 on failure</cite> (Thanks to Stéphane)</li>
 </ul>
 </div>
-<div class="section" id="id26">
-<h2>4.4.2 (2012/07/26)<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id29">
+<h2>4.4.2 (2012/07/26)<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h2>
 <p>This release contains mostly bug fixes and minor improvements</p>
 <ul class="simple">
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/111">glu-111</a>: <cite>Console server initialization fails with Oracle 11g</cite> (Thanks to Chris for the tip)</li>
@@ -428,15 +462,15 @@ recommended to upgrade</li>
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/151">glu-151</a>: <cite>Allow &#8216;_&#8217; in mountPoint</cite></li>
 </ul>
 </div>
-<div class="section" id="id27">
-<h2>4.4.1 (2012/07/04)<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id30">
+<h2>4.4.1 (2012/07/04)<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h2>
 <p>This release contains a critical bug fix</p>
 <ul class="simple">
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/150">glu-150</a>: <cite>Cannot change password</cite></li>
 </ul>
 </div>
-<div class="section" id="id28">
-<h2>4.4.0 (2012/04/28)<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id31">
+<h2>4.4.0 (2012/04/28)<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h2>
 <p>This release further improves the performance of the previous one.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -454,8 +488,8 @@ If this turns out to be an issue in your case (which should be extremely unlikel
 <li>Merged <a class="reference external" href="https://github.com/pongasoft/glu/issues/137">glu-137</a>: <cite>Place focus in username input text field on page load</cite> (thanks to Tom)</li>
 </ul>
 </div>
-<div class="section" id="id29">
-<h2>4.3.1 (2012/03/31)<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id32">
+<h2>4.3.1 (2012/03/31)<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h2>
 <p>Mostly a performance improvement release: use of the jackson library to enhance memory consumption and speed particularly visible on large system models.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -481,8 +515,8 @@ now:</p>
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/133">glu-133</a>: <cite>Be able to run GLU on IBM&#8217;s JDK</cite> (thanks to Lucas)</li>
 </ul>
 </div>
-<div class="section" id="id30">
-<h2>4.3.0 (2012/03/18)<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id33">
+<h2>4.3.0 (2012/03/18)<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h2>
 <p>4.3.0 introduces:</p>
 <ul>
 <li><p class="first">the ability to define your own system wide state machine (check the glu script chapter in the documentation for
@@ -528,8 +562,8 @@ documentation):</p>
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/129">glu-129</a>: <cite>Exception when calling stop with nothing to do</cite></li>
 </ul>
 </div>
-<div class="section" id="id31">
-<h2>4.2.0 (2012/02/16)<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id34">
+<h2>4.2.0 (2012/02/16)<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h2>
 <p>4.2.0 introduces the ability to package a glu script as a precompiled class (or set of classes) inside one (or more) jar file(s). As a result, a glu script can inherit from another class as well as have external (to glu) dependencies! Check <a class="reference internal" href="glu-script.html#glu-script-packaging"><em>Packaging a glu script</em></a> for more info.</p>
 <ul class="simple">
 <li>Implemented <a class="reference external" href="https://github.com/pongasoft/glu/issues/118">glu-118</a>: <cite>Add classpath / compiled glu script capability</cite></li>
@@ -540,8 +574,8 @@ documentation):</p>
 <li>Implemented <a class="reference external" href="https://github.com/pongasoft/glu/issues/126">glu-126</a>: <cite>Add REST api for manipulating fabrics</cite></li>
 </ul>
 </div>
-<div class="section" id="id32">
-<h2>4.1.1 (2012/01/27)<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id35">
+<h2>4.1.1 (2012/01/27)<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>Issue 116 introduces a change in the default handling of delta vs error (requested by both LinkedIn and Orbitz): when an application is not running and there is a delta, it is better to treat it as an error instead of a simple delta because it represents the fact that something is wrong.
@@ -556,8 +590,8 @@ You can revert to the previous behavior (delta is never treated as an error) by 
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/117">glu-117</a>: <cite>shell.fetch generates Authorization header when not required</cite></li>
 </ul>
 </div>
-<div class="section" id="id33">
-<h2>4.1.0 (2011/12/29)<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id36">
+<h2>4.1.0 (2011/12/29)<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h2>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p>The following configuration parameters have changed in the console configuration file. If you are using the feature <em>restricting file access on an agent</em> then you need to rename them prior to starting the
@@ -576,8 +610,8 @@ plugins.StreamFileContentPlugin.unrestrictedRole (new and optional value)
 </ul>
 </div>
 </div>
-<div class="section" id="id34">
-<h2>4.0.0 (2011/11/17)<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id37">
+<h2>4.0.0 (2011/11/17)<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="what-is-new-in-4-0-0">
 <h3>What is new in 4.0.0 ?<a class="headerlink" href="#what-is-new-in-4-0-0" title="Permalink to this headline">¶</a></h3>
 <div class="admonition warning">
@@ -614,8 +648,8 @@ system -&gt; model
 <li>Renamed <tt class="docutils literal"><span class="pre">console.defaults.system</span></tt> into <tt class="docutils literal"><span class="pre">console.defaults.model</span></tt>: to be consistent with the UI where you are looking at models</li>
 </ul>
 </div>
-<div class="section" id="id35">
-<h3>List of tickets<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id38">
+<h3>List of tickets<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Implemented <a class="reference external" href="https://github.com/pongasoft/glu/issues/17">glu-17</a>: <cite>Feature Request: make console views navigation friendly (bookmarkable)</cite></li>
 <li>Implemented <a class="reference external" href="https://github.com/pongasoft/glu/issues/28">glu-28</a>: <cite>Feature Request: Add dates to the table at /console</cite></li>
@@ -627,8 +661,8 @@ system -&gt; model
 </ul>
 </div>
 </div>
-<div class="section" id="id36">
-<h2>3.4.0 (2011/10/10)<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id39">
+<h2>3.4.0 (2011/10/10)<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h2>
 <p>A few changes to the agent (requires upgrade):</p>
 <ul class="simple">
 <li>Now the agent saves its fabric in ZooKeeper on boot (since it can be overriden on the command line, it ensures that the console sees the same value!)</li>
@@ -656,8 +690,8 @@ system -&gt; model
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/103">glu-103</a>: <cite>3.4.0dev Agent REST Call doesn&#8217;t return unassociated agents.</cite></li>
 </ul>
 </div>
-<div class="section" id="id37">
-<h2>3.3.0 (2011/09/16)<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id40">
+<h2>3.3.0 (2011/09/16)<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h2>
 <p>This release features the following:</p>
 <ul class="simple">
 <li>Performance tuning (minimizing GC) based on LinkedIn feedback</li>
@@ -681,8 +715,8 @@ system -&gt; model
 </ul>
 <p>Thanks to Richard and Vincent for the contributions to this release.</p>
 </div>
-<div class="section" id="id38">
-<h2>3.2.0 (2011/07/31)<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id41">
+<h2>3.2.0 (2011/07/31)<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h2>
 <p>Enhanced REST API by exposing more functionalities (agent upgrade, deployments, plans). Note that the REST call <tt class="docutils literal"><span class="pre">HEAD</span> <span class="pre">/plan/&lt;planId&gt;/execution/&lt;executionId&gt;</span></tt> now returns a header called <tt class="docutils literal"><span class="pre">X-glu-completion</span></tt> (the old one <tt class="docutils literal"><span class="pre">X-LinkedIn-GLU-completion</span></tt> is still returned for backward compatibility).</p>
 <ul class="simple">
 <li>Implemented <a class="reference external" href="https://github.com/pongasoft/glu/issues/66">glu-66</a>: <cite>implement rest call GET /plans</cite></li>
@@ -691,16 +725,16 @@ system -&gt; model
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/83">glu-83</a>: <cite>NPE at http://glu/console/plan/deployments/XXX</cite></li>
 </ul>
 </div>
-<div class="section" id="id39">
-<h2>3.1.0 (2011/07/26)<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id42">
+<h2>3.1.0 (2011/07/26)<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h2>
 <p>Added unit test framework for glu script and created sibling project <a class="reference external" href="https://github.com/pongasoft/glu-scripts-contrib">glu-script-contribs</a></p>
 <ul class="simple">
 <li>Implemented <a class="reference external" href="https://github.com/pongasoft/glu/issues/80">glu-80</a>: <cite>Add ability to write unit tests for glu script</cite></li>
 <li>Added <tt class="docutils literal"><span class="pre">Shell.httpPost</span></tt> method</li>
 </ul>
 </div>
-<div class="section" id="id40">
-<h2>3.0.0 (2011/06/25)<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id43">
+<h2>3.0.0 (2011/06/25)<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="what-is-new-in-3-0-0">
 <h3>What is new in 3.0.0 ?<a class="headerlink" href="#what-is-new-in-3-0-0" title="Permalink to this headline">¶</a></h3>
 <p>3.0.0 adds the following features:</p>
@@ -715,8 +749,8 @@ application without starting it</li>
 which should provide some performance improvements over groovy).</li>
 </ul>
 </div>
-<div class="section" id="id41">
-<h3>List of tickets<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id44">
+<h3>List of tickets<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/18">glu-18</a>: <cite>Grails Runtime Exception (500) when viewing a deployment status</cite> (thanks to Ran!)</li>
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/21">glu-21</a>: <cite>The model should allow for expressing which state is desired</cite></li>
@@ -728,21 +762,21 @@ which should provide some performance improvements over groovy).</li>
 </ul>
 </div>
 </div>
-<div class="section" id="id42">
-<h2>2.4.2 (2011/05/27)<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id45">
+<h2>2.4.2 (2011/05/27)<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/64">glu-64</a>: <cite>Concurrent deployment of ivy artifacts causes wrong artifact to be downloaded</cite></li>
 </ul>
 </div>
-<div class="section" id="id43">
-<h2>2.4.1 (2011/05/24)<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id46">
+<h2>2.4.1 (2011/05/24)<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/61">glu-61</a>: <cite>ClassCastException when error is a String</cite></li>
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/62">glu-62</a>: <cite>&#8220;View Full Stack Trace&#8221; fails if agent disappears</cite></li>
 </ul>
 </div>
-<div class="section" id="id44">
-<h2>2.4.0 (2011/05/20)<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id47">
+<h2>2.4.0 (2011/05/20)<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Added instrumentation for <a class="reference external" href="https://github.com/pongasoft/glu/issues/18">glu-18</a>: <cite>Grails Runtime Exception (500) when viewing a deployment status</cite></li>
 <li>Implemented <a class="reference external" href="https://github.com/pongasoft/glu/issues/42">glu-42</a>: <cite>Support &#8216;transient&#8217; declaration in glu script</cite> (thanks to Andras!)</li>
@@ -752,8 +786,8 @@ which should provide some performance improvements over groovy).</li>
 <li>Misc.: better handling of logs in the console, improved documentation</li>
 </ul>
 </div>
-<div class="section" id="id46">
-<h2>2.3.0 (2011/05/13)<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id49">
+<h2>2.3.0 (2011/05/13)<a class="headerlink" href="#id49" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Implemented <a class="reference external" href="https://github.com/pongasoft/glu/issues/56">glu-56</a>: <cite>Finalize refactoring (#34)</cite><ul>
 <li>fixed some issues with tagging</li>
@@ -766,28 +800,28 @@ which should provide some performance improvements over groovy).</li>
 </li>
 </ul>
 </div>
-<div class="section" id="id47">
-<h2>2.2.3 (2011/05/05)<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id50">
+<h2>2.2.3 (2011/05/05)<a class="headerlink" href="#id50" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/52">glu-52</a>: <cite>deadlock on agent shutdown</cite></li>
 </ul>
 </div>
-<div class="section" id="id48">
-<h2>2.2.2 (2011/05/04)<a class="headerlink" href="#id48" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id51">
+<h2>2.2.2 (2011/05/04)<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/51">glu-51</a>: <cite>agent does not recover properly when safeOverwrite fails</cite></li>
 </ul>
 </div>
-<div class="section" id="id49">
-<h2>2.2.1 (2011/04/30)<a class="headerlink" href="#id49" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id52">
+<h2>2.2.1 (2011/04/30)<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/49">glu-49</a>: <cite>shell.cat is leaking memory</cite></li>
 <li>Fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/48">glu-48</a>: <cite>use -XX:+PrintGCDateStamps for gc log</cite></li>
 </ul>
 <p>Also tweaked a couple of parameters for the agent (starting VM now 128M).</p>
 </div>
-<div class="section" id="id50">
-<h2>2.2.0 (2011/04/22)<a class="headerlink" href="#id50" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id53">
+<h2>2.2.0 (2011/04/22)<a class="headerlink" href="#id53" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first">Implemented <a class="reference external" href="https://github.com/pongasoft/glu/issues/34">glu-34</a>: <cite>Refactor code out of the console</cite></p>
 <p>The business logic layer of the console has been moved to the orchestration engine area so it is now more easily shareable.</p>
@@ -797,22 +831,22 @@ which should provide some performance improvements over groovy).</li>
 </li>
 </ul>
 </div>
-<div class="section" id="id51">
-<h2>2.1.1 (2011/03/04)<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id54">
+<h2>2.1.1 (2011/03/04)<a class="headerlink" href="#id54" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/31">glu-31</a>: Agent exception when no persistent properties files</li>
 </ul>
 </div>
-<div class="section" id="id52">
-<h2>2.1.0 (2011/03/01)<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id55">
+<h2>2.1.0 (2011/03/01)<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h2>
 <p>This version is highly recommended for glu-27 specifically which may prevent the agent to recover properly. It affects all previous versions of the agent.</p>
 <ul class="simple">
 <li>fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/26">glu-26</a>: agent cli fails when using spaces</li>
 <li>fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/27">glu-27</a>: Unexpected exception can disable the agent</li>
 </ul>
 </div>
-<div class="section" id="id53">
-<h2>2.0.0 (2011/02/14)<a class="headerlink" href="#id53" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id56">
+<h2>2.0.0 (2011/02/14)<a class="headerlink" href="#id56" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first">fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/22">glu-22</a>: jetty glu script (1.6.0) does not handle restart properly</p>
 </li>
@@ -826,15 +860,15 @@ which should provide some performance improvements over groovy).</li>
 </li>
 </ul>
 </div>
-<div class="section" id="id54">
-<h2>1.7.1 (2011/01/20)<a class="headerlink" href="#id54" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id57">
+<h2>1.7.1 (2011/01/20)<a class="headerlink" href="#id57" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>workaround for <a class="reference external" href="https://github.com/pongasoft/glu/issues/19">glu-19</a>: New users aren&#8217;t displayed at <tt class="docutils literal"><span class="pre">/console/admin/user/list</span></tt></li>
 <li>fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/20">glu-20</a>: Race condition while upgrading the agent</li>
 </ul>
 </div>
-<div class="section" id="id55">
-<h2>1.7.0 (2011/01/17)<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id58">
+<h2>1.7.0 (2011/01/17)<a class="headerlink" href="#id58" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Implemented <a class="reference external" href="https://github.com/pongasoft/glu/issues/12">glu-12</a>: better packaging</li>
 <li>fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/1">glu-1</a>: Agent name and fabric are not preserved upon restart</li>
@@ -843,8 +877,8 @@ which should provide some performance improvements over groovy).</li>
 <li>Updated Copyright</li>
 </ul>
 </div>
-<div class="section" id="id56">
-<h2>1.6.0 (2011/01/11)<a class="headerlink" href="#id56" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id59">
+<h2>1.6.0 (2011/01/11)<a class="headerlink" href="#id59" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>changed the tutorial to deploy jetty and the sample webapps to better demonstrate the capabilities of glu</li>
 <li>added jetty glu script which demonstrates a &#8216;real&#8217; glu script and allows to deploy a webapp container with webapps and monitor them</li>
@@ -855,15 +889,15 @@ which should provide some performance improvements over groovy).</li>
 <li>fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/13">glu-13</a>: missing connection string in setup-zookeeper.sh</li>
 </ul>
 </div>
-<div class="section" id="id58">
-<h2>1.5.1 (2010/12/28)<a class="headerlink" href="#id58" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id61">
+<h2>1.5.1 (2010/12/28)<a class="headerlink" href="#id61" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/10">glu-10</a>: missing -s $GLU_ZK_CONNECT_STRING in setup-agent.sh (thanks to Ran)</li>
 <li>fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/11">glu-11</a>: missing glu.agent.port when not using default value</li>
 </ul>
 </div>
-<div class="section" id="id59">
-<h2>1.5.0 (2010/12/24)<a class="headerlink" href="#id59" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id62">
+<h2>1.5.0 (2010/12/24)<a class="headerlink" href="#id62" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>fixed <a class="reference external" href="https://github.com/pongasoft/glu/issues/8">glu-8</a>: added support for urls with basic authentication (thanks to Ran)</li>
 <li>added console cli (<tt class="docutils literal"><span class="pre">org.linkedin.glu.console-cli</span></tt>) which talks to the REST api of the console</li>
@@ -871,8 +905,8 @@ which should provide some performance improvements over groovy).</li>
 <li>added the glu logo (thanks to Markus for the logos)</li>
 </ul>
 </div>
-<div class="section" id="id60">
-<h2>1.4.0 (2010/12/20)<a class="headerlink" href="#id60" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id63">
+<h2>1.4.0 (2010/12/20)<a class="headerlink" href="#id63" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>use of <a class="reference external" href="https://github.com/pongasoft/gradle-plugins/tree/REL_1.5.0">gradle-plugins 1.5.0</a> which now uses gradle 0.9</li>
 <li>added packaging for all clis</li>
@@ -883,22 +917,22 @@ which should provide some performance improvements over groovy).</li>
 <li>new tutorial based on pre-built binaries (<tt class="docutils literal"><span class="pre">org.linkedin.glu.packaging-all</span></tt>)</li>
 </ul>
 </div>
-<div class="section" id="id61">
-<h2>1.3.2 (2010/12/07)<a class="headerlink" href="#id61" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id64">
+<h2>1.3.2 (2010/12/07)<a class="headerlink" href="#id64" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>use of <a class="reference external" href="https://github.com/pongasoft/linkedin-utils/tree/REL_1.2.1">linkedin-utils 1.2.1</a> which fixes the issue of password not being masked properly</li>
 <li>use of <a class="reference external" href="https://github.com/pongasoft/linkedin-zookeeper/tree/REL_1.2.1">linkedin-zookeeper 1.2.1</a></li>
 </ul>
 </div>
-<div class="section" id="id62">
-<h2>1.3.1 (2010/12/02)<a class="headerlink" href="#id62" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id65">
+<h2>1.3.1 (2010/12/02)<a class="headerlink" href="#id65" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>use of <a class="reference external" href="https://github.com/pongasoft/gradle-plugins/tree/REL_1.3.1">gradle-plugins 1.3.1</a></li>
 <li>fixes issue in agent cli (exception when parsing configuration)</li>
 </ul>
 </div>
-<div class="section" id="id63">
-<h2>1.0.0 (2010/11/07)<a class="headerlink" href="#id63" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id66">
+<h2>1.0.0 (2010/11/07)<a class="headerlink" href="#id66" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>First release</li>
 </ul>
@@ -929,22 +963,27 @@ which should provide some performance improvements over groovy).</li>
 <li class="toctree-l1"><a class="reference internal" href="production-setup.html">Old Production Setup (prior to 5.1.0)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev-setup.html">Compiling glu</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Release Notes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#glu-5-4-2">5.4.2 (2014/01/17)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#glu-5-4-1">5.4.1 (2013/12/06)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#glu-5-4-0">5.4.0 (2013/11/27)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#glu-5-5-0">5.5.0 (2014/03/14)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#new-and-noteworthy">New and noteworthy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tickets">Tickets</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#glu-5-4-2">5.4.2 (2014/01/17)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#glu-5-4-1">5.4.1 (2013/12/06)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#glu-5-4-0">5.4.0 (2013/11/27)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id5">New and noteworthy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Tickets</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#glu-5-3-1">5.3.1 (2013/10/03)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#glu-5-3-0">5.3.0 (2013/09/27)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id6">New and noteworthy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id7">Tickets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">New and noteworthy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">Tickets</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#glu-5-2-0">5.2.0 (2013/08/14)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id10">New and noteworthy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id11">Tickets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">New and noteworthy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">Tickets</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#glu-5-1-0">5.1.0 (2013/07/20)</a></li>
@@ -955,54 +994,54 @@ which should provide some performance improvements over groovy).</li>
 <li class="toctree-l2"><a class="reference internal" href="#glu-4-6-2">4.6.2 (2013/01/21)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#glu-4-6-1">4.6.1 (2012/12/21)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#glu-4-6-0">4.6.0 (2012/11/18)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id23">4.5.2 (2012/10/31)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id24">4.5.1 (2012/09/23)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id25">4.5.0 (2012/08/15)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id26">4.4.2 (2012/07/26)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id27">4.4.1 (2012/07/04)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id28">4.4.0 (2012/04/28)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id29">4.3.1 (2012/03/31)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id30">4.3.0 (2012/03/18)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id31">4.2.0 (2012/02/16)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id32">4.1.1 (2012/01/27)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id33">4.1.0 (2011/12/29)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id26">4.5.2 (2012/10/31)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id27">4.5.1 (2012/09/23)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id28">4.5.0 (2012/08/15)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id29">4.4.2 (2012/07/26)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id30">4.4.1 (2012/07/04)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id31">4.4.0 (2012/04/28)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id32">4.3.1 (2012/03/31)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id33">4.3.0 (2012/03/18)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id34">4.2.0 (2012/02/16)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id35">4.1.1 (2012/01/27)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id36">4.1.0 (2011/12/29)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#list-of-tickets">List of tickets</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id34">4.0.0 (2011/11/17)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id37">4.0.0 (2011/11/17)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#what-is-new-in-4-0-0">What is new in 4.0.0 ?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id35">List of tickets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id38">List of tickets</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id36">3.4.0 (2011/10/10)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id37">3.3.0 (2011/09/16)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id38">3.2.0 (2011/07/31)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id39">3.1.0 (2011/07/26)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id40">3.0.0 (2011/06/25)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id39">3.4.0 (2011/10/10)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id40">3.3.0 (2011/09/16)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id41">3.2.0 (2011/07/31)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id42">3.1.0 (2011/07/26)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id43">3.0.0 (2011/06/25)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#what-is-new-in-3-0-0">What is new in 3.0.0 ?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id41">List of tickets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id44">List of tickets</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id42">2.4.2 (2011/05/27)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id43">2.4.1 (2011/05/24)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id44">2.4.0 (2011/05/20)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id46">2.3.0 (2011/05/13)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id47">2.2.3 (2011/05/05)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id48">2.2.2 (2011/05/04)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id49">2.2.1 (2011/04/30)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id50">2.2.0 (2011/04/22)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id51">2.1.1 (2011/03/04)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id52">2.1.0 (2011/03/01)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id53">2.0.0 (2011/02/14)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id54">1.7.1 (2011/01/20)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id55">1.7.0 (2011/01/17)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id56">1.6.0 (2011/01/11)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id58">1.5.1 (2010/12/28)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id59">1.5.0 (2010/12/24)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id60">1.4.0 (2010/12/20)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id61">1.3.2 (2010/12/07)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id62">1.3.1 (2010/12/02)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id63">1.0.0 (2010/11/07)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id45">2.4.2 (2011/05/27)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id46">2.4.1 (2011/05/24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id47">2.4.0 (2011/05/20)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id49">2.3.0 (2011/05/13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id50">2.2.3 (2011/05/05)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id51">2.2.2 (2011/05/04)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id52">2.2.1 (2011/04/30)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id53">2.2.0 (2011/04/22)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id54">2.1.1 (2011/03/04)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id55">2.1.0 (2011/03/01)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id56">2.0.0 (2011/02/14)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id57">1.7.1 (2011/01/20)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id58">1.7.0 (2011/01/17)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id59">1.6.0 (2011/01/11)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id61">1.5.1 (2010/12/28)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id62">1.5.0 (2010/12/24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id63">1.4.0 (2010/12/20)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id64">1.3.2 (2010/12/07)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id65">1.3.1 (2010/12/02)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id66">1.0.0 (2010/11/07)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="migration-guide.html">Migration Guide</a></li>

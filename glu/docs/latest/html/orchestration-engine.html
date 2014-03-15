@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Orchestration engine &mdash; glu 5.4.2 documentation</title>
+    <title>Orchestration engine &mdash; glu 5.5.0 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '5.4.2',
+        VERSION:     '5.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="glu 5.4.2 documentation" href="index.html" />
+    <link rel="top" title="glu 5.5.0 documentation" href="index.html" />
     <link rel="next" title="Static Model" href="static-model.html" />
     <link rel="prev" title="glu script" href="glu-script.html" />
  
@@ -48,7 +48,7 @@
             <img class="logo" src="_static/glu-logo-214x72.png" alt="Logo"/>
           </a></p>
         <div class="headertitle"><a
-          href="contents.html">glu 5.4.2 documentation</a></div>
+          href="contents.html">glu 5.5.0 documentation</a></div>
         <div class="rel">
           <a href="glu-script.html" title="glu script"
              accesskey="P">previous</a> |
@@ -643,6 +643,17 @@ of the command execution</td>
 <td>Returns the map of associations
 agent -&gt; fabric</td>
 <td><a class="reference internal" href="#goe-rest-api-get-agents-fabrics"><em>view</em></a></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">HEAD</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">/audit/logs</span></tt></td>
+<td>Returns the count of audit logs</td>
+<td><a class="reference internal" href="#goe-rest-api-count-audit-logs"><em>view</em></a></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">GET</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">/audit/logs</span></tt></td>
+<td>Returns the list of audit logs
+(paginated!)</td>
+<td><a class="reference internal" href="#goe-rest-api-list-audit-logs"><em>view</em></a></td>
 </tr>
 </tbody>
 </table>
@@ -1871,6 +1882,100 @@ abcdef
 </li>
 </ul>
 </div>
+<div class="section" id="audit-logs-count">
+<span id="goe-rest-api-count-audit-logs"></span><h4>Audit Logs Count<a class="headerlink" href="#audit-logs-count" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first">Description: Returns the total count of audit logs</p>
+</li>
+<li><p class="first">Request: <tt class="docutils literal"><span class="pre">HEAD</span> <span class="pre">/audit/logs</span></tt></p>
+</li>
+<li><p class="first">Response:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">200</span></tt> (<tt class="docutils literal"><span class="pre">OK</span></tt>) with:<ul>
+<li>headers: <tt class="docutils literal"><span class="pre">X-glu-totalCount</span></tt> which is the total number of audit log entries.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p class="first">Example:</p>
+<div class="highlight-text"><div class="highlight"><pre>curl -u &quot;glua:password&quot; &quot;http://localhost:8080/console/rest/v1/-/audit/logs&quot; --head
+HTTP/1.1 200 OK
+X-glu-totalCount: 5
+...
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="list-audit-logs">
+<span id="goe-rest-api-list-audit-logs"></span><h4>List Audit Logs<a class="headerlink" href="#list-audit-logs" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first">Description: Returns the (paginated) list of audit logs</p>
+</li>
+<li><p class="first">Request: <tt class="docutils literal"><span class="pre">GET</span> <span class="pre">/audit/logs</span></tt></p>
+<p>optional request parameters:</p>
+<ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">prettyPrint=true</span></tt> for human readable output</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">max=xxx</span></tt> how many entries to return max (default to 100)</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">offset=xxx</span></tt> which entry to start (default is 0)</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><tt class="docutils literal"><span class="pre">offset</span></tt> represents the index in the list (not an  id!). To go from page to page, the offset simply increments by <tt class="docutils literal"><span class="pre">max</span></tt>. Example with <tt class="docutils literal"><span class="pre">max=10</span></tt>, <tt class="docutils literal"><span class="pre">offset=0</span></tt> will return page 1, <tt class="docutils literal"><span class="pre">offset=10</span></tt> will return page 2, etc...</p>
+</div>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">sort</span></tt> which <cite>column</cite> to sort on (default is <tt class="docutils literal"><span class="pre">id</span></tt>)</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">order</span></tt> which order to sort the list (default is <tt class="docutils literal"><span class="pre">desc</span></tt>)</p>
+</li>
+</ul>
+</li>
+<li><p class="first">Response:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">200</span></tt> (<tt class="docutils literal"><span class="pre">OK</span></tt>) with:<ul>
+<li>headers: <tt class="docutils literal"><span class="pre">X-glu-max</span></tt>, <tt class="docutils literal"><span class="pre">X-glu-offset</span></tt>, <tt class="docutils literal"><span class="pre">X-glu-sort</span></tt>, <tt class="docutils literal"><span class="pre">X-glu-order</span></tt>, which are the values provided/defaulted/adjusted from the request and <tt class="docutils literal"><span class="pre">X-glu-count</span></tt> which is the number of entries returned and <tt class="docutils literal"><span class="pre">X-glu-totalCount</span></tt> which is the total number of audit log entries.</li>
+<li>body: json list of audit log entries</li>
+</ul>
+</li>
+<li><tt class="docutils literal"><span class="pre">204</span></tt> (<tt class="docutils literal"><span class="pre">NO</span> <span class="pre">CONTENT</span></tt>) when there is no audit log entries (which should not happen).</li>
+</ul>
+</li>
+<li><p class="first">Example:</p>
+<div class="highlight-text"><div class="highlight"><pre>curl -v -u &quot;glua:password&quot; &quot;http://localhost:8080/console/rest/v1/-/audit/logs?prettyPrint=true&quot;
+&lt; HTTP/1.1 200 OK
+&lt; X-glu-count: 5
+&lt; X-glu-totalCount: 5
+&lt; X-glu-max: 100
+&lt; X-glu-offset: 0
+&lt; X-glu-sort: id
+&lt; X-glu-order: desc
+&lt; Content-Type: text/json;charset=ISO-8859-1
+...
+[
+  {
+    &quot;dateCreated&quot;: 1394839512550,
+    &quot;id&quot;: 5,
+    &quot;type&quot;: &quot;login&quot;,
+    &quot;username&quot;: &quot;glua&quot;
+  },
+  {
+    &quot;dateCreated&quot;: 1394839368174,
+    &quot;details&quot;: &quot;fabric: glu-dev-2, systemId: 71236129b3a55f84ca8904914209f980627abf02&quot;,
+    &quot;id&quot;: 4,
+    &quot;type&quot;: &quot;system.change&quot;,
+    &quot;username&quot;: &quot;&lt;bootstrap&gt;&quot;
+  },
+...
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This api (<tt class="docutils literal"><span class="pre">/rest/v1/-/audit/logs</span></tt>) does not reference a fabric because the audit log is not fabric dependent.</p>
+</div>
+</div>
 </div>
 <div class="section" id="api-examples">
 <h3>API Examples<a class="headerlink" href="#api-examples" title="Permalink to this headline">¶</a></h3>
@@ -1896,10 +2001,10 @@ abcdef
 <p>The body then contains a query string with the following parameters:</p>
 <table border="1" class="docutils">
 <colgroup>
+<col width="21%" />
+<col width="18%" />
 <col width="17%" />
-<col width="19%" />
-<col width="17%" />
-<col width="46%" />
+<col width="44%" />
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td>name</td>
@@ -1948,11 +2053,21 @@ don&#8217;t filter at all.</td>
 <tt class="docutils literal"><span class="pre">sequential</span></tt></td>
 <td><tt class="docutils literal"><span class="pre">order=parallel</span></tt></td>
 </tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">maxParallelStepsCount</span></tt></td>
+<td>a positive integer</td>
+<td>No.</td>
+<td><tt class="docutils literal"><span class="pre">maxParallelStepsCount=2</span></tt> defines parallel plan
+with no more than 2 steps in parallel</td>
+</tr>
 </tbody>
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last"><tt class="docutils literal"><span class="pre">planAction=stop</span></tt> is equivalent to <tt class="docutils literal"><span class="pre">planType=transition&amp;state=stopped</span></tt>. The <tt class="docutils literal"><span class="pre">planType</span></tt> notation is more generic and should be used when using your own state machine or creating your own custom plan types (in which case you can also pass as many parameters as you want).</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><tt class="docutils literal"><span class="pre">maxParallelStepsCount</span></tt> only makes sense when <tt class="docutils literal"><span class="pre">order</span></tt> is set to <tt class="docutils literal"><span class="pre">parallel</span></tt>. Setting this value to <tt class="docutils literal"><span class="pre">1</span></tt> is equivalent to defining <tt class="docutils literal"><span class="pre">order=sequential</span></tt>.</p>
 </div>
 </div>
 </div>
@@ -2293,6 +2408,8 @@ don&#8217;t filter at all.</td>
 <li class="toctree-l4"><a class="reference internal" href="#list-all-the-agents-fabrics">List all the agents fabrics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#execute-a-shell-command">Execute a shell command</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#read-wait-for-command-result">Read/Wait for command result</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#audit-logs-count">Audit Logs Count</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#list-audit-logs">List Audit Logs</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#api-examples">API Examples</a></li>
