@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Migration Guide &mdash; glu 5.5.0 documentation</title>
+    <title>Migration Guide &mdash; glu 5.5.1 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '5.5.0',
+        VERSION:     '5.5.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,9 +23,9 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="glu 5.5.0 documentation" href="index.html" />
+    <link rel="top" title="glu 5.5.1 documentation" href="index.html" />
     <link rel="next" title="Glossary" href="glossary.html" />
-    <link rel="prev" title="Release Notes" href="RELEASE.html" />
+    <link rel="prev" title="Release Notes (4.7.x and below)" href="release-notes-old.html" />
  
 <link rel="stylesheet" href="_static/glu.css" type="text/css" />
 <script type="text/javascript" src="http://widgets.twimg.com/j/2/widget.js"></script>
@@ -48,9 +48,9 @@
             <img class="logo" src="_static/glu-logo-214x72.png" alt="Logo"/>
           </a></p>
         <div class="headertitle"><a
-          href="contents.html">glu 5.5.0 documentation</a></div>
+          href="contents.html">glu 5.5.1 documentation</a></div>
         <div class="rel">
-          <a href="RELEASE.html" title="Release Notes"
+          <a href="release-notes-old.html" title="Release Notes (4.7.x and below)"
              accesskey="P">previous</a> |
           <a href="glossary.html" title="Glossary"
              accesskey="N">next</a> |
@@ -71,8 +71,77 @@
             
   <div class="section" id="migration-guide">
 <h1>Migration Guide<a class="headerlink" href="#migration-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="general-tips-and-guidelines">
+<span id="migration-guide-overall"></span><h2>General tips and guidelines<a class="headerlink" href="#general-tips-and-guidelines" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">In order to upgrade glu, you should determine which version you can upgrade to. The following table shows the requirements in terms of java vm for glu</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="31%" />
+<col width="69%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">glu version</th>
+<th class="head">java version(s)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>5.0.0+</td>
+<td>java 1.7</td>
+</tr>
+<tr class="row-odd"><td>4.7.x</td>
+<td>java 1.6 (any VM) or java 1.7</td>
+</tr>
+<tr class="row-even"><td>4.6.x and below</td>
+<td>java 1.6 (with Sun/Oracle VM only!)</td>
+</tr>
+</tbody>
+</table>
+<p>As a result, here are the recommended migration paths:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="36%" />
+<col width="64%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">You are running glu...</th>
+<th class="head">You should...</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>5.0.0+</td>
+<td>upgrade to 5.3.1</td>
+</tr>
+<tr class="row-odd"><td>4.7.x</td>
+<td>switch to java 1.7 and upgrade to 5.3.1</td>
+</tr>
+<tr class="row-even"><td>4.6.x and below</td>
+<td>upgrade to 4.7.3 (java 1.6),
+switch to java 1.7 and upgrade to 5.3.1</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">If you are upgrading from a version prior to 5.1.0 to a more recent version of glu, you can follow the <a class="reference internal" href="#migration-guide-5-0-0-5-1-0-quick-and-easy"><em>quick and easy steps</em></a> to generate the distributions as it was before the change in setup.</p>
+</div>
+</li>
+<li><p class="first">In general (unless noted otherwise), you should upgrade the console first, then the agents.</p>
+</li>
+<li><p class="first">It is highly recommended to use the console <tt class="docutils literal"><span class="pre">Upgrade</span> <span class="pre">Agents</span></tt> functionality to upgrade the agents (under the <tt class="docutils literal"><span class="pre">Admin</span></tt> tab).</p>
+</li>
+<li><p class="first">It is highly recommended to upgrade just a few agents first, make sure the upgrade process is working properly and then upgrade the rest of them in batches: if something goes wrong, it is much easier to address the issue on a smaller set of nodes.</p>
+</li>
+<li><p class="first">During the agent upgrade process, the agent is stopped and restarted. During the restart phase, the agent recreates the state as it was prior to being shutdown. In order to do this, some older versions of glu (prior to 4.6.2) may need to fetch the glu scripts they were running from their original location, so you need to make sure that this location is accessible.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="migration-guide-5-5-0-5-5-1">
+<span id="id1"></span><h2>5.5.0 -&gt; 5.5.1<a class="headerlink" href="#migration-guide-5-5-0-5-5-1" title="Permalink to this headline">¶</a></h2>
+<p>This upgrade requires both the console and the agents to be upgraded.</p>
+</div>
 <div class="section" id="migration-guide-5-4-2-5-5-0">
-<span id="id1"></span><h2>5.4.2 -&gt; 5.5.0<a class="headerlink" href="#migration-guide-5-4-2-5-5-0" title="Permalink to this headline">¶</a></h2>
+<span id="id2"></span><h2>5.4.2 -&gt; 5.5.0<a class="headerlink" href="#migration-guide-5-4-2-5-5-0" title="Permalink to this headline">¶</a></h2>
 <p>No specific migration steps. Only the console is affected in this release, so no need to upgrade the agents.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -80,35 +149,35 @@
 </div>
 </div>
 <div class="section" id="migration-guide-5-4-1-5-4-2">
-<span id="id2"></span><h2>5.4.1 -&gt; 5.4.2<a class="headerlink" href="#migration-guide-5-4-1-5-4-2" title="Permalink to this headline">¶</a></h2>
+<span id="id3"></span><h2>5.4.1 -&gt; 5.4.2<a class="headerlink" href="#migration-guide-5-4-1-5-4-2" title="Permalink to this headline">¶</a></h2>
 <p>No specific migration steps. Only the setup process is fixed to take into account a different port for the console (so simply re-running the setup flow should fix the issue in the generated package).</p>
 </div>
 <div class="section" id="migration-guide-5-4-0-5-4-1">
-<span id="id3"></span><h2>5.4.0 -&gt; 5.4.1<a class="headerlink" href="#migration-guide-5-4-0-5-4-1" title="Permalink to this headline">¶</a></h2>
+<span id="id4"></span><h2>5.4.0 -&gt; 5.4.1<a class="headerlink" href="#migration-guide-5-4-0-5-4-1" title="Permalink to this headline">¶</a></h2>
 <p>No specific migration steps. Only the console and the setup flow are affected in this release, so no need to upgrade the agents.</p>
 </div>
 <div class="section" id="migration-guide-5-3-1-5-4-0">
-<span id="id4"></span><h2>5.3.1 -&gt; 5.4.0<a class="headerlink" href="#migration-guide-5-3-1-5-4-0" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2>5.3.1 -&gt; 5.4.0<a class="headerlink" href="#migration-guide-5-3-1-5-4-0" title="Permalink to this headline">¶</a></h2>
 <p>No specific migration steps. Only the console is affected in this release, so no need to upgrade the agents.</p>
 </div>
 <div class="section" id="migration-guide-5-3-0-5-3-1">
-<span id="id5"></span><h2>5.3.0 -&gt; 5.3.1<a class="headerlink" href="#migration-guide-5-3-0-5-3-1" title="Permalink to this headline">¶</a></h2>
+<span id="id6"></span><h2>5.3.0 -&gt; 5.3.1<a class="headerlink" href="#migration-guide-5-3-0-5-3-1" title="Permalink to this headline">¶</a></h2>
 <p>No specific migration steps. Only the console is affected in this release, so no need to upgrade the agents.</p>
 </div>
 <div class="section" id="migration-guide-5-2-0-5-3-0">
-<span id="id6"></span><h2>5.2.0 -&gt; 5.3.0<a class="headerlink" href="#migration-guide-5-2-0-5-3-0" title="Permalink to this headline">¶</a></h2>
+<span id="id7"></span><h2>5.2.0 -&gt; 5.3.0<a class="headerlink" href="#migration-guide-5-2-0-5-3-0" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>In order to benefit fully from the new tail feature, you need to upgrade the agent to 5.3.0. If you upgrade the console only, the tail will simply not refresh. You can use the auto upgrade capability of the agent to upgrade.</li>
 <li>If you have been using the variable <tt class="docutils literal"><span class="pre">agentZooKeeper</span></tt> in your glu script, it will conflict with the new one introduced in 5.3.0 and it is strongly suggested you rename yours.</li>
 </ul>
 </div>
 <div class="section" id="migration-guide-5-1-0-5-2-0">
-<span id="id7"></span><h2>5.1.0 -&gt; 5.2.0<a class="headerlink" href="#migration-guide-5-1-0-5-2-0" title="Permalink to this headline">¶</a></h2>
+<span id="id8"></span><h2>5.1.0 -&gt; 5.2.0<a class="headerlink" href="#migration-guide-5-1-0-5-2-0" title="Permalink to this headline">¶</a></h2>
 <p>No specific migration steps.</p>
 <p>If you are compiling glu, please refer to the <a class="reference internal" href="dev-setup.html"><em>Compiling glu</em></a> page as the quick setup guide has changed.</p>
 </div>
 <div class="section" id="migration-guide-5-0-0-5-1-0">
-<span id="id8"></span><h2>5.0.0 -&gt; 5.1.0<a class="headerlink" href="#migration-guide-5-0-0-5-1-0" title="Permalink to this headline">¶</a></h2>
+<span id="id9"></span><h2>5.0.0 -&gt; 5.1.0<a class="headerlink" href="#migration-guide-5-0-0-5-1-0" title="Permalink to this headline">¶</a></h2>
 <p>The glu code itself has not changed much between 5.0.0 and 5.1.0. What has really changed is the way glu is packaged and distributed. In order to migrate, you have several approaches.</p>
 <div class="section" id="recommended">
 <h3>Recommended<a class="headerlink" href="#recommended" title="Permalink to this headline">¶</a></h3>
@@ -191,7 +260,7 @@ org.linkedin.zookeeper-server-2.0.0/
 </div>
 </div>
 <div class="section" id="migration-guide-4-7-2-5-0-0">
-<span id="id9"></span><h2>4.7.2 -&gt; 5.0.0<a class="headerlink" href="#migration-guide-4-7-2-5-0-0" title="Permalink to this headline">¶</a></h2>
+<span id="id10"></span><h2>4.7.2 -&gt; 5.0.0<a class="headerlink" href="#migration-guide-4-7-2-5-0-0" title="Permalink to this headline">¶</a></h2>
 <p>The only migration step required for this upgrade is to make sure that you are using java 1.7.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -199,7 +268,7 @@ org.linkedin.zookeeper-server-2.0.0/
 </div>
 </div>
 <div class="section" id="migration-guide-4-7-1-4-7-2">
-<span id="id10"></span><h2>4.7.1 -&gt; 4.7.2<a class="headerlink" href="#migration-guide-4-7-1-4-7-2" title="Permalink to this headline">¶</a></h2>
+<span id="id11"></span><h2>4.7.1 -&gt; 4.7.2<a class="headerlink" href="#migration-guide-4-7-1-4-7-2" title="Permalink to this headline">¶</a></h2>
 <p>No specific migration steps.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -207,7 +276,7 @@ org.linkedin.zookeeper-server-2.0.0/
 </div>
 </div>
 <div class="section" id="migration-guide-4-6-2-4-7-1">
-<span id="id11"></span><h2>4.6.2 -&gt; 4.7.1<a class="headerlink" href="#migration-guide-4-6-2-4-7-1" title="Permalink to this headline">¶</a></h2>
+<span id="id12"></span><h2>4.6.2 -&gt; 4.7.1<a class="headerlink" href="#migration-guide-4-6-2-4-7-1" title="Permalink to this headline">¶</a></h2>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last"><tt class="docutils literal"><span class="pre">4.7.0</span></tt> contains a critical bug and should not be used. It is also recommended to use <tt class="docutils literal"><span class="pre">4.7.2</span></tt> instead of <tt class="docutils literal"><span class="pre">4.7.1</span></tt> if you are upgrading from an earlier version.</p>
@@ -249,12 +318,6 @@ org.linkedin.zookeeper-server-2.0.0/
       </div>
 </div>
 <div class="sidebar">
-    <div class="admonition warning">
-    <p class="first admonition-title">Warning</p>
-        <p>
-            2014/04/19: A <a href="https://github.com/pongasoft/glu/issues/262">critical bug</a> while upgrading has been found. It is strongly advised not to upgrade at this time.
-        </p>
-    </div>
   <div class="sidebar-entry">
     <h3>Table Of Contents</h3>
     <ul class="current">
@@ -272,8 +335,11 @@ org.linkedin.zookeeper-server-2.0.0/
 <li class="toctree-l1"><a class="reference internal" href="setup-tool.html"><tt class="docutils literal"><span class="pre">setup.sh</span></tt> tool</a></li>
 <li class="toctree-l1"><a class="reference internal" href="production-setup.html">Old Production Setup (prior to 5.1.0)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev-setup.html">Compiling glu</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RELEASE.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RELEASE.html">Release Notes (Latest)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes-old.html">Release Notes (4.7.x and below)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Migration Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#general-tips-and-guidelines">General tips and guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#migration-guide-5-5-0-5-5-1">5.5.0 -&gt; 5.5.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#migration-guide-5-4-2-5-5-0">5.4.2 -&gt; 5.5.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#migration-guide-5-4-1-5-4-2">5.4.1 -&gt; 5.4.2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#migration-guide-5-4-0-5-4-1">5.4.0 -&gt; 5.4.1</a></li>
@@ -337,7 +403,7 @@ org.linkedin.zookeeper-server-2.0.0/
     <div class="footer-wrapper">
       <div class="footer">
         <div class="left">
-          <a href="RELEASE.html" title="Release Notes"
+          <a href="release-notes-old.html" title="Release Notes (4.7.x and below)"
              >previous</a> |
           <a href="glossary.html" title="Glossary"
              >next</a> |
