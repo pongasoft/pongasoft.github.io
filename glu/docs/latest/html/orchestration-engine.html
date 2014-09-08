@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Orchestration engine &mdash; glu 5.5.1 documentation</title>
+    <title>Orchestration engine &mdash; glu 5.5.2 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '5.5.1',
+        VERSION:     '5.5.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="glu 5.5.1 documentation" href="index.html" />
+    <link rel="top" title="glu 5.5.2 documentation" href="index.html" />
     <link rel="next" title="Static Model" href="static-model.html" />
     <link rel="prev" title="glu script" href="glu-script.html" />
  
@@ -48,7 +48,7 @@
             <img class="logo" src="_static/glu-logo-214x72.png" alt="Logo"/>
           </a></p>
         <div class="headertitle"><a
-          href="contents.html">glu 5.5.1 documentation</a></div>
+          href="contents.html">glu 5.5.2 documentation</a></div>
         <div class="rel">
           <a href="glu-script.html" title="glu script"
              accesskey="P">previous</a> |
@@ -582,7 +582,7 @@ deployment</td>
 <tr class="row-even"><td><tt class="docutils literal"><span class="pre">POST</span></tt></td>
 <td><tt class="docutils literal"><span class="pre">/model/static</span></tt></td>
 <td>Loads the (desired) model in the
-console</td>
+console / Set as current</td>
 <td><a class="reference internal" href="#goe-rest-api-post-model-static"><em>view</em></a></td>
 </tr>
 <tr class="row-odd"><td><tt class="docutils literal"><span class="pre">GET</span></tt></td>
@@ -592,24 +592,41 @@ console</td>
 <td><a class="reference internal" href="#goe-rest-api-get-model-static"><em>view</em></a></td>
 </tr>
 <tr class="row-even"><td><tt class="docutils literal"><span class="pre">GET</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">/model/static/&lt;modelId&gt;</span></tt></td>
+<td>Retrieves the  model given its id</td>
+<td><a class="reference internal" href="#goe-rest-api-get-model-static"><em>view</em></a></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">HEAD</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">/models/static</span></tt></td>
+<td>Return the total count of static
+models</td>
+<td><a class="reference internal" href="#goe-rest-api-head-models-static"><em>view</em></a></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">GET</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">/models/static</span></tt></td>
+<td>Retrieve a (paginated) list of
+previously loaded static models</td>
+<td><a class="reference internal" href="#goe-rest-api-get-models-static"><em>view</em></a></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">GET</span></tt></td>
 <td><tt class="docutils literal"><span class="pre">/model/live</span></tt></td>
 <td>Retrieves the current live model
 coming from ZooKeeper (aka current
 state)</td>
 <td><a class="reference internal" href="#goe-rest-api-get-model-live"><em>view</em></a></td>
 </tr>
-<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">GET</span></tt></td>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">GET</span></tt></td>
 <td><tt class="docutils literal"><span class="pre">/model/delta</span></tt></td>
 <td>Retrieves the delta between static
 model and live model</td>
 <td><a class="reference internal" href="#goe-rest-api-get-model-delta"><em>view</em></a></td>
 </tr>
-<tr class="row-even"><td><tt class="docutils literal"><span class="pre">POST</span></tt></td>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">POST</span></tt></td>
 <td><tt class="docutils literal"><span class="pre">/agent/&lt;agentName&gt;/commands</span></tt></td>
 <td>Executes a shell command</td>
 <td><a class="reference internal" href="#goe-rest-api-post-command-execute"><em>view</em></a></td>
 </tr>
-<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">GET</span></tt></td>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">GET</span></tt></td>
 <td><tt class="docutils literal"><span class="pre">/command/&lt;commandId&gt;/streams</span></tt></td>
 <td>Retrieves the streams (=result)
 of the command execution</td>
@@ -1242,7 +1259,9 @@ curl -v -u &quot;glua:password&quot; &quot;http://localhost:8080/console/rest/v1
 </ul>
 </li>
 <li>Response:<ul>
-<li>TBD</li>
+<li><tt class="docutils literal"><span class="pre">200</span></tt> (<tt class="docutils literal"><span class="pre">OK</span></tt>) if the execution was aborted</li>
+<li><tt class="docutils literal"><span class="pre">204</span></tt> (<tt class="docutils literal"><span class="pre">NO_CONTENT</span></tt>) if the execution was already completed</li>
+<li><tt class="docutils literal"><span class="pre">404</span></tt> (<tt class="docutils literal"><span class="pre">NOT_FOUND</span></tt>) if no such execution</li>
 </ul>
 </li>
 </ul>
@@ -1576,20 +1595,22 @@ curl -v -u &quot;glua:password&quot; &quot;http://localhost:8080/console/rest/v1
 </li>
 </ul>
 </div>
-<div class="section" id="load-static-model">
-<span id="goe-rest-api-post-model-static"></span><h4>Load static model<a class="headerlink" href="#load-static-model" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="load-static-model-set-as-current">
+<span id="goe-rest-api-post-model-static"></span><h4>Load static model / Set as current<a class="headerlink" href="#load-static-model-set-as-current" title="Permalink to this headline">¶</a></h4>
 <ul>
-<li><p class="first">Description: Load the (desired) model in the console.</p>
+<li><p class="first">Description: Load the (desired) model in the console or set a previously loaded one as current</p>
 </li>
 <li><p class="first">Request: <tt class="docutils literal"><span class="pre">POST</span> <span class="pre">/model/static</span></tt></p>
-<p>Body can be of 2 types depending on the <tt class="docutils literal"><span class="pre">Content-Type</span></tt> header:</p>
+<p>Body can be of 3 types depending on the <tt class="docutils literal"><span class="pre">Content-Type</span></tt> header:</p>
 <ol class="arabic simple">
-<li><tt class="docutils literal"><span class="pre">application/x-www-form-urlencoded</span></tt> then body should contain <tt class="docutils literal"><span class="pre">modelUrl=xxx</span></tt> with the url pointing to the model (the console will &#8216;download&#8217; it)</li>
+<li><tt class="docutils literal"><span class="pre">application/x-www-form-urlencoded</span></tt> with body containing <tt class="docutils literal"><span class="pre">modelUrl=xxx</span></tt> where the url is pointing to the model (the console will &#8216;download&#8217; it)</li>
+<li><tt class="docutils literal"><span class="pre">application/x-www-form-urlencoded</span></tt> with body containing <tt class="docutils literal"><span class="pre">id=xxx</span></tt> where id is the model id to set as current</li>
 <li><tt class="docutils literal"><span class="pre">text/json</span></tt> or <tt class="docutils literal"><span class="pre">text/json+groovy</span></tt> then body should be the model itself (<a class="reference external" href="https://gist.github.com/755981">example</a>)</li>
 </ol>
 </li>
 <li><p class="first">Response:</p>
 <ul class="simple">
+<li><tt class="docutils literal"><span class="pre">200</span></tt> (<tt class="docutils literal"><span class="pre">OK</span></tt>) when model is successfully set as current</li>
 <li><tt class="docutils literal"><span class="pre">201</span></tt> (<tt class="docutils literal"><span class="pre">CREATED</span></tt>) when loaded successfully</li>
 <li><tt class="docutils literal"><span class="pre">204</span></tt> (<tt class="docutils literal"><span class="pre">NO_CONTENT</span></tt>) if model was loaded successfully and is equal to the previous one</li>
 <li><tt class="docutils literal"><span class="pre">400</span></tt> (<tt class="docutils literal"><span class="pre">BAD_REQUEST</span></tt>) if the model is not valid (should be a properly json formatted document)</li>
@@ -1607,7 +1628,16 @@ curl -v -u &quot;glua:password&quot; --data &quot;modelUrl=file%3A%2FUsers%2Fypu
 &lt; ...
 id=facc4ef65539a5c558436f034b5e63e5ba1fd0ef
 
-# 2. using input stream
+# 2. using id (set as current)
+curl -v -u &quot;glua:password&quot; --data &quot;id=34879db4fbe0afed9755e70bb2a392a3a93938fd&quot; http://localhost:8080/console/rest/v1/glu-dev-1/model/static
+&gt; POST /console/rest/v1/glu-dev-1/model/static HTTP/1.1
+&gt; Content-Type: application/x-www-form-urlencoded
+&gt; ...
+&gt;
+&lt; HTTP/1.1 200 OK
+&lt; ...
+
+# 3. using input stream
 curl -v -u &quot;glua:password&quot; -H &quot;Content-Type: text/json&quot; --data-binary @/Users/ypujante/github/org.pongasoft/glu/console/org.linkedin.glu.console-server/src/cmdline/resources/glu/repository/systems/hello-world-system.json http://localhost:8080/console/rest/v1/glu-dev-1/model/static
 &gt; POST /console/rest/v1/glu-dev-1/model/static HTTP/1.1
 &gt; Content-Type: text/json
@@ -1624,13 +1654,13 @@ id=facc4ef65539a5c558436f034b5e63e5ba1fd0ef
 <div class="section" id="view-static-model">
 <span id="goe-rest-api-get-model-static"></span><h4>View static model<a class="headerlink" href="#view-static-model" title="Permalink to this headline">¶</a></h4>
 <ul>
-<li><p class="first">Description: Retrieve the current loaded model (aka <em>expected</em> state).</p>
+<li><p class="first">Description: Retrieve the current loaded model (aka <em>expected</em> state) if no id specified, otherwise the specified model.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">this is what you loaded using <tt class="docutils literal"><span class="pre">POST</span> <span class="pre">/model/static</span></tt></p>
 </div>
 </li>
-<li><p class="first">Request: <tt class="docutils literal"><span class="pre">GET</span> <span class="pre">/model/static</span></tt></p>
+<li><p class="first">Request: <tt class="docutils literal"><span class="pre">GET</span> <span class="pre">/model/static</span></tt> for the current loaded model or  <tt class="docutils literal"><span class="pre">GET</span> <span class="pre">/model/static/&lt;id&gt;</span></tt> for a specific model</p>
 <p>optional request parameters:</p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">prettyPrint=true</span></tt> for human readable output</li>
@@ -1640,7 +1670,102 @@ id=facc4ef65539a5c558436f034b5e63e5ba1fd0ef
 <li><p class="first">Response:</p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">200</span></tt> (<tt class="docutils literal"><span class="pre">OK</span></tt>) with a json representation of the model</li>
+<li><tt class="docutils literal"><span class="pre">404</span></tt> (<tt class="docutils literal"><span class="pre">NOT_FOUND</span></tt>) if the id does not match a previously loaded model</li>
 </ul>
+</li>
+</ul>
+</div>
+<div class="section" id="static-models-count">
+<span id="goe-rest-api-head-models-static"></span><h4>Static models count<a class="headerlink" href="#static-models-count" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first">Description: Return the total count of static models.</p>
+</li>
+<li><p class="first">Request: <tt class="docutils literal"><span class="pre">HEAD</span> <span class="pre">/models/static</span></tt></p>
+</li>
+<li><p class="first">Response:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">200</span></tt> (<tt class="docutils literal"><span class="pre">OK</span></tt>) with:<ul>
+<li>headers: <tt class="docutils literal"><span class="pre">X-glu-totalCount</span></tt> and <tt class="docutils literal"><span class="pre">X-glu-current</span></tt> which contains the id of the currently selected model</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p class="first">Example:</p>
+<div class="highlight-text"><div class="highlight"><pre>curl --head -u &quot;glua:password&quot; &quot;http://localhost:8080/console/rest/v1/glu-dev-1/models/static&quot;
+&lt; HTTP/1.1 200 OK
+&lt; X-glu-current: 34879db4fbe0afed9755e70bb2a392a3a93638fd
+&lt; X-glu-totalCount: 5
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="list-static-models">
+<span id="goe-rest-api-get-models-static"></span><h4>List static models<a class="headerlink" href="#list-static-models" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first">Description: Retrieve a (paginated) list of previously loaded static models</p>
+</li>
+<li><p class="first">Request: <tt class="docutils literal"><span class="pre">GET</span> <span class="pre">/models/static</span></tt></p>
+<p>optional request parameters:</p>
+<ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">prettyPrint=true</span></tt> for human readable output</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">max=xxx</span></tt> how many entries to return max (max cannot exceed a limit which defaults to 10 which is also the value used if not provided)</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">offset=xxx</span></tt> which entry to start (default is 0)</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><tt class="docutils literal"><span class="pre">offset</span></tt> represents the index in the list (not a model id!). To go from page to page, the offset simply increments by <tt class="docutils literal"><span class="pre">max</span></tt>. Example with <tt class="docutils literal"><span class="pre">max=10</span></tt>, <tt class="docutils literal"><span class="pre">offset=0</span></tt> will return page 1, <tt class="docutils literal"><span class="pre">offset=10</span></tt> will return page 2, etc...</p>
+</div>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">sort</span></tt> which <cite>column</cite> to sort on (default is <tt class="docutils literal"><span class="pre">timeCreated</span></tt>)</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">order</span></tt> which order to sort the list (default is <tt class="docutils literal"><span class="pre">desc</span></tt>)</p>
+</li>
+</ul>
+</li>
+<li><p class="first">Response:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">200</span></tt> (<tt class="docutils literal"><span class="pre">OK</span></tt>) with:<ul>
+<li>headers: <tt class="docutils literal"><span class="pre">X-glu-max</span></tt>, <tt class="docutils literal"><span class="pre">X-glu-offset</span></tt>, <tt class="docutils literal"><span class="pre">X-glu-sort</span></tt>, <tt class="docutils literal"><span class="pre">X-glu-order</span></tt>, which are the values provided/defaulted/adjusted from the request and <tt class="docutils literal"><span class="pre">X-glu-count</span></tt> which is the number of entries returned and <tt class="docutils literal"><span class="pre">X-glu-totalCount</span></tt> which is the total number of models. <tt class="docutils literal"><span class="pre">X-glu-current</span></tt> contains the id of the currently selected model (which may not be on the page returned).</li>
+<li>body: json array of maps with some details about each model (equivalent to what you see on the <cite>Model/List</cite> tab in the console)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p class="first">Example:</p>
+<div class="highlight-text"><div class="highlight"><pre>curl -v -u &quot;glua:password&quot; &quot;http://localhost:8080/console/rest/v1/glu-dev-1/models/static?prettyPrint=true&amp;max=2&quot;
+&lt; HTTP/1.1 200 OK
+&lt; X-glu-current: 34879db4fbe0afed9755e70bb2a392a3a93638fd
+&lt; X-glu-count: 2
+&lt; X-glu-totalCount: 5
+&lt; X-glu-max: 2
+&lt; X-glu-offset: 0
+&lt; X-glu-sort: timeCreated
+&lt; X-glu-order: desc
+&lt; Content-Type: text/json;charset=ISO-8859-1
+&lt; Content-Length: 582
+&lt;
+[
+  {
+    &quot;fabric&quot;: &quot;glu-dev-1&quot;,
+    &quot;id&quot;: &quot;c036278ff0a47f5bbe9a695809af1515855a686a&quot;,
+    &quot;name&quot;: &quot;Empty System Model 5&quot;,
+    &quot;size&quot;: 113,
+    &quot;timeCreated&quot;: 1409167185742,
+    &quot;viewURL&quot;: &quot;http://192.168.0.117:8080/console/rest/v1/glu-dev-1/model/static/c036278ff0a47f5bbe9a695809af1515855a686a&quot;
+  },
+  {
+    &quot;fabric&quot;: &quot;glu-dev-1&quot;,
+    &quot;id&quot;: &quot;21aee08eee129f99d88e9e617ecb01415f67a74c&quot;,
+    &quot;name&quot;: &quot;Empty System Model 4&quot;,
+    &quot;size&quot;: 113,
+    &quot;timeCreated&quot;: 1409167182596,
+    &quot;viewURL&quot;: &quot;http://192.168.0.117:8080/console/rest/v1/glu-dev-1/model/static/21aee08eee129f99d88e9e617ecb01415f67a74c&quot;
+  }
+]
+</pre></div>
+</div>
 </li>
 </ul>
 </div>
@@ -2400,8 +2525,10 @@ with no more than 2 steps in parallel</td>
 <li class="toctree-l4"><a class="reference internal" href="#list-archived-deployments-paginated">List archived deployments (paginated)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#view-archived-deployment-details">View archived deployment (details)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#view-archived-deployment-info">View archived deployment (info)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#load-static-model">Load static model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#load-static-model-set-as-current">Load static model / Set as current</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#view-static-model">View static model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#static-models-count">Static models count</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#list-static-models">List static models</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#view-live-model">View live model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#view-delta">View delta</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#list-all-the-fabrics">List all the fabrics</a></li>
