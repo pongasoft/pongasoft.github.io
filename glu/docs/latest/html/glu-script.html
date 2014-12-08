@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>glu script &mdash; glu 5.5.2 documentation</title>
+    <title>glu script &mdash; glu 5.5.3 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '5.5.2',
+        VERSION:     '5.5.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="glu 5.5.2 documentation" href="index.html" />
+    <link rel="top" title="glu 5.5.3 documentation" href="index.html" />
     <link rel="next" title="Orchestration engine" href="orchestration-engine.html" />
     <link rel="prev" title="Agent" href="agent.html" />
  
@@ -48,7 +48,7 @@
             <img class="logo" src="_static/glu-logo-214x72.png" alt="Logo"/>
           </a></p>
         <div class="headertitle"><a
-          href="contents.html">glu 5.5.2 documentation</a></div>
+          href="contents.html">glu 5.5.3 documentation</a></div>
         <div class="rel">
           <a href="agent.html" title="Agent"
              accesskey="P">previous</a> |
@@ -231,6 +231,10 @@ def destroyChild = { args -&gt; // mountPoint, script
 <h3>Logs<a class="headerlink" href="#logs" title="Permalink to this headline">¶</a></h3>
 <p>In order to be able to see (in the console) log files produced by an application deployed by the glu script, you can follow the convention described in the &#8220;<a class="reference internal" href="console.html#console-script-log-files"><em>Log Files Display</em></a>&#8221; section.</p>
 </div>
+<div class="section" id="processes">
+<h3>Processes<a class="headerlink" href="#processes" title="Permalink to this headline">¶</a></h3>
+<p>In order to be able to see (in the console) processes managed by the glu script, you can follow the convention described in the &#8220;<a class="reference internal" href="console.html#console-script-pids"><em>Processes Display</em></a>&#8221; section.</p>
+</div>
 <div class="section" id="fields">
 <h3>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h3>
 <p>All fields in a glu script are stored (locally on the agent) and exported (remotely to ZooKeeper). Check the &#8220;<a class="reference internal" href="agent.html#agent-integration-zookeeper"><em>Integration with ZooKeeper</em></a>&#8221; section.</p>
@@ -405,6 +409,7 @@ class SubScript extends BaseScript
 <li class="toctree-l2"><a class="reference internal" href="#parent-script">Parent Script</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#conventions">Conventions</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#logs">Logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#processes">Processes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#fields">Fields</a></li>
 </ul>
 </li>

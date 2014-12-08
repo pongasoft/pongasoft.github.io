@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Console &mdash; glu 5.5.2 documentation</title>
+    <title>Console &mdash; glu 5.5.3 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '5.5.2',
+        VERSION:     '5.5.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="glu 5.5.2 documentation" href="index.html" />
+    <link rel="top" title="glu 5.5.3 documentation" href="index.html" />
     <link rel="next" title="Meta Model" href="meta-model.html" />
     <link rel="prev" title="Filtering" href="filtering.html" />
  
@@ -48,7 +48,7 @@
             <img class="logo" src="_static/glu-logo-214x72.png" alt="Logo"/>
           </a></p>
         <div class="headertitle"><a
-          href="contents.html">glu 5.5.2 documentation</a></div>
+          href="contents.html">glu 5.5.3 documentation</a></div>
         <div class="rel">
           <a href="filtering.html" title="Filtering"
              accesskey="P">previous</a> |
@@ -921,6 +921,67 @@ $GLU_HOME/bin/setup.sh -D -o xxxx --config-templates-root &quot;&lt;default&gt;&
 </pre></div>
 </div>
 </div>
+<div class="section" id="processes-display">
+<span id="console-script-pids"></span><h2>Processes Display<a class="headerlink" href="#processes-display" title="Permalink to this headline">¶</a></h2>
+<p>When looking at an agent (agents view page), for each entry, there may be a <tt class="docutils literal"><span class="pre">Processes</span></tt> section determined by the fields declared in the script:</p>
+<img alt="Script log files" class="align-center" src="_images/console-script-log-files.png" />
+<p>or in the <tt class="docutils literal"><span class="pre">All</span> <span class="pre">Processes</span></tt> tab, the <tt class="docutils literal"><span class="pre">org.linkedin.app.name</span></tt> column can provide details about the process:</p>
+<img alt="Script log files" class="align-center" src="_images/console-script-processes.png" />
+<p>In order to see entries like this you can do the following in your script:</p>
+<ul class="simple">
+<li>declare a field called <tt class="docutils literal"><span class="pre">pids</span></tt> which should be a map where the key is the pid (process id) and the value is another map with the following keys:<ul>
+<li><tt class="docutils literal"><span class="pre">command</span></tt>: the name of the command/process (ex: <tt class="docutils literal"><span class="pre">java</span></tt>) (optional)</li>
+<li><tt class="docutils literal"><span class="pre">org.linkedin.app.name</span></tt>: the name to be displayed (optional)</li>
+<li><tt class="docutils literal"><span class="pre">cpu</span></tt>: the percentage of cpu used by the process (optional). This value is usually unnecessary to be provided since glu will compute it appropriately.</li>
+</ul>
+</li>
+<li>declare a field called <tt class="docutils literal"><span class="pre">pid</span></tt> which is just one process id and will reference the &#8220;main&#8221; process started by the glu script (and will be rendered as a <tt class="docutils literal"><span class="pre">ps</span></tt> shortcut).</li>
+</ul>
+<p>Example of glu script:</p>
+<div class="highlight-text"><div class="highlight"><pre>class GluScriptWithPids
+{
+  def port
+  def pid
+  def pids
+
+  // ...
+
+  def start = {
+    shell.exec(&quot;${serverCmd} start &gt; /dev/null 2&gt;&amp;1 &amp;&quot;)
+
+    // we wait for the process to be started (should be quick)
+    shell.waitFor(timeout: &#39;5s&#39;, heartbeat: &#39;250&#39;) {
+      pid = isProcessUp()
+      // in order for groovy/glu to detect the changes inside the map, the entire map should be
+      // recreated every time (simply treat it as an immutable map...)
+      pids =
+        [
+          (pid): [ &#39;org.linkedin.app.name&#39;: &quot;Jetty container [${port}]&quot; ]
+        ]
+    }
+  }
+
+  // ...
+
+  private Integer isProcessUp()
+  {
+    // determine if the process is up or not and return the pid
+    // ...
+    return processId
+  }
+
+}
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In order to fill the <tt class="docutils literal"><span class="pre">org.linkedin.app.name</span></tt> column, you can also simply start the process with a command line argument like this: <tt class="docutils literal"><span class="pre">-Dorg.linkedin.app.name=xxx</span></tt> and <tt class="docutils literal"><span class="pre">xxx</span></tt> will be displayed (note that the <tt class="docutils literal"><span class="pre">pids</span></tt> map in the glu script will override this value if both are provided).</p>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">For a full example, check the <tt class="docutils literal"><span class="pre">JettyGluScript</span></tt> that comes bundled with glu.</p>
+</div>
+</div>
 <div class="section" id="first-bootstrap">
 <h2>First bootstrap<a class="headerlink" href="#first-bootstrap" title="Permalink to this headline">¶</a></h2>
 <p>The very first time the console is started, it will create an admin user. Log in as this user:</p>
@@ -1056,6 +1117,7 @@ entries…)</td>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#further-customizations">Further customizations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#log-files-display">Log Files Display</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#processes-display">Processes Display</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#first-bootstrap">First bootstrap</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#user-management">User management</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id5">LDAP</a></li>
