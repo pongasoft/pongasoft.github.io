@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Orchestration engine &mdash; glu 5.5.5 documentation</title>
+    <title>Orchestration engine &mdash; glu 5.5.6 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '5.5.5',
+        VERSION:     '5.5.6',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="glu 5.5.5 documentation" href="index.html" />
+    <link rel="top" title="glu 5.5.6 documentation" href="index.html" />
     <link rel="next" title="Static Model" href="static-model.html" />
     <link rel="prev" title="glu script" href="glu-script.html" />
  
@@ -48,7 +48,7 @@
             <img class="logo" src="_static/glu-logo-214x72.png" alt="Logo"/>
           </a></p>
         <div class="headertitle"><a
-          href="contents.html">glu 5.5.5 documentation</a></div>
+          href="contents.html">glu 5.5.6 documentation</a></div>
         <div class="rel">
           <a href="glu-script.html" title="glu script"
              accesskey="P">previous</a> |
@@ -1669,9 +1669,31 @@ id=facc4ef65539a5c558436f034b5e63e5ba1fd0ef
 </li>
 <li><p class="first">Response:</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">200</span></tt> (<tt class="docutils literal"><span class="pre">OK</span></tt>) with a json representation of the model</li>
+<li><tt class="docutils literal"><span class="pre">200</span></tt> (<tt class="docutils literal"><span class="pre">OK</span></tt>) with a json representation of the model<ul>
+<li>headers: <tt class="docutils literal"><span class="pre">X-glu-timeCreated</span></tt>, <tt class="docutils literal"><span class="pre">X-glu-createdBy</span></tt> and if the model requested is the current one, <tt class="docutils literal"><span class="pre">X-glu-timeSetAsCurrent</span></tt>, <tt class="docutils literal"><span class="pre">X-glu-setAsCurrentBy</span></tt></li>
+</ul>
+</li>
 <li><tt class="docutils literal"><span class="pre">404</span></tt> (<tt class="docutils literal"><span class="pre">NOT_FOUND</span></tt>) if the id does not match a previously loaded model</li>
 </ul>
+</li>
+<li><p class="first">Example:</p>
+<div class="highlight-text"><div class="highlight"><pre>curl -v -u &quot;glua:password&quot; &quot;http://localhost:8080/console/rest/v1/glu-dev-1/model/static?prettyPrint=true&quot;
+&lt; HTTP/1.1 200 OK
+&lt; Etag: 11c1038e9cea43b6bf59276de8063db09d5fa496
+&lt; X-glu-timeCreated: 1429050416211
+&lt; X-glu-createdBy: &lt;bootstrap&gt;
+&lt; X-glu-timeSetAsCurrent: 1429053507297
+&lt; X-glu-setAsCurrentBy: glur
+&lt;
+{
+  &quot;fabric&quot;: &quot;glu-dev-1&quot;,
+  &quot;id&quot;: &quot;7328fb4bdffcac106a189f38416fb03502aca68f&quot;,
+  &quot;metadata&quot;: {
+    &quot;name&quot;: &quot;Empty System Model&quot;
+  }
+}
+</pre></div>
+</div>
 </li>
 </ul>
 </div>
@@ -1751,8 +1773,10 @@ id=facc4ef65539a5c558436f034b5e63e5ba1fd0ef
     &quot;fabric&quot;: &quot;glu-dev-1&quot;,
     &quot;id&quot;: &quot;c036278ff0a47f5bbe9a695809af1515855a686a&quot;,
     &quot;name&quot;: &quot;Empty System Model 5&quot;,
+    &quot;setAsCurrentBy&quot;: &quot;glur&quot;,
     &quot;size&quot;: 113,
     &quot;timeCreated&quot;: 1409167185742,
+    &quot;timeSetAsCurrent&quot;: 1409167185742,
     &quot;viewURL&quot;: &quot;http://192.168.0.117:8080/console/rest/v1/glu-dev-1/model/static/c036278ff0a47f5bbe9a695809af1515855a686a&quot;
   },
   {
