@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Migration Guide &mdash; glu 5.5.6 documentation</title>
+    <title>Migration Guide &mdash; glu 5.6.0 documentation</title>
     
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '5.5.6',
+        VERSION:     '5.6.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="glu 5.5.6 documentation" href="index.html" />
+    <link rel="top" title="glu 5.6.0 documentation" href="index.html" />
     <link rel="next" title="Glossary" href="glossary.html" />
     <link rel="prev" title="Release Notes (4.7.x and below)" href="release-notes-old.html" />
  
@@ -48,7 +48,7 @@
             <img class="logo" src="_static/glu-logo-214x72.png" alt="Logo"/>
           </a></p>
         <div class="headertitle"><a
-          href="contents.html">glu 5.5.6 documentation</a></div>
+          href="contents.html">glu 5.6.0 documentation</a></div>
         <div class="rel">
           <a href="release-notes-old.html" title="Release Notes (4.7.x and below)"
              accesskey="P">previous</a> |
@@ -86,13 +86,16 @@
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>5.0.0+</td>
+<tr class="row-even"><td>5.6.0+</td>
+<td>java 1.7 or java 1.8</td>
+</tr>
+<tr class="row-odd"><td>5.0.0 - 5.5.x</td>
 <td>java 1.7</td>
 </tr>
-<tr class="row-odd"><td>4.7.x</td>
+<tr class="row-even"><td>4.7.x</td>
 <td>java 1.6 (any VM) or java 1.7</td>
 </tr>
-<tr class="row-even"><td>4.6.x and below</td>
+<tr class="row-odd"><td>4.6.x and below</td>
 <td>java 1.6 (with Sun/Oracle VM only!)</td>
 </tr>
 </tbody>
@@ -110,14 +113,14 @@
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>5.0.0+</td>
-<td>upgrade to 5.3.1</td>
+<td>upgrade to 5.6.0</td>
 </tr>
 <tr class="row-odd"><td>4.7.x</td>
-<td>switch to java 1.7 and upgrade to 5.3.1</td>
+<td>switch to java 1.7 and upgrade to 5.6.0</td>
 </tr>
 <tr class="row-even"><td>4.6.x and below</td>
 <td>upgrade to 4.7.3 (java 1.6),
-switch to java 1.7 and upgrade to 5.3.1</td>
+switch to java 1.7 and upgrade to 5.6.0</td>
 </tr>
 </tbody>
 </table>
@@ -136,8 +139,40 @@ switch to java 1.7 and upgrade to 5.3.1</td>
 </li>
 </ul>
 </div>
+<div class="section" id="migration-guide-5-5-6-5-6-0">
+<span id="id1"></span><h2>5.5.6 -&gt; 5.6.0<a class="headerlink" href="#migration-guide-5-5-6-5-6-0" title="Permalink to this headline">¶</a></h2>
+<p>As pointed out in the release notes, the big change in this version is upgrading all libraries to a more recent version so that glu would run under java 1.8 (it still runs with java 1.7 but java 1.7 is no longer supported by Oracle). Of notable changes, <tt class="docutils literal"><span class="pre">groovy</span></tt> has been upgraded to <tt class="docutils literal"><span class="pre">2.4.3</span></tt> and grails to <tt class="docutils literal"><span class="pre">2.5.0</span></tt>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Although all tests pass and longevity tests are not showing any difference in memory usage and speed, I would strongly advise to use caution when upgrading to this version.</p>
+</div>
+<ul class="simple">
+<li>the flag <tt class="docutils literal"><span class="pre">console.systemModelRenderer.maintainBackwardCompatibilityInSystemId</span> <span class="pre">=</span> <span class="pre">false</span></tt> has been removed due to the latest version of the json library which no longer sorts the keys when pretty printing. As a result there is no longer a way to compute the system Id the way it was previously done. This flag was introduced way back in 2012 so you should have migrated to the new system id by now.</li>
+</ul>
+<p>Here is the list of (direct) dependencies that have been changed (all transitive dependencies have been updated accordingly):</p>
+<div class="highlight-text"><div class="highlight"><pre>ant: 1.9.4 (was 1.8.2)
+commons-io: 2.2 (was 2.1)
+gradle 2.3 (was 1.11)
+gradle-plugins: 2.2.8 (was 2.2.6)
+grails 2.5.0 (was 2.2.1)
+groovy: 2.4.3 (was 2.0.7)
+httpclient: 4.2.6 (was 4.2.3)
+ivy: 2.4.0 (was 2.2.0)
+jackson: 2.5.3 (was 2.1.4)
+jquery: 1.11.1 (was 1.8.3)
+json: 20140107 (was 20090211)
+junit: 4.12 (was 4.10)
+log4j: 1.2.17 (was 1.2.16)
+shiro: 1.2.1 (was 1.1.4)
+slf4j: 1.7.10 (was 1.6.2)
+utils-misc: 2.1.0 (was 2.0.3)
+utils-zookeeper: 2.1.0 (was 2.0.3)
+zookeeper: 3.4.6 (was 3.4.5)
+</pre></div>
+</div>
+</div>
 <div class="section" id="migration-guide-5-5-5-5-5-6">
-<span id="id1"></span><h2>5.5.5 -&gt; 5.5.6<a class="headerlink" href="#migration-guide-5-5-5-5-5-6" title="Permalink to this headline">¶</a></h2>
+<span id="id2"></span><h2>5.5.5 -&gt; 5.5.6<a class="headerlink" href="#migration-guide-5-5-5-5-5-6" title="Permalink to this headline">¶</a></h2>
 <p>Only the console is affected in this release, so no need to upgrade the agents. Of notable changes:</p>
 <ul class="simple">
 <li>The database backing up the console is modified by adding some (nullable) columns to the tables <tt class="docutils literal"><span class="pre">DB_CURRENT_SYSTEM</span></tt> and <tt class="docutils literal"><span class="pre">DB_SYSTEM_MODEL</span></tt>. During bootstrap of the new console, glu (grails) will take care of it automatically.</li>
@@ -150,19 +185,19 @@ switch to java 1.7 and upgrade to 5.3.1</td>
 </div>
 </div>
 <div class="section" id="migration-guide-5-5-4-5-5-5">
-<span id="id2"></span><h2>5.5.4 -&gt; 5.5.5<a class="headerlink" href="#migration-guide-5-5-4-5-5-5" title="Permalink to this headline">¶</a></h2>
+<span id="id3"></span><h2>5.5.4 -&gt; 5.5.5<a class="headerlink" href="#migration-guide-5-5-4-5-5-5" title="Permalink to this headline">¶</a></h2>
 <p>No specific migration steps: the agent needs to be upgraded following the usual agent upgrade path and the console needs to be upgraded as well.</p>
 </div>
 <div class="section" id="migration-guide-5-5-3-5-5-4">
-<span id="id3"></span><h2>5.5.3 -&gt; 5.5.4<a class="headerlink" href="#migration-guide-5-5-3-5-5-4" title="Permalink to this headline">¶</a></h2>
+<span id="id4"></span><h2>5.5.3 -&gt; 5.5.4<a class="headerlink" href="#migration-guide-5-5-3-5-5-4" title="Permalink to this headline">¶</a></h2>
 <p>Only the agent is affected in this release and needs to be upgraded following the usual agent upgrade path.</p>
 </div>
 <div class="section" id="migration-guide-5-5-2-5-5-3">
-<span id="id4"></span><h2>5.5.2 -&gt; 5.5.3<a class="headerlink" href="#migration-guide-5-5-2-5-5-3" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2>5.5.2 -&gt; 5.5.3<a class="headerlink" href="#migration-guide-5-5-2-5-5-3" title="Permalink to this headline">¶</a></h2>
 <p>No specific migration steps. Only the console is affected in this release, so no need to upgrade the agents.</p>
 </div>
 <div class="section" id="migration-guide-5-5-1-5-5-2">
-<span id="id5"></span><h2>5.5.1 -&gt; 5.5.2<a class="headerlink" href="#migration-guide-5-5-1-5-5-2" title="Permalink to this headline">¶</a></h2>
+<span id="id6"></span><h2>5.5.1 -&gt; 5.5.2<a class="headerlink" href="#migration-guide-5-5-1-5-5-2" title="Permalink to this headline">¶</a></h2>
 <p>This upgrade requires only the console to be upgraded.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -170,11 +205,11 @@ switch to java 1.7 and upgrade to 5.3.1</td>
 </div>
 </div>
 <div class="section" id="migration-guide-5-5-0-5-5-1">
-<span id="id6"></span><h2>5.5.0 -&gt; 5.5.1<a class="headerlink" href="#migration-guide-5-5-0-5-5-1" title="Permalink to this headline">¶</a></h2>
+<span id="id7"></span><h2>5.5.0 -&gt; 5.5.1<a class="headerlink" href="#migration-guide-5-5-0-5-5-1" title="Permalink to this headline">¶</a></h2>
 <p>This upgrade requires both the console and the agents to be upgraded.</p>
 </div>
 <div class="section" id="migration-guide-5-4-2-5-5-0">
-<span id="id7"></span><h2>5.4.2 -&gt; 5.5.0<a class="headerlink" href="#migration-guide-5-4-2-5-5-0" title="Permalink to this headline">¶</a></h2>
+<span id="id8"></span><h2>5.4.2 -&gt; 5.5.0<a class="headerlink" href="#migration-guide-5-4-2-5-5-0" title="Permalink to this headline">¶</a></h2>
 <p>No specific migration steps. Only the console is affected in this release, so no need to upgrade the agents.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -182,35 +217,35 @@ switch to java 1.7 and upgrade to 5.3.1</td>
 </div>
 </div>
 <div class="section" id="migration-guide-5-4-1-5-4-2">
-<span id="id8"></span><h2>5.4.1 -&gt; 5.4.2<a class="headerlink" href="#migration-guide-5-4-1-5-4-2" title="Permalink to this headline">¶</a></h2>
+<span id="id9"></span><h2>5.4.1 -&gt; 5.4.2<a class="headerlink" href="#migration-guide-5-4-1-5-4-2" title="Permalink to this headline">¶</a></h2>
 <p>No specific migration steps. Only the setup process is fixed to take into account a different port for the console (so simply re-running the setup flow should fix the issue in the generated package).</p>
 </div>
 <div class="section" id="migration-guide-5-4-0-5-4-1">
-<span id="id9"></span><h2>5.4.0 -&gt; 5.4.1<a class="headerlink" href="#migration-guide-5-4-0-5-4-1" title="Permalink to this headline">¶</a></h2>
+<span id="id10"></span><h2>5.4.0 -&gt; 5.4.1<a class="headerlink" href="#migration-guide-5-4-0-5-4-1" title="Permalink to this headline">¶</a></h2>
 <p>No specific migration steps. Only the console and the setup flow are affected in this release, so no need to upgrade the agents.</p>
 </div>
 <div class="section" id="migration-guide-5-3-1-5-4-0">
-<span id="id10"></span><h2>5.3.1 -&gt; 5.4.0<a class="headerlink" href="#migration-guide-5-3-1-5-4-0" title="Permalink to this headline">¶</a></h2>
+<span id="id11"></span><h2>5.3.1 -&gt; 5.4.0<a class="headerlink" href="#migration-guide-5-3-1-5-4-0" title="Permalink to this headline">¶</a></h2>
 <p>No specific migration steps. Only the console is affected in this release, so no need to upgrade the agents.</p>
 </div>
 <div class="section" id="migration-guide-5-3-0-5-3-1">
-<span id="id11"></span><h2>5.3.0 -&gt; 5.3.1<a class="headerlink" href="#migration-guide-5-3-0-5-3-1" title="Permalink to this headline">¶</a></h2>
+<span id="id12"></span><h2>5.3.0 -&gt; 5.3.1<a class="headerlink" href="#migration-guide-5-3-0-5-3-1" title="Permalink to this headline">¶</a></h2>
 <p>No specific migration steps. Only the console is affected in this release, so no need to upgrade the agents.</p>
 </div>
 <div class="section" id="migration-guide-5-2-0-5-3-0">
-<span id="id12"></span><h2>5.2.0 -&gt; 5.3.0<a class="headerlink" href="#migration-guide-5-2-0-5-3-0" title="Permalink to this headline">¶</a></h2>
+<span id="id13"></span><h2>5.2.0 -&gt; 5.3.0<a class="headerlink" href="#migration-guide-5-2-0-5-3-0" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>In order to benefit fully from the new tail feature, you need to upgrade the agent to 5.3.0. If you upgrade the console only, the tail will simply not refresh. You can use the auto upgrade capability of the agent to upgrade.</li>
 <li>If you have been using the variable <tt class="docutils literal"><span class="pre">agentZooKeeper</span></tt> in your glu script, it will conflict with the new one introduced in 5.3.0 and it is strongly suggested you rename yours.</li>
 </ul>
 </div>
 <div class="section" id="migration-guide-5-1-0-5-2-0">
-<span id="id13"></span><h2>5.1.0 -&gt; 5.2.0<a class="headerlink" href="#migration-guide-5-1-0-5-2-0" title="Permalink to this headline">¶</a></h2>
+<span id="id14"></span><h2>5.1.0 -&gt; 5.2.0<a class="headerlink" href="#migration-guide-5-1-0-5-2-0" title="Permalink to this headline">¶</a></h2>
 <p>No specific migration steps.</p>
 <p>If you are compiling glu, please refer to the <a class="reference internal" href="dev-setup.html"><em>Compiling glu</em></a> page as the quick setup guide has changed.</p>
 </div>
 <div class="section" id="migration-guide-5-0-0-5-1-0">
-<span id="id14"></span><h2>5.0.0 -&gt; 5.1.0<a class="headerlink" href="#migration-guide-5-0-0-5-1-0" title="Permalink to this headline">¶</a></h2>
+<span id="id15"></span><h2>5.0.0 -&gt; 5.1.0<a class="headerlink" href="#migration-guide-5-0-0-5-1-0" title="Permalink to this headline">¶</a></h2>
 <p>The glu code itself has not changed much between 5.0.0 and 5.1.0. What has really changed is the way glu is packaged and distributed. In order to migrate, you have several approaches.</p>
 <div class="section" id="recommended">
 <h3>Recommended<a class="headerlink" href="#recommended" title="Permalink to this headline">¶</a></h3>
@@ -293,7 +328,7 @@ org.linkedin.zookeeper-server-2.0.0/
 </div>
 </div>
 <div class="section" id="migration-guide-4-7-2-5-0-0">
-<span id="id15"></span><h2>4.7.2 -&gt; 5.0.0<a class="headerlink" href="#migration-guide-4-7-2-5-0-0" title="Permalink to this headline">¶</a></h2>
+<span id="id16"></span><h2>4.7.2 -&gt; 5.0.0<a class="headerlink" href="#migration-guide-4-7-2-5-0-0" title="Permalink to this headline">¶</a></h2>
 <p>The only migration step required for this upgrade is to make sure that you are using java 1.7.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -301,7 +336,7 @@ org.linkedin.zookeeper-server-2.0.0/
 </div>
 </div>
 <div class="section" id="migration-guide-4-7-1-4-7-2">
-<span id="id16"></span><h2>4.7.1 -&gt; 4.7.2<a class="headerlink" href="#migration-guide-4-7-1-4-7-2" title="Permalink to this headline">¶</a></h2>
+<span id="id17"></span><h2>4.7.1 -&gt; 4.7.2<a class="headerlink" href="#migration-guide-4-7-1-4-7-2" title="Permalink to this headline">¶</a></h2>
 <p>No specific migration steps.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -309,7 +344,7 @@ org.linkedin.zookeeper-server-2.0.0/
 </div>
 </div>
 <div class="section" id="migration-guide-4-6-2-4-7-1">
-<span id="id17"></span><h2>4.6.2 -&gt; 4.7.1<a class="headerlink" href="#migration-guide-4-6-2-4-7-1" title="Permalink to this headline">¶</a></h2>
+<span id="id18"></span><h2>4.6.2 -&gt; 4.7.1<a class="headerlink" href="#migration-guide-4-6-2-4-7-1" title="Permalink to this headline">¶</a></h2>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last"><tt class="docutils literal"><span class="pre">4.7.0</span></tt> contains a critical bug and should not be used. It is also recommended to use <tt class="docutils literal"><span class="pre">4.7.2</span></tt> instead of <tt class="docutils literal"><span class="pre">4.7.1</span></tt> if you are upgrading from an earlier version.</p>
@@ -372,6 +407,7 @@ org.linkedin.zookeeper-server-2.0.0/
 <li class="toctree-l1"><a class="reference internal" href="release-notes-old.html">Release Notes (4.7.x and below)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Migration Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#general-tips-and-guidelines">General tips and guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#migration-guide-5-5-6-5-6-0">5.5.6 -&gt; 5.6.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#migration-guide-5-5-5-5-5-6">5.5.5 -&gt; 5.5.6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#migration-guide-5-5-4-5-5-5">5.5.4 -&gt; 5.5.5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#migration-guide-5-5-3-5-5-4">5.5.3 -&gt; 5.5.4</a></li>
