@@ -1,0 +1,28 @@
+var structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder =
+[
+    [ "RawVstParamDefBuilder", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#a6cd11ce398bf92d2e8a067ebe4671e91", null ],
+    [ "add", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#ac5cf124e691233d8e9477cb86048bca1", null ],
+    [ "defaultValue", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#a689d6310a768c8360dba7bba999216ea", null ],
+    [ "flags", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#a8c3a1d098c05056643af285717386bf8", null ],
+    [ "guiOwned", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#a569fb85976d4715cb8d90257777f3f44", null ],
+    [ "precision", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#aa4047d91bca17abb47806659c560bff6", null ],
+    [ "rtOwned", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#a9ad9a42d3ad7252605ae516b2d8be500", null ],
+    [ "shortTitle", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#a02a08dc1fe549168d5cc58401d83db0d", null ],
+    [ "stepCount", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#aa58cc06d3c9d868e5a0f028c2de3fc1a", null ],
+    [ "transient", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#a4c175ed2f64fbe86c852e1309a8554e2", null ],
+    [ "unitID", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#a28bf4e394fcafe0ec5d9b43a730edadb", null ],
+    [ "units", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#ad28c9fd3160d3a6efea05b36d507a564", null ],
+    [ "Parameters", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#afaebbd8ef883afa59f01fa3d4475e6a2", null ],
+    [ "fDefaultValue", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#a913c21bf06cfacdcab97411c11ab9b65", null ],
+    [ "fFlags", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#a703e906538060be80ccafb28ff9150dd", null ],
+    [ "fOwner", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#a04430135c2b34908ccb0bfb73b63d212", null ],
+    [ "fParameters", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#a3f7ad22f96d8f8feefc1a72b040adf0e", null ],
+    [ "fParamID", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#a37d815c0b333937065fb829b2cc66a98", null ],
+    [ "fPrecision", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#ac7a2af37133152ff0df7a0d2d322616b", null ],
+    [ "fShortTitle", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#a34f45e57f611790163969fea10814d83", null ],
+    [ "fStepCount", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#a26c8831cc4369d5a43e33998b63f4296", null ],
+    [ "fTitle", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#a0510a2c0be7eaf8bab84e3af35f0a649", null ],
+    [ "fTransient", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#a0bc4a95633baf5bf59c52ee1ec842fd1", null ],
+    [ "fUnitID", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#adde41556181155182bd1dddfc65473ce", null ],
+    [ "fUnits", "structpongasoft_1_1_v_s_t_1_1_parameters_1_1_raw_vst_param_def_builder.html#af707cbfbca8e716b4233016fe97dd26d", null ]
+];

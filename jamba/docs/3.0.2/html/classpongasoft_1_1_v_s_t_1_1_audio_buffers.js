@@ -1,0 +1,26 @@
+var classpongasoft_1_1_v_s_t_1_1_audio_buffers =
+[
+    [ "Channel", "classpongasoft_1_1_v_s_t_1_1_audio_buffers_1_1_channel.html", "classpongasoft_1_1_v_s_t_1_1_audio_buffers_1_1_channel" ],
+    [ "class_type", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#ab57bd77f336a0abe0905761f1c97a5fc", null ],
+    [ "AudioBuffers", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#a9144748d8341b463dedc788ba4021588", null ],
+    [ "absoluteMax", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#a95d3b19462e713bd9939ae7237419702", null ],
+    [ "adjustSilenceFlags", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#a2651111ec003911e386572acd4d05c23", null ],
+    [ "clear", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#af58bb12c16674f0c77cc5113797f84d4", null ],
+    [ "copyFrom", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#abe64af61928b2f883a75b0653baefde9", null ],
+    [ "copyTo", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#a917d9479492c1c0c18a71b06ac60f71a", null ],
+    [ "getAudioChannel", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#ad357c4d23f3d173a2bca339aed391fcd", null ],
+    [ "getBuffer", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#a0efdd7ada3a5e0c451bb88868eeee07b", null ],
+    [ "getBuffer", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#a276fe9c50e3bbcba77af8010cf57e0ac", null ],
+    [ "getBuffer", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#a2ebd80d02a728feff83c779db7533e9f", null ],
+    [ "getLeftChannel", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#a1412c438c54f7d12a2bf8009753327f5", null ],
+    [ "getNumChannels", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#a5d880c803ef3f6a97f6e5bc683153d14", null ],
+    [ "getNumSamples", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#a26900564c339fdc907ed4375a3f127a7", null ],
+    [ "getRightChannel", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#a9b9973112b988227d65413ead1d300f7", null ],
+    [ "getSilenceFlags", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#a6f4e8aa8c395f4b08a2c52a60bc4b699", null ],
+    [ "isSilent", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#adb35a2c81929504b66441161a5ab1d1c", null ],
+    [ "isSilent", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#a1396fa0540d22c54ad0463a29f5ed9e5", null ],
+    [ "setSilenceFlag", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#af810b32f00adf5978d54f194947897de", null ],
+    [ "setSilenceFlags", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#a0234bccfaf5426e05141147a6563efc1", null ],
+    [ "fBuffer", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#a56c1fd026e951496b1377d7d1da1116c", null ],
+    [ "fNumSamples", "classpongasoft_1_1_v_s_t_1_1_audio_buffers.html#a319aeeeddc79773ae4c0140f2778fda5", null ]
+];
