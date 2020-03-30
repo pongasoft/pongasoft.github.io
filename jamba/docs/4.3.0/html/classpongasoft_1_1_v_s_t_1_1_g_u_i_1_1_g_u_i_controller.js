@@ -1,0 +1,28 @@
+var classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller =
+[
+    [ "GUIController", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#a7ab6b433df361e5a57f4f1068ce4b295", null ],
+    [ "~GUIController", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#a1ae745f5ffa1c7c8977ecadeb5dfc88f", null ],
+    [ "allocateMessage", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#ad14bf0af85c8103d9ade9a04fc7890dd", null ],
+    [ "createCustomController", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#a8912abf7b6f1274f1b1080b03067e226", null ],
+    [ "createSubController", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#acefcedcc249905ec60807d3355d7b304", null ],
+    [ "createView", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#a7040b7382437fc5abdfad9dfdd076b83", null ],
+    [ "didOpen", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#a7c8d156b21cdac84da0dd4d8136d07d1", null ],
+    [ "getGUIState", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#af58aa381a964b73db7271607ae71251d", null ],
+    [ "getState", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#a3758dd9a98770010faaf076bd09bbf36", null ],
+    [ "initialize", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#a1447d3b11d392ee73c3ea342345cf88b", null ],
+    [ "notify", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#a60bbab8211ead54d50dbb672be410342", null ],
+    [ "registerParameters", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#a7f893799601f5799da9aa291e1561087", null ],
+    [ "sendMessage", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#af95444cb56eb87604801d979c6e54968", null ],
+    [ "setComponentState", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#a99764cf9cfa60196177b8678fe26c9b7", null ],
+    [ "setState", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#a01d1ce581fccbdfa72ccfb1d7372fa12", null ],
+    [ "switchToMainView", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#a4e0be65a015714176e9e0e625f317455", null ],
+    [ "switchToView", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#a8b7495c553503ae8fba6f6ca99ad6f26", null ],
+    [ "terminate", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#aa221301eaff743b52dc8862b1e607a8c", null ],
+    [ "willClose", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#a3f8c1e382c31dd95d5112d7e799c2c02", null ],
+    [ "fCurrentViewName", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#ad9fbce12dc4cc9720d48a37f87119389", null ],
+    [ "fDefaultKnobMode", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#adee648ec05867777417513b203760bee", null ],
+    [ "fMainViewName", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#af1fb575f03b0890f06f3ed6591f98801", null ],
+    [ "fViewFactory", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#a87e389fe149a2c60192199c1a4a894a7", null ],
+    [ "fVST3Editor", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#aaae4277a17f33d83363735a7a15a100a", null ],
+    [ "fXmlFileName", "classpongasoft_1_1_v_s_t_1_1_g_u_i_1_1_g_u_i_controller.html#af69d8d2a057cd711ed3aed6b2e5f418c", null ]
+];
