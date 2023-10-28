@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="EN-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <title>raylib_web_cmake</title>
+
+  <meta name="title" content="raylib_web_cmake">
+  <meta name="description" content="New raylib web videogame, developed using raylib videogames library">
+  <meta name="keywords" content="raylib, games, html5, programming, C, C++, library, learn, videogames">
+  <meta name="viewport" content="width=device-width">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="https://www.raylib.com/favicon.ico">
+
+  <style>
+    body {
+      margin: 0px;
+    }
+
+    canvas.emscripten {
+      border: 0px none;
+      background-color: black;
+      image-rendering: pixelated;
+      width: 800px;
+      height: 450px;
+    }
+
+    @font-face {
+      font-family: "Jetbrains Mono";
+      src: url("JetBrainsMono-Regular.ttf") format("truetype")
+    }
+  </style>
+</head>
+<body>
+<h4>Browser</h4>
+<p style="font-family: 'Jetbrains Mono', sans-serif; font-size: 27px; margin-left: 10px">
+  The quick brown fox jumps over the lazy dog
+  <br>
+  <img id="logo" src="logo_dark_128x128.png" alt="logo" width="64"/>
+</p>
+<!--<h4>Canvas</h4>-->
+<!--<p>-->
+<!--  <canvas id="c2d" width="800" height="100"></canvas>-->
+<!--</p>-->
+<h4>Raylib</h4>
+<canvas class=emscripten id=canvas oncontextmenu=event.preventDefault() tabindex=-1></canvas>
+<p id="output"/>
+<script>
+
+  function isHiDPIAware() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if(urlParams.has('isHiDPIAware')) {
+      return urlParams.get('isHiDPIAware') !== "false";
+    } else {
+      return true;
+    }
+  }
+
+  var Module = {
+              isHiDPIAware: isHiDPIAware(),
+              print: (function() {
+                  var element = document.getElementById('output');
+                  if (element) element.value = ''; // clear browser cache
+                  return function(text) {
+                      if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+                      console.log(text);
+                      if (element) {
+                        element.value += text + "\n";
+                        element.scrollTop = element.scrollHeight; // focus on bottom
+                      }
+                  };
+              })(),
+              canvas: (function() {
+                  //const scale = window.devicePixelRatio;
+                  return document.getElementById('canvas');
+              })()
+          };
+</script>
+<script async type="text/javascript" src="raylib_web_cmake.js"></script>
+</body>
+</html>
