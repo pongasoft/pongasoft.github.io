@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="EN-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <title>imgui_raylib_cmake</title>
+
+  <meta name="title" content="imgui_raylib_cmake">
+  <meta name="viewport" content="width=device-width">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="https://www.raylib.com/favicon.ico">
+
+  <style>
+    body {
+      margin: 0;
+    }
+
+    canvas.emscripten {
+      border: 0 none;
+      background-color: black;
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: block;
+      image-rendering: pixelated;
+    }
+
+    #canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 0;
+      border: 0 none;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+<div id="canvas-container">
+<canvas class=emscripten id=canvas oncontextmenu=event.preventDefault() tabindex=-1></canvas>
+</div>
+<script>
+  function isHiDPIAware() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if(urlParams.has('isHiDPIAware')) {
+      return urlParams.get('isHiDPIAware') !== "false";
+    } else {
+      return true;
+    }
+  }
+  var Module = {
+              isHiDPIAware: isHiDPIAware(),
+              print: (function() {
+                  var element = document.getElementById('output');
+                  if (element) element.value = ''; // clear browser cache
+                  return function(text) {
+                      if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+                      console.log(text);
+                      if (element) {
+                        element.value += text + "\n";
+                        element.scrollTop = element.scrollHeight; // focus on bottom
+                      }
+                  };
+              })(),
+              canvas: (function() {
+                  return document.getElementById('canvas');
+              })()
+          };
+</script>
+<script async type="text/javascript" src="imgui_raylib_cmake.js"></script>
+</body>
+</html>
