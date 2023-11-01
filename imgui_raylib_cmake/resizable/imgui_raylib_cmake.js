@@ -969,8 +969,10 @@ function dbg(text) {
 // === Body ===
 
 var ASM_CONSTS = {
-  242612: () => { return Module.isHiDPIAware; },  
- 242640: ($0) => { Module.setHiDPIAware($0); }
+  242612: () => { const warning = document.getElementById("browser-warning"); if(warning) warning.remove(); },  
+ 242702: () => { return Module.isHiDPIAware; },  
+ 242730: ($0) => { Module.setHiDPIAware($0); },  
+ 242760: () => { const fs = document.getElementById("fullscreen"); if(fs) fs.click(); }
 };
 
 

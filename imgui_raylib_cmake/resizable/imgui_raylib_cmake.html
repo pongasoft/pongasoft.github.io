@@ -44,9 +44,19 @@
   </style>
 </head>
 <body>
+<div id="browser-warning">
+  ⚠️ If you are seeing this message it means that your browser does not support WASM.
+  <br/>You can try with the latest version of:
+  <ul>
+    <li>Google Chrome (119+)</li>
+    <li>Safari (16.6+)</li>
+    <li>Firefox (119+)</li>
+  </ul>
+</div>
 <div id="canvas-container">
 <canvas class=emscripten id=canvas oncontextmenu=event.preventDefault() tabindex=-1></canvas>
 </div>
+<input id="fullscreen" type="button" value="Fullscreen" onclick="Module.requestFullscreen(false, true);">
 <script>
   function isHiDPIAware() {
     const urlParams = new URLSearchParams(window.location.search);
