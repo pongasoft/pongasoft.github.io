@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+  <title>WebGPU Shader Toy</title>
+  <style>
+
+    .hidden {
+      display: none;
+    }
+
+    .canvas-container {
+      position: relative;
+      border: solid 1px #888888;
+    }
+
+    .canvas-container canvas {
+      margin: 0;
+      padding: 0;
+      display: block;
+    }
+
+    .canvas-container canvas:focus {
+      outline: none;
+    }
+
+    .canvas-handle {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      margin-bottom: 1px;
+      margin-right: 1px;
+      border-left: 20px solid transparent;
+      border-bottom: 20px solid rgba(102, 102, 102, 0.5);
+      width: 0;
+      height: 0;
+      cursor: nwse-resize;
+    }
+
+    #canvases {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+    }
+
+    #canvases {
+      border: 2px dashed transparent;
+      position: relative;
+    }
+
+    #canvases.highlight {
+      border: 2px dashed purple;
+    }
+
+    #canvas1 {
+      width: 100%;
+      height: 100%;
+    }
+
+    #canvas1-container {
+      margin-right: 5px;
+      width: calc(50vw - 20px);
+      height: calc(100vh - 3em);
+    }
+
+    #canvas2-container {
+      width: calc(50vw - 20px);
+      height: calc(100vh - 3em);
+    }
+
+    #canvas2 {
+      width: 100%;
+      height: 100%;
+    }
+
+    #canvases #drop-zone {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0);
+      pointer-events: none;
+    }
+
+    #canvases #drop-zone #drop-zone-content {
+      display: none;
+      color: white;
+      font-size: 30px;
+      text-align: center;
+    }
+
+    #canvases.highlight #drop-zone {
+      background-color: rgba(1, 1, 1, 0.5);
+    }
+
+    #canvases.highlight #drop-zone #drop-zone-content {
+      display: block;
+    }
+
+    .hidden-initially {
+      display: none;
+    }
+
+    #intro {
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: black;
+      color: white;
+      font-family: monospace;
+      text-shadow: 2px 2px 4px black;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+    }
+
+    #intro .content {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+
+    #intro .centered {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    #intro .cover {
+      background: url('../images/wgpu_shader_toy_bg.webp') black;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: contain;
+      background-attachment: fixed;
+      height: 100%;
+    }
+
+    @media (orientation: landscape) {
+      #intro .cover {
+        margin-left: calc((100vw - 100vh) / 2);
+        margin-right: calc((100vw - 100vh) / 2);
+      }
+    }
+
+    @media (orientation: portrait) {
+      #intro .cover {
+        margin-left: 0;
+        margin-right: 0;
+        background-size: cover;
+      }
+    }
+
+    #intro .loader {
+      display: inline-block;
+      border: 2px solid lightgray;
+      border-top: 2px solid teal;
+      border-radius: 50%;
+      width: 1em;
+      height: 1em;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    #intro .error {
+      color: red;
+    }
+
+    #intro a {
+      color: inherit;
+    }
+
+    #intro a:hover {
+      color: teal;
+    }
+
+    #intro .info {
+      background-color: rgba(0, 0, 0, 0.5);
+      padding-left: 1em;
+      padding-right: 1em;
+      border: solid 1px teal;
+      border-radius: 1em;
+    }
+
+    #intro .status {
+      margin-top: 1em;
+    }
+
+    #continue {
+      display: none;
+      margin-top: 1em;
+      background-color: teal;
+      color: white;
+      font-family: monospace;
+      border: none;
+      border-radius: 0.5em;
+      padding: 0.5em;
+      transition-duration: 0.4s;
+      box-shadow: 8px 8px 16px 0 rgba(0,0,0,0.8);
+    }
+
+    #continue:hover {
+      background-color: white;
+      color: teal;
+    }
+
+    #footer {
+      position: fixed;
+      bottom: 5px;
+      right: 5px;
+      font-family: monospace;
+      font-size: x-small;
+      color: lightgray;
+      z-index: 20;
+    }
+
+    #footer a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    #footer a:hover {
+      text-decoration: underline;
+      color: teal;
+    }
+
+  </style>
+</head>
+<body>
+<div id="intro">
+  <div class="cover">
+    <div class="content">
+      <div class="centered">
+        <h1>Welcome to WebGPU Shader Toy</h1>
+        <div class="webgpu error hidden"></div>
+        <noscript>
+          <h3 class="error">This tool requires javascript (currently disabled)!</h3>
+        </noscript>
+        <div class="info">
+          <p>WebGPU Shader Toy is a free tool developed by pongasoft for experimenting with WebGPU fragment shaders and the <a href="https://www.w3.org/TR/WGSL/">WebGPU Shading Language</a> (WGSL).</p>
+          <p>This tool has no tracking, ads or server-side component: it is running 100% in your browser. It uses <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">localStorage</a> to store information across browser sessions. </p>
+          <p>You can provide feedback or report issues on <a href="https://github.com/pongasoft/webgpu-shader-toy">GitHub</a>.</p>
+          <p>If you are having issues, try to <a href="?reset">reset</a>.</p>
+          <p>This project originated from my interest in learning about WebGPU. It also served as a platform for developing a more comprehensive application for my library: <a href="https://github.com/pongasoft/emscripten-glfw">emscripten-glfw</a>.</p>
+          <p>This tool is using <a href="https://emscripten.org/">emscripten</a> (web assembly) for the compiler, <a href="https://github.com/ocornut/imgui">ImGui</a> and GLFW for the GUI (<a href="https://github.com/pongasoft/emscripten-glfw">emscripten-glfw</a> for the backend and WebGPU for the renderer.)</p>
+          <p>It has been inspired by the popular project <a href="https://www.shadertoy.com/">Shadertoy</a>.</p>
+        </div>
+        <div class="status hidden-initially">
+          <div>Loading... <span class="loader"></span></div>
+        </div>
+        <input id="continue" type="button" value="Continue">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="canvases">
+  <div id="canvas1-container" class="canvas-container">
+    <div id="canvas1-handle" class="canvas-handle hidden"></div>
+    <canvas id="canvas1" oncontextmenu="event.preventDefault()"></canvas>
+  </div>
+  <div id="canvas2-container" class="canvas-container">
+    <div id="canvas2-handle" class="canvas-handle hidden"></div>
+    <canvas id="canvas2" oncontextmenu="event.preventDefault()"></canvas>
+  </div>
+
+  <div id="drop-zone">
+    <p id="drop-zone-content">Drop Shader Here</p>
+  </div>
+</div>
+<div id="footer"><a href="https://pongasoft.com" target="_blank">pongasoft</a> | <a href="https://github.com/pongasoft/webgpu-shader-toy" target="_blank">Project</a> | <a href="?reset">Reset</a></div>
+<script type='text/javascript'>
+  var Module = {};
+
+  // Detect reset: clean storage + reload the page
+  {
+    let urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("reset")) {
+      localStorage.removeItem('shader_toy::State');
+      Module.resetRequested = true;
+      urlParams.delete("reset");
+      let newUrl = window.location.pathname + (urlParams.size > 0 ? ('?' + urlParams.toString()) : '');
+      window.history.replaceState({}, '', newUrl);
+      location.reload();
+    }
+  }
+
+
+  function addClass(cssSelector, c) {
+    const el = document.querySelector(cssSelector);
+    if (el) {
+      el.classList.add(c);
+    }
+  }
+
+  function removeClass(cssSelector, c) {
+    const el = document.querySelector(cssSelector);
+    if (el) {
+      el.classList.remove(c);
+    }
+  }
+
+  function show(cssSelector) { removeClass(cssSelector, "hidden"); }
+  function hide(cssSelector) { addClass(cssSelector, "hidden"); }
+
+  // Detect WebGPU
+  if(navigator.gpu !== undefined)
+  {
+    (async () => {
+      const adapter = await navigator.gpu.requestAdapter();
+      Module.preinitializedWebGPUDevice = await adapter.requestDevice();
+      Module.wst_done_waiting = false;
+
+      // Module.wst_set_style
+      Module.wst_set_style = (darkStyle) => {
+        document.body.style.backgroundColor = darkStyle ? "black" : "white";
+      };
+
+      // Module.wst_set_manual_layout
+      Module.wst_set_manual_layout = (manualLayout) => {
+        function set_manual_layout(canvasSelector) {
+          const containerSelector = `${canvasSelector}-container`;
+          const handleSelector = `${canvasSelector}-handle`;
+          if(manualLayout) {
+            // show the handle
+            show(handleSelector);
+            Module.glfwMakeCanvasResizable(canvasSelector, containerSelector, handleSelector);
+          } else {
+            // hide the handle
+            hide(handleSelector);
+            Module.glfwMakeCanvasResizable(canvasSelector, containerSelector, null);
+            // re-enable global css (bug #6 in emscripten-glfw)
+            const container = document.querySelector(containerSelector);
+            if(container) {
+              container.style.removeProperty('width');
+              container.style.removeProperty('height');
+            }
+          }
+        }
+
+        set_manual_layout('#canvas1');
+        set_manual_layout('#canvas2');
+      };
+
+      // Module.wst_wait_for_continue
+      Module.wst_wait_for_continue = async () => {
+        fadeAndRemove("#intro .status", 0);
+        fadeAndRemove("#intro .error", 0);
+        if(Module.wst_done_waiting)
+          return;
+        const button = document.getElementById("continue");
+        button.style.display = 'inline-block';
+        const promise = new Promise(resolve => button.addEventListener("click", resolve, { once: true }));
+        await promise;
+        Module.wst_done_waiting = true;
+        fadeAndRemove("#intro", 250);
+      }
+
+      // load the main wasm code
+      let scriptTag = document.createElement("script");
+      scriptTag.type = "text/javascript";
+      scriptTag.src = "index.js";
+      scriptTag.async = true;
+      document.head.appendChild(scriptTag);
+    })();
+  }
+  else
+  {
+    console.log("WebGPU is not supported by this browser");
+    fadeAndRemove("#intro .status", 0);
+    const errorSelector = '#intro .content .webgpu.error'
+    const error = document.querySelector(errorSelector);
+    if(error !== undefined) {
+      error.innerHTML =
+        '<h3>WebGPU is not supported by this browser</h3>' +
+        '<h3>Try with Google Chrome (macOS / Windows)</h3>';
+      show(errorSelector);
+    }
+  }
+
+  function fadeAndRemove(selector, duration) {
+    const element = document.querySelector(selector);
+    const rate = 25; // ms
+    if(element !== undefined)
+    {
+      if(duration > 0) {
+        var opacity = 1;
+        var timer = setInterval(function()
+        {
+          if(opacity <= 0)
+          {
+            clearInterval(timer);
+            element.remove();
+          }
+          element.style.opacity = opacity;
+          opacity -= rate / duration;
+        }, rate);
+      } else {
+        element.remove();
+      }
+    }
+  }
+
+  function showHiddenInitially() {
+    const elements = document.querySelectorAll('.hidden-initially');
+    elements.forEach((element) => {
+      element.classList.remove('hidden-initially'); // remove the class
+    });
+  }
+
+  setTimeout(showHiddenInitially, 1000);
+
+  function handleDrop(e) {
+    var dt = e.dataTransfer;
+    var files = dt.files;
+
+    if (files.length > 0) {
+      Module.wgpuShaderToyLoadFile(files[0]);
+    }
+  }
+
+  function makeDropZone(dropZone) {
+    // Prevent default drag behaviors
+    ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
+      dropZone.addEventListener(eventName, preventDefaults, false);
+      document.body.addEventListener(eventName, preventDefaults, false);
+    });
+
+    // Highlight drop area when item is dragged over it
+    ["dragenter", "dragover"].forEach(eventName => {
+      dropZone.addEventListener(eventName, highlight, false);
+    });
+
+    ["dragleave", "drop"].forEach(eventName => {
+      dropZone.addEventListener(eventName, unhighlight, false);
+    });
+
+    // Handle dropped files
+    dropZone.addEventListener("drop", handleDrop, false);
+
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    function highlight(e) {
+      dropZone.classList.add('highlight');
+    }
+
+    function unhighlight(e) {
+      dropZone.classList.remove('highlight');
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    makeDropZone(document.getElementById('canvases'));
+  });
+
+</script>
+</body>
+</html>
