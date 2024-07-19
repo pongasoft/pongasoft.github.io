@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
-  <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="images/favicon.png" type="image/x-icon">
   <title>WebGPU Shader Toy</title>
   <style>
 
@@ -306,7 +306,7 @@
   </ul>
 </div>
 
-<div id="footer"><a href="https://pongasoft.com" target="_blank">pongasoft</a> | <a href="?reset">Reset</a> | <a href="https://github.com/pongasoft/webgpu-shader-toy" target="_blank">v2024.07.15</a></div>
+<div id="footer"><a href="https://pongasoft.com" target="_blank">pongasoft</a> | <a href="?reset">Reset</a> | <a href="https://github.com/pongasoft/webgpu-shader-toy" target="_blank">v2024.07.19</a></div>
 
 <script type='text/javascript'>
   var Module = {};
@@ -367,6 +367,8 @@
   if(navigator.gpu)
   {
     Module.onAbort = (reason) => {
+      const error = new Error(`Aborted: ${reason}`);
+      console.log(error.stack);
       showErrorDialog(reason);
     }
 
