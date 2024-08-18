@@ -401,6 +401,8 @@ var __ATPOSTRUN__ = []; // functions called after the main() is called
 
 var runtimeInitialized = false;
 
+var runtimeExited = false;
+
 function preRun() {
   if (Module['preRun']) {
     if (typeof Module['preRun'] == 'function') Module['preRun'] = [Module['preRun']];
@@ -425,6 +427,15 @@ function preMain() {
   checkStackCookie();
   
   callRuntimeCallbacks(__ATMAIN__);
+}
+
+function exitRuntime() {
+  assert(!runtimeExited);
+  checkStackCookie();
+  ___funcs_on_exit(); // Native atexit() functions
+  callRuntimeCallbacks(__ATEXIT__);
+  flush_NO_FILESYSTEM()
+  runtimeExited = true;
 }
 
 function postRun() {
@@ -453,6 +464,7 @@ function addOnPreMain(cb) {
 }
 
 function addOnExit(cb) {
+  __ATEXIT__.unshift(cb);
 }
 
 function addOnPostRun(cb) {
@@ -625,6 +637,7 @@ var isFileURI = (filename) => filename.startsWith('file://');
 function createExportWrapper(name, nargs) {
   return (...args) => {
     assert(runtimeInitialized, `native function \`${name}\` called before runtime initialization`);
+    assert(!runtimeExited, `native function \`${name}\` called after runtime exit (use NO_EXIT_RUNTIME to keep it alive after main() exits)`);
     var f = wasmExports[name];
     assert(f, `exported native function \`${name}\` not found`);
     // Only assert for too many arguments. Too few can be valid since the missing arguments will be zero filled.
@@ -901,7 +914,7 @@ function dbg(...args) {
 // === Body ===
 
 var ASM_CONSTS = {
-  241392: ($0) => { return Module.glfwGetWindow(UTF8ToString($0)); }
+  241328: ($0) => { return Module.glfwGetWindow(UTF8ToString($0)); }
 };
 
 // end include: preamble.js
@@ -941,7 +954,7 @@ var ASM_CONSTS = {
     }
   }
 
-  var noExitRuntime = Module['noExitRuntime'] || true;
+  var noExitRuntime = Module['noExitRuntime'] || false;
 
   var ptrToString = (ptr) => {
       assert(typeof ptr === 'number');
@@ -1205,6 +1218,12 @@ var ASM_CONSTS = {
         }
         JSEvents.deferredCalls = [];
       },
+  registerRemoveEventListeners() {
+        if (!JSEvents.removeEventListenersRegistered) {
+          __ATEXIT__.push(JSEvents.removeAllEventListeners);
+          JSEvents.removeEventListenersRegistered = true;
+        }
+      },
   inEventHandler:0,
   deferredCalls:[],
   deferCall(targetFunction, precedence, argsList) {
@@ -1294,6 +1313,7 @@ var ASM_CONSTS = {
                                                eventHandler.eventListenerFunc,
                                                eventHandler.useCapture);
           JSEvents.eventHandlers.push(eventHandler);
+          JSEvents.registerRemoveEventListeners();
         } else {
           for (var i = 0; i < JSEvents.eventHandlers.length; ++i) {
             if (JSEvents.eventHandlers[i].target == eventHandler.target
@@ -1778,13 +1798,21 @@ var ASM_CONSTS = {
           getWasmTableEntry(GLFW3.fWindowResizeCallback)(GLFW3.fContext, glfwWindow, width, height);
         }
       },
+  isAnyElementFocused:() => {
+        return document.activeElement !== document.body;
+      },
+  isAnyOtherElementFocused() {
+        return GLFW3.isAnyElementFocused() && GLFW3.findContext(document.activeElement) == null;
+      },
   onPaste(e) {
-        e.preventDefault();
+        if(!GLFW3.isAnyOtherElementFocused()) {
+          e.preventDefault();
+        }
         let clipboardData = e.clipboardData || window.clipboardData;
         let pastedData = clipboardData.getData('text/plain');
         if(pastedData !== '' && GLFW3.fClipboardCallback) {
           const pastedString = stringToNewUTF8(pastedData);
-          getWasmTableEntry(GLFW3.fClipboardCallback)(GLFW3.fContext, 0, pastedString, null);
+          getWasmTableEntry(GLFW3.fClipboardCallback)(GLFW3.fContext, pastedString, null);
           _free(pastedString);
         }
       },
@@ -1793,12 +1821,14 @@ var ASM_CONSTS = {
           const windowSelection = window.getSelection();
           if(windowSelection && windowSelection.toString() !== '') {
             const selection = stringToNewUTF8(windowSelection.toString());
-            getWasmTableEntry(GLFW3.fClipboardCallback)(GLFW3.fContext, 0, selection, null);
+            getWasmTableEntry(GLFW3.fClipboardCallback)(GLFW3.fContext, selection, null);
             _free(selection);
           } else {
-            // this is to prevent the browser to beep on empty clipboard
-            e.clipboardData.setData('text/plain', ' ');
-            e.preventDefault();
+            if(!GLFW3.isAnyOtherElementFocused()) {
+              // this is to prevent the browser to beep on empty clipboard
+              e.clipboardData.setData('text/plain', ' ');
+              e.preventDefault();
+            }
           }
         }
       },
@@ -1852,7 +1882,7 @@ var ASM_CONSTS = {
       },
   findContextBySelector__deps:["$findEventTarget"],
   findContextBySelector(canvasSelector) {
-        return GLFW3.findContextByCanvas(findEventTarget(canvasSelector));
+        return typeof canvasSelector === 'string' ? GLFW3.findContextByCanvas(findEventTarget(canvasSelector)) : null;
       },
   findContext(any) {
         if(!any)
@@ -1864,7 +1894,7 @@ var ASM_CONSTS = {
   
         // is any a canvas?
         if(any instanceof HTMLCanvasElement)
-          return GLFW3.findContextByCanvas(canvas);
+          return GLFW3.findContextByCanvas(any);
   
         // is any a selector?
         return GLFW3.findContextBySelector(any);
@@ -2181,10 +2211,10 @@ var ASM_CONSTS = {
     };
 
   var _emscripten_glfw3_context_is_any_element_focused = () => {
-      return document.activeElement !== document.body;
+      return GLFW3.isAnyElementFocused();
     };
 
-  var _emscripten_glfw3_context_is_apple_platform = () => {
+  var _emscripten_glfw3_context_is_runtime_platform_apple = () => {
       return navigator.platform.indexOf("Mac") === 0 || navigator.platform === "iPhone";
     };
 
@@ -2213,7 +2243,7 @@ var ASM_CONSTS = {
       const errorHandler = (err) => {
         if(GLFW3.fClipboardCallback) {
           const errorString = stringToNewUTF8(`${err}`);
-          getWasmTableEntry(GLFW3.fClipboardCallback)(GLFW3.fContext, 2, null, errorString);
+          getWasmTableEntry(GLFW3.fClipboardCallback)(GLFW3.fContext, null, errorString);
           _free(errorString);
         } else {
           GLFW3.onError('GLFW_PLATFORM_ERROR', `Cannot set clipboard string [${err}]`);
@@ -2225,7 +2255,7 @@ var ASM_CONSTS = {
             .then(() => {
               if(GLFW3.fClipboardCallback) {
                 const string = stringToNewUTF8(content);
-                getWasmTableEntry(GLFW3.fClipboardCallback)(GLFW3.fContext, 2, string, null);
+                getWasmTableEntry(GLFW3.fClipboardCallback)(GLFW3.fContext, string, null);
                 _free(string);
               }
             })
@@ -2652,16 +2682,79 @@ var ASM_CONSTS = {
     };
 
   var getHeapMax = () =>
-      HEAPU8.length;
+      // Stay one Wasm page short of 4GB: while e.g. Chrome is able to allocate
+      // full 4GB Wasm memories, the size will wrap back to 0 bytes in Wasm side
+      // for any code that deals with heap sizes, which would require special
+      // casing all heap size related code to treat 0 specially.
+      2147483648;
   
-  var abortOnCannotGrowMemory = (requestedSize) => {
-      abort(`Cannot enlarge memory arrays to size ${requestedSize} bytes (OOM). Either (1) compile with -sINITIAL_MEMORY=X with X higher than the current value ${HEAP8.length}, (2) compile with -sALLOW_MEMORY_GROWTH which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with -sABORTING_MALLOC=0`);
+  var growMemory = (size) => {
+      var b = wasmMemory.buffer;
+      var pages = (size - b.byteLength + 65535) / 65536;
+      try {
+        // round size grow request up to wasm page size (fixed 64KB per spec)
+        wasmMemory.grow(pages); // .grow() takes a delta compared to the previous size
+        updateMemoryViews();
+        return 1 /*success*/;
+      } catch(e) {
+        err(`growMemory: Attempted to grow heap from ${b.byteLength} bytes to ${size} bytes, but got error: ${e}`);
+      }
+      // implicit 0 return to save code size (caller will cast "undefined" into 0
+      // anyhow)
     };
   var _emscripten_resize_heap = (requestedSize) => {
       var oldSize = HEAPU8.length;
       // With CAN_ADDRESS_2GB or MEMORY64, pointers are already unsigned.
       requestedSize >>>= 0;
-      abortOnCannotGrowMemory(requestedSize);
+      // With multithreaded builds, races can happen (another thread might increase the size
+      // in between), so return a failure, and let the caller retry.
+      assert(requestedSize > oldSize);
+  
+      // Memory resize rules:
+      // 1.  Always increase heap size to at least the requested size, rounded up
+      //     to next page multiple.
+      // 2a. If MEMORY_GROWTH_LINEAR_STEP == -1, excessively resize the heap
+      //     geometrically: increase the heap size according to
+      //     MEMORY_GROWTH_GEOMETRIC_STEP factor (default +20%), At most
+      //     overreserve by MEMORY_GROWTH_GEOMETRIC_CAP bytes (default 96MB).
+      // 2b. If MEMORY_GROWTH_LINEAR_STEP != -1, excessively resize the heap
+      //     linearly: increase the heap size by at least
+      //     MEMORY_GROWTH_LINEAR_STEP bytes.
+      // 3.  Max size for the heap is capped at 2048MB-WASM_PAGE_SIZE, or by
+      //     MAXIMUM_MEMORY, or by ASAN limit, depending on which is smallest
+      // 4.  If we were unable to allocate as much memory, it may be due to
+      //     over-eager decision to excessively reserve due to (3) above.
+      //     Hence if an allocation fails, cut down on the amount of excess
+      //     growth, in an attempt to succeed to perform a smaller allocation.
+  
+      // A limit is set for how much we can grow. We should not exceed that
+      // (the wasm binary specifies it, so if we tried, we'd fail anyhow).
+      var maxHeapSize = getHeapMax();
+      if (requestedSize > maxHeapSize) {
+        err(`Cannot enlarge memory, requested ${requestedSize} bytes, but the limit is ${maxHeapSize} bytes!`);
+        return false;
+      }
+  
+      var alignUp = (x, multiple) => x + (multiple - x % multiple) % multiple;
+  
+      // Loop through potential heap size increases. If we attempt a too eager
+      // reservation that fails, cut down on the attempted size and reserve a
+      // smaller bump instead. (max 3 times, chosen somewhat arbitrarily)
+      for (var cutDown = 1; cutDown <= 4; cutDown *= 2) {
+        var overGrownHeapSize = oldSize * (1 + 0.2 / cutDown); // ensure geometric growth
+        // but limit overreserving (default to capping at +96MB overgrowth at most)
+        overGrownHeapSize = Math.min(overGrownHeapSize, requestedSize + 100663296 );
+  
+        var newSize = Math.min(maxHeapSize, alignUp(Math.max(requestedSize, overGrownHeapSize), 65536));
+  
+        var replacement = growMemory(newSize);
+        if (replacement) {
+  
+          return true;
+        }
+      }
+      err(`Failed to grow the heap from ${oldSize} bytes to ${newSize} bytes, not enough memory!`);
+      return false;
     };
 
   /** @suppress {checkTypes} */
@@ -2843,7 +2936,9 @@ var ASM_CONSTS = {
   var exitJS = (status, implicit) => {
       EXITSTATUS = status;
   
-      checkUnflushedContent();
+      if (!keepRuntimeAlive()) {
+        exitRuntime();
+      }
   
       // if exit() was called explicitly, warn the user if the runtime isn't actually being shut down
       if (keepRuntimeAlive() && !implicit) {
@@ -2857,6 +2952,9 @@ var ASM_CONSTS = {
   
   
   var maybeExit = () => {
+      if (runtimeExited) {
+        return;
+      }
       if (!keepRuntimeAlive()) {
         try {
           _exit(EXITSTATUS);
@@ -2866,7 +2964,7 @@ var ASM_CONSTS = {
       }
     };
   var callUserCallback = (func) => {
-      if (ABORT) {
+      if (runtimeExited || ABORT) {
         err('user callback triggered after runtime exited or application aborted.  Ignoring.');
         return;
       }
@@ -2878,14 +2976,25 @@ var ASM_CONSTS = {
       }
     };
   
+  
+  var runtimeKeepalivePush = () => {
+      runtimeKeepaliveCounter += 1;
+    };
+  
+  var runtimeKeepalivePop = () => {
+      assert(runtimeKeepaliveCounter > 0);
+      runtimeKeepaliveCounter -= 1;
+    };
   /** @param {number=} timeout */
   var safeSetTimeout = (func, timeout) => {
-      
+      runtimeKeepalivePush();
       return setTimeout(() => {
-        
+        runtimeKeepalivePop();
         callUserCallback(func);
       }, timeout);
     };
+  
+  
   
   
   
@@ -3148,9 +3257,9 @@ var ASM_CONSTS = {
         return safeSetTimeout(func, timeout);
       },
   safeRequestAnimationFrame(func) {
-        
+        runtimeKeepalivePush();
         return Browser.requestAnimationFrame(() => {
-          
+          runtimeKeepalivePop();
           callUserCallback(func);
         });
       },
@@ -3376,6 +3485,7 @@ var ASM_CONSTS = {
         }
       },
   };
+  
   var _emscripten_set_main_loop_timing = (mode, value) => {
       Browser.mainLoop.timingMode = mode;
       Browser.mainLoop.timingValue = value;
@@ -3386,7 +3496,7 @@ var ASM_CONSTS = {
       }
   
       if (!Browser.mainLoop.running) {
-        
+        runtimeKeepalivePush();
         Browser.mainLoop.running = true;
       }
       if (mode == 0) {
@@ -3438,6 +3548,8 @@ var ASM_CONSTS = {
   
   
   
+  
+  
     /**
      * @param {number=} arg
      * @param {boolean=} noSetTiming
@@ -3459,7 +3571,8 @@ var ASM_CONSTS = {
       var thisMainLoopId = (() => Browser.mainLoop.currentlyRunningMainloop)();
       function checkIsRunning() {
         if (thisMainLoopId < Browser.mainLoop.currentlyRunningMainloop) {
-          
+          runtimeKeepalivePop();
+          maybeExit();
           return false;
         }
         return true;
@@ -4546,6 +4659,7 @@ var ASM_CONSTS = {
       Module["glfwMakeCanvasResizable"] = (any, resizableSelector, handleSelector) => { GLFW3.makeCanvasResizable(any, resizableSelector, handleSelector); };
       Module["glfwUnmakeCanvasResizable"] = (any) => { GLFW3.unmakeCanvasResizable(any); };
       Module["glfwRequestFullscreen"] = GLFW3.requestFullscreen;
+      Module["glfwIsRuntimePlatformApple"] = () => { return _emscripten_glfw3_context_is_runtime_platform_apple() };
       ;
 var GLctx;;
 
@@ -4614,7 +4728,7 @@ var wasmImports = {
   /** @export */
   emscripten_glfw3_context_is_any_element_focused: _emscripten_glfw3_context_is_any_element_focused,
   /** @export */
-  emscripten_glfw3_context_is_apple_platform: _emscripten_glfw3_context_is_apple_platform,
+  emscripten_glfw3_context_is_runtime_platform_apple: _emscripten_glfw3_context_is_runtime_platform_apple,
   /** @export */
   emscripten_glfw3_context_make_canvas_resizable: _emscripten_glfw3_context_make_canvas_resizable,
   /** @export */
@@ -4793,6 +4907,7 @@ var ___wasm_call_ctors = createExportWrapper('__wasm_call_ctors', 0);
 var _main = Module['_main'] = createExportWrapper('__main_argc_argv', 2);
 var _malloc = createExportWrapper('malloc', 1);
 var _free = createExportWrapper('free', 1);
+var ___funcs_on_exit = createExportWrapper('__funcs_on_exit', 0);
 var _fflush = createExportWrapper('fflush', 1);
 var _emscripten_stack_init = () => (_emscripten_stack_init = wasmExports['emscripten_stack_init'])();
 var _emscripten_stack_get_free = () => (_emscripten_stack_get_free = wasmExports['emscripten_stack_get_free'])();
@@ -4818,7 +4933,6 @@ var missingLibrarySymbols = [
   'getTempRet0',
   'setTempRet0',
   'zeroMemory',
-  'growMemory',
   'isLeapYear',
   'ydayFromDate',
   'arraySum',
@@ -4839,8 +4953,6 @@ var missingLibrarySymbols = [
   'dynCallLegacy',
   'getDynCaller',
   'dynCall',
-  'runtimeKeepalivePush',
-  'runtimeKeepalivePop',
   'asmjsMangle',
   'asyncLoad',
   'alignMemory',
@@ -4959,7 +5071,7 @@ var unexportedSymbols = [
   'ptrToString',
   'exitJS',
   'getHeapMax',
-  'abortOnCannotGrowMemory',
+  'growMemory',
   'ENV',
   'MONTH_DAYS_REGULAR',
   'MONTH_DAYS_LEAP',
@@ -4979,6 +5091,8 @@ var unexportedSymbols = [
   'getExecutableName',
   'handleException',
   'keepRuntimeAlive',
+  'runtimeKeepalivePush',
+  'runtimeKeepalivePop',
   'callUserCallback',
   'maybeExit',
   'wasmTable',
@@ -5065,8 +5179,6 @@ var unexportedSymbols = [
   'IDBStore',
   'SDL',
   'SDL_gfx',
-  'WebGPU',
-  'JsValStore',
   'allocateUTF8',
   'allocateUTF8OnStack',
   'print',
@@ -5172,35 +5284,6 @@ function run(args = arguments_) {
     doRun();
   }
   checkStackCookie();
-}
-
-function checkUnflushedContent() {
-  // Compiler settings do not allow exiting the runtime, so flushing
-  // the streams is not possible. but in ASSERTIONS mode we check
-  // if there was something to flush, and if so tell the user they
-  // should request that the runtime be exitable.
-  // Normally we would not even include flush() at all, but in ASSERTIONS
-  // builds we do so just for this check, and here we see if there is any
-  // content to flush, that is, we check if there would have been
-  // something a non-ASSERTIONS build would have not seen.
-  // How we flush the streams depends on whether we are in SYSCALLS_REQUIRE_FILESYSTEM=0
-  // mode (which has its own special function for this; otherwise, all
-  // the code is inside libc)
-  var oldOut = out;
-  var oldErr = err;
-  var has = false;
-  out = err = (x) => {
-    has = true;
-  }
-  try { // it doesn't matter if it fails
-    flush_NO_FILESYSTEM();
-  } catch(e) {}
-  out = oldOut;
-  err = oldErr;
-  if (has) {
-    warnOnce('stdio streams had content in them that was not flushed. you should set EXIT_RUNTIME to 1 (see the Emscripten FAQ), or make sure to emit a newline when you printf etc.');
-    warnOnce('(this may also be due to not including full filesystem support - try building with -sFORCE_FILESYSTEM)');
-  }
 }
 
 if (Module['preInit']) {
