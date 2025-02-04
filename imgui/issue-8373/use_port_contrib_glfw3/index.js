@@ -886,7 +886,7 @@ async function createWasm() {
 // === Body ===
 
 var ASM_CONSTS = {
-  244928: ($0) => { return Module.glfwGetWindow(UTF8ToString($0)); }
+  245456: ($0) => { return Module.glfwGetWindow(UTF8ToString($0)); }
 };
 
 // end include: preamble.js
@@ -2074,6 +2074,7 @@ var ASM_CONSTS = {
         var lastDownX = 0;
         var lastDownY = 0;
         var size = undefined;
+        var touchId = undefined;
   
         ctx.fCanvasResize.onSizeChanged = (width, height) => {
           if (!size) { // while not resizing (otherwise it conflicts)
@@ -2089,20 +2090,17 @@ var ASM_CONSTS = {
   
         // mouse down (target handle) => record size + location
         const onMouseDown = (e) => {
-          e.preventDefault();
           size = computeSize(resizable);
           lastDownX = e.clientX;
           lastDownY = e.clientY;
         };
   
-        handle.addEventListener('mousedown', onMouseDown);
+        handle.addEventListener('mousedown', (e) => { e.preventDefault(); onMouseDown(e); });
         ctx.fCanvasResize.destructors.push(() => { handle.removeEventListener('mousedown', onMouseDown); });
   
         // mouse move (target window) => if resizing, compute new size and make resizable this size
         const onMouseMove = (e) => {
-          if (!size) {
-            return;
-          }
+          if (!size) { return; }
           var offsetX = lastDownX - e.clientX;
           var offsetY = lastDownY - e.clientY;
           size.width -= offsetX;
@@ -2132,6 +2130,44 @@ var ASM_CONSTS = {
   
         window.addEventListener('mouseup', onMouseUp);
         ctx.fCanvasResize.destructors.push(() => { window.removeEventListener('mouseup', onMouseUp); });
+  
+        // touchstart
+        const onTouchStart = (e) => {
+          if (e.touches.length > 0) {
+            const touch = e.touches[0];
+            touchId = touch.identifier;
+            e.preventDefault();
+            onMouseDown(touch);
+          }
+        };
+  
+        handle.addEventListener('touchstart', onTouchStart);
+        ctx.fCanvasResize.destructors.push(() => { handle.removeEventListener('touchstart', onTouchStart); });
+  
+        // touchmove
+        const onTouchMove = (e) => {
+          if (!size) { return; }
+          const touch = Array.from(e.touches).find(touch => touch.identifier === touchId);
+          if (!touch) { return; }
+          onMouseMove(touch);
+        };
+  
+        window.addEventListener('touchmove', onTouchMove);
+        ctx.fCanvasResize.destructors.push(() => { window.removeEventListener('touchmove', onTouchMove); });
+  
+        // touchend/touchcancel
+        const onTouchEnd = (e) => {
+          if (!size) { return; }
+          const touch = Array.from(e.touches).find(touch => touch.identifier === touchId);
+          if (!touch) { return; }
+          touchId = undefined;
+          onMouseUp(touch);
+        };
+  
+        window.addEventListener('touchend', onTouchEnd);
+        ctx.fCanvasResize.destructors.push(() => { window.removeEventListener('touchend', onTouchEnd); });
+        window.addEventListener('touchcancel', onTouchEnd);
+        ctx.fCanvasResize.destructors.push(() => { window.removeEventListener('touchcancel', onTouchEnd); });
   
         return 0;
       },
