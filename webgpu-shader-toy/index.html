@@ -13,6 +13,7 @@
 
     body {
       margin: 8px;
+      overflow: hidden;
     }
 
     .canvas-container {
@@ -52,12 +53,12 @@
 
     .pane {
       flex-grow: 1;
-      overflow-x: auto;
+      /*overflow-x: auto;*/
     }
 
     .pane.manual-layout {
       flex-grow: 0;
-      overflow-x: clip;
+      /*overflow-x: clip;*/
     }
 
     .left-pane {
@@ -339,7 +340,7 @@
   </ul>
 </div>
 
-<div id="footer"><a href="https://pongasoft.com" target="_blank">pongasoft</a> | <a href="#" onclick="return reset();">Reset</a> | <a href="https://github.com/pongasoft/webgpu-shader-toy" target="_blank">v2025.02.27</a></div>
+<div id="footer"><a href="https://pongasoft.com" target="_blank">pongasoft</a> | <a href="#" onclick="return reset();">Reset</a> | <a href="https://github.com/pongasoft/webgpu-shader-toy" target="_blank">v2025.08.24</a></div>
 
 <script type='text/javascript'>
   var Module = {isResizing: false};
@@ -442,7 +443,7 @@
       // load the main wasm code
       let scriptTag = document.createElement("script");
       scriptTag.type = "text/javascript";
-      scriptTag.src = "index.js?v2025.02.27";
+      scriptTag.src = "index.js?v2025.08.24";
       scriptTag.async = true;
       document.head.appendChild(scriptTag);
     })();
