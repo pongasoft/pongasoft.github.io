@@ -226,14 +226,10 @@
     <tr>
       <td class="action">glfwSetWindowOpacity</td>
       <td>
-        <input type="button" value="30%" onclick="Module.pushEvent('opacity_30', '#canvas1')">
-        <input type="button" value="60%" onclick="Module.pushEvent('opacity_60', '#canvas1')">
-        <input type="button" value="100%" onclick="Module.pushEvent('opacity_100', '#canvas1')">
+        <input class="canvas1 opacity" type="range" min="0" max="100" value="100" oninput="Module.pushEvent('opacity', '#canvas1', this.value)">
       </td>
       <td>
-        <input type="button" value="30%" onclick="Module.pushEvent('opacity_30', '#canvas2')">
-        <input type="button" value="60%" onclick="Module.pushEvent('opacity_60', '#canvas2')">
-        <input type="button" value="100%" onclick="Module.pushEvent('opacity_100', '#canvas2')">
+        <input class="canvas2 opacity" type="range" min="0" max="100" value="100" oninput="Module.pushEvent('opacity', '#canvas2', this.value)">
       </td>
     </tr>
     <tr class="glfwShowWindow">
@@ -318,7 +314,7 @@
     </tr>
     <tr>
       <td class="action">Change focus</td>
-      <td colspan="2"><label><input type="range" id="change-focus"></label></td>
+      <td colspan="2"><label>Text: <input type="text" id="change-focus"></label></td>
     </tr>
     <tr>
       <td class="action">Exit main loop</td>
@@ -366,14 +362,15 @@
     canvas2Enabled: isCanvasEnabled("canvas2"),
     eventTypes: {
       exit: 1, toggle_show: 2, zoom_in: 3, zoom_out: 4, zoom_reset: 5,
-      opacity_30: 6, opacity_60: 7, opacity_100: 8, close: 9, toggle_hi_dpi_aware: 10,
-      toggle_resizable: 11, toggle_size_limits: 12, toggle_aspect_ratio: 13,
-      update_title: 14
+      opacity: 6, close: 7, toggle_hi_dpi_aware: 8,
+      toggle_resizable: 9, toggle_size_limits: 10, toggle_aspect_ratio: 11,
+      update_title: 12
     },
     events: [],
     hasEvents: () => { return Module.events.length > 0; },
-    pushEvent: (name, canvasSelector) => {
-      Module.events.push({type: Module.eventTypes[name], canvas: Module.glfwGetWindow(canvasSelector)});
+    pushEvent: (name, canvasSelector, data) => {
+      data = data === undefined ? 0 : Number(data);
+      Module.events.push({type: Module.eventTypes[name], canvas: Module.glfwGetWindow(canvasSelector), data: data});
     },
     popEvent: () => { return Module.events.shift(); },
     toggleCSSClass: (selector, cssClass) => {
